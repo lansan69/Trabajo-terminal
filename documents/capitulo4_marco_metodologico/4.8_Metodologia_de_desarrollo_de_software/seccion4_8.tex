@@ -1,0 +1,46 @@
+% =========================================================
+% 4.8 METODOLOGÍA DE DESARROLLO DE SOFTWARE
+% El \section{} de esta sección está en el chapter.tex del capítulo;
+% sus referencias van en seccion4_8.bib (misma carpeta).
+% =========================================================
+
+Se utiliza \textbf{Scrumban} como marco de gestión del proyecto y, en la etapa de programación del sistema, se combinan los modelos \textbf{Incremental} y de \textbf{Prototipos}, lo que configura una estrategia de \textit{Desarrollo Evolutivo}: el sistema se construye en incrementos funcionales y cada uno se refina a partir de la retroalimentación obtenida del prototipo.
+
+Se eligió esta estrategia porque los requisitos del sistema pueden ajustarse conforme se valida el prototipo, y porque el equipo es pequeño y requiere flexibilidad para redistribuir el trabajo sin la rigidez de un proceso completamente predictivo.
+
+\subsection{Marco de gestión: Scrumban}
+
+
+Scrumban combina la estructura de roles y eventos de Scrum con el flujo continuo de Kanban. En este proyecto se aplica de la siguiente forma:
+
+\begin{itemize}
+    \item \textbf{\textit{Sprints}:} El trabajo se organiza en \textit{sprints} de [dos] semanas, con una reunión de planeación al inicio, una reunión de seguimiento semanal y una revisión con retrospectiva al cierre.
+    \item \textbf{Tablero Kanban:} Las tareas se gestionan en [herramienta] con las columnas \textit{Backlog}, \textit{En desarrollo}, \textit{En pruebas} y \textit{Terminado}. Se establece un límite de trabajo en curso (WIP) de [n] tareas por integrante para evitar la acumulación de tareas abiertas.
+    \item \textbf{\textit{Product Backlog}:} Se prioriza según el valor que cada elemento aporta al sistema, tomando como base los requisitos funcionales y no funcionales definidos.
+    \item \textbf{Definición de terminado:} Un elemento se considera terminado cuando cumple sus criterios de aceptación, ha sido revisado por el equipo, ha pasado las pruebas correspondientes y ha sido validado por el \textit{Product Owner}.
+\end{itemize}
+
+\subsection{Ciclo de desarrollo: Incremental y Prototipos}
+
+La programación del sistema se divide en incrementos funcionales, cada uno correspondiente a un módulo o conjunto de requisitos. Cada incremento sigue el ciclo:
+
+\begin{enumerate}
+    \item Diseño de la interfaz y de la lógica del módulo.
+    \item Construcción de un prototipo funcional.
+    \item Pruebas y revisión con el \textit{Product Owner}.
+    \item Refinamiento a partir de la retroalimentación e integración al sistema.
+\end{enumerate}
+
+Los incrementos se priorizan de modo que el sistema disponga desde etapas tempranas de un flujo mínimo funcional (buscar un destino y obtener una ruta), al que posteriormente se agregan las funciones complementarias.
+
+\subsection{Roles del equipo}
+\label{Roles_equip}
+
+Los roles se distribuyen entre los tres integrantes del equipo, quienes además participan en la codificación.
+
+\begin{itemize}
+    \item \textbf{Scrum Master:} Rebeca Hernández Simón facilita la aplicación de la metodología, remueve los obstáculos que generen retrasos y modera las reuniones y la planeación de los \textit{sprints}. Administra las cargas de trabajo en el tablero Kanban, controla las fechas de entrega y prepara estimaciones de esfuerzo para acordar los siguientes entregables.
+    \item \textbf{\textit{Product Owner}:} Fernando Mendoza Segura revisa el desarrollo de los incrementos y valida que cada módulo cumpla con los requerimientos funcionales y no funcionales. Crea y ordena el \textit{Product Backlog} según el valor de cada elemento y da seguimiento al progreso general de la base de datos, el \textit{frontend} y la lógica de negocio.
+    \item \textbf{Líder de QA:} Alan Ivan Sánchez supervisa que el sistema sea usable, intuitivo y robusto. Colabora en el diseño de interfaces, evalúa la experiencia de usuario antes de codificar los incrementos complejos, verifica la integridad del \textit{frontend} y ejecuta pruebas de integración sobre la lógica del sistema. Coordina las pruebas de cada incremento y reporta sus resultados en el capítulo de pruebas y resultados.
+    \item \textbf{Equipo de desarrollo:} Los tres integrantes participan en la codificación y se especializan en áreas como bases de datos, \textit{frontend}, lógica algorítmica (incluido el modelo de riesgo y su calibración) o UI/UX. Las tareas se distribuyen según las fortalezas técnicas de cada integrante, sin una fragmentación estricta, para que todos conozcan el funcionamiento general de cada módulo.
+\end{itemize}

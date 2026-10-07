@@ -1,28 +1,29 @@
+% =========================================================
+% main.tex — Documento principal del Trabajo Terminal
+% ---------------------------------------------------------
+% Este archivo solo arma la estructura; no contiene texto ni paquetes.
+%
+%   setup/metadata.tex       Datos del trabajo (título, autores, directores...)
+%   setup/settings.tex       TODOS los paquetes, formato y comandos propios
+%   documents/cover/         Portada
+%   documents/preliminares/  Agradecimientos, resumen, abstract, glosario,
+%                            acrónimos, introducción (y hoja de firmas)
+%   documents/capituloN_*/   Un capítulo por carpeta:
+%       chapter.tex                 \section{...} + \input de cada sección
+%       N.X_<nombre>/seccionN_X.tex Contenido de la sección
+%       N.X_<nombre>/seccionN_X.bib Referencias de la sección
+%   figures/seccionN_X/      Imágenes de la sección N.X
+%
+% Para agregar una sección: crea su carpeta con .tex y .bib, agrégala al
+% chapter.tex de su capítulo y su .bib a \bibliography (al final).
+% =========================================================
 \documentclass[12pt, oneside]{report}
 
-% Configuración para permitir acentos
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[spanish]{babel} % Recomendado para correcta separación de sílabas
-\usepackage{csquotes}
-
-% imports de la seccion 5.4
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{booktabs}
-\usepackage[table]{xcolor}
-\usepackage{pdflscape}
-%------------------------------
-
-% Definición de los colores del semáforo
-\definecolor{riskRed}{HTML}{C00000}
-\definecolor{riskOrange}{HTML}{FFC000}
-\definecolor{riskYellow}{HTML}{FFFF00}
-
-
-\input{setup/acronyms}
-% Import all settings and packages
-\input{setup/settings.tex}
+% =========================================================
+% PREÁMBULO
+% =========================================================
+\input{setup/metadata}   % Datos del trabajo (va antes de settings; ver el archivo)
+\input{setup/settings}   % Paquetes, formato y comandos propios
 
 \begin{document}
 
@@ -32,27 +33,27 @@
 \include{documents/cover/cover_page}
 
 % =========================================================
+% HOJA DE FIRMAS (pendiente; descomentar cuando tenga contenido)
+% =========================================================
+% \input{documents/preliminares/firmas}
+
+% =========================================================
 % AGRADECIMIENTOS
 % =========================================================
 \chapter*{Agradecimientos}
+\input{documents/preliminares/agradecimientos}
+
 % =========================================================
 % RESUMEN
 % =========================================================
 \chapter*{Resumen}
-
-La inseguridad en México expone a la ciudadanía a riesgos latentes durante sus traslados cotidianos. Sin embargo, los peatones no siempre cuentan con herramientas para evaluar el nivel de vulnerabilidad de las rutas elegidas. Esta investigación propone el desarrollo de un prototipo de aplicación móvil enfocado en la generación de rutas peatonales seguras, fundamentado en algoritmos de búsqueda de caminos óptimos (\textit{Pathfinding} y \textit{Shortest Path Problem}), Teoría de Grafos, técnicas de cartografía participativa (\textit{crowdmapping}) y Sistemas de Información Geográfica (SIG). El modelo computacional pondera variables asociadas a la incidencia delictiva, morfología urbana, Criminología Ambiental y percepción ciudadana, con el fin de calcular trayectos con el menor nivel de exposición al riesgo.
-
-\keywords{Aplicación móvil, Teoría de Grafos, Sistemas de Información Geográfica, Criminología Ambiental}
+\input{documents/preliminares/resumen}
 
 % =========================================================
 % ABSTRACT
 % =========================================================
 \chapter*{Abstract}
-
-Insecurity in Mexico exposes citizens to latent risks during their daily commutes. However, pedestrians often lack analytical tools to evaluate the level of vulnerability associated with their chosen routes. This research proposes the development of a mobile application prototype designed to generate safe pedestrian routes, grounded in optimal pathfinding algorithms (Shortest Path Problem), Graph Theory, crowdmapping techniques, and Geographic Information Systems (GIS). The computational model weighs variables related to crime incidence, urban morphology, Environmental Criminology, and citizen perception in order to compute paths with minimal risk exposure.
-
-\vspace{0.5cm}
-\noindent\textbf{Keywords:} Mobile application, Graph Theory, Geographic Information Systems, Environmental Criminology.
+\input{documents/preliminares/abstract}
 
 % =========================================================
 % ÍNDICES
@@ -69,7 +70,7 @@ Insecurity in Mexico exposes citizens to latent risks during their daily commute
 % =========================================================
 \chapter*{Glosario de Términos}
 \addcontentsline{toc}{chapter}{Glosario de Términos}
-% Incluir el contenidos de los términos aquí
+\input{documents/preliminares/glosario}
 \cleardoublepage
 
 % =========================================================
@@ -77,7 +78,7 @@ Insecurity in Mexico exposes citizens to latent risks during their daily commute
 % =========================================================
 \chapter*{Acrónimos y abreviaturas}
 \addcontentsline{toc}{chapter}{Acrónimos y abreviaturas}
-% Incluir contenido o listado de acrónimos aquí
+\input{documents/preliminares/acronimos}
 \cleardoublepage
 
 % =========================================================
@@ -85,6 +86,8 @@ Insecurity in Mexico exposes citizens to latent risks during their daily commute
 % =========================================================
 \chapter*{Introducción}
 \addcontentsline{toc}{chapter}{Introducción}
+\input{documents/preliminares/introduccion}
+
 % =========================================================
 % CAPÍTULO 1: ANTECEDENTES
 % =========================================================
@@ -125,19 +128,18 @@ Insecurity in Mexico exposes citizens to latent risks during their daily commute
 % =========================================================
 \chapter{Diseño del sistema}
 \label{cap:diseno_sistema}
-\input{documents/capitulo6_diseño_sistema/chapter}
+\input{documents/capitulo6_diseno_sistema/chapter}
 
-
-% *************************************************
-% SECCIONES PARA TT 2
+% *********************************************************
+% CAPÍTULOS PARA TT 2
+% *********************************************************
 
 % =========================================================
-% CAPÍTULO 7: DESARROLLO E IMPLEMENTACIÓN 
+% CAPÍTULO 7: DESARROLLO E IMPLEMENTACIÓN
 % =========================================================
 \chapter{Desarrollo e Implementación}
 \label{cap:desarrollo_implementacion}
 \input{documents/capitulo7_desarrollo_implementacion/chapter}
-
 
 % =========================================================
 % CAPÍTULO 8: PRUEBAS
@@ -146,7 +148,7 @@ Insecurity in Mexico exposes citizens to latent risks during their daily commute
 \label{cap:pruebas}
 \input{documents/capitulo8_pruebas/chapter}
 
-% *************************************************
+% *********************************************************
 
 % =========================================================
 % CAPÍTULO 9: CONCLUSIONES Y TRABAJO FUTURO
@@ -156,29 +158,72 @@ Insecurity in Mexico exposes citizens to latent risks during their daily commute
 \input{documents/capitulo9_conclusiones/chapter}
 
 % =========================================================
-% REFERENCIAS / BIBLIOGRAFÍA
+% REFERENCIAS
+% ---------------------------------------------------------
+% Se cargan TODOS los .bib: uno por sección, en orden de capítulo.
+% BibTeX solo imprime las entradas que se citan con \cite.
+% Una clave debe existir en un solo .bib (si se repite, BibTeX da error).
 % =========================================================
-\renewcommand{\bibname}{Referencias}
+\cleardoublepage
+\phantomsection
 \addcontentsline{toc}{chapter}{Referencias}
+\renewcommand{\bibname}{Referencias}
 
 \bibliographystyle{IEEEtran}
 \bibliography{
-% Capítulo 1
-documents/capitulo1_antecedentes/chapter,
-% Capítulo 2
-documents/capitulo2_estado_arte/chapter,
-% Capítulo 3
+% Preliminares
+documents/preliminares/preliminares,
+% Capítulo 1: Antecedentes
+documents/capitulo1_antecedentes/1.1_Planteamiento_del_problema/seccion1_1,
+documents/capitulo1_antecedentes/1.2_Propuesta_de_solucion/seccion1_2,
+documents/capitulo1_antecedentes/1.3_Objetivos/seccion1_3,
+documents/capitulo1_antecedentes/1.4_Justificacion/seccion1_4,
+% Capítulo 2: Estado del arte
+documents/capitulo2_estado_arte/2.1_SafetiPin/seccion2_1,
+documents/capitulo2_estado_arte/2.2_RTMDX/seccion2_2,
+documents/capitulo2_estado_arte/2.3_Mobile_Safe_Route_CDMX/seccion2_3,
+documents/capitulo2_estado_arte/2.4_Micro_Built_Environment/seccion2_4,
+documents/capitulo2_estado_arte/2.5_SafeRoute/seccion2_5,
+documents/capitulo2_estado_arte/2.6_Comparativa/seccion2_6,
+% Capítulo 3: Marco teórico
 documents/capitulo3_marco_teorico/3.1_criminologia_ambiental/seccion3_1,
 documents/capitulo3_marco_teorico/3.2_contexto_geografico/seccion3_2,
-documents/capitulo3_marco_teorico/3.5_teoria_de_grafos/seccion3_5,
-% Capítulo 4
-documents/capitulo4_marco_metodologico/chapter,
-% Capítulo 5
+documents/capitulo3_marco_teorico/3.3_teoria_de_grafos/seccion3_3,
+% Capítulo 4: Marco metodológico
+documents/capitulo4_marco_metodologico/4.1_Diseno_de_la_investigacion/seccion4_1,
+documents/capitulo4_marco_metodologico/4.2_Enfoque/seccion4_2,
+documents/capitulo4_marco_metodologico/4.3_Area_de_estudio_y_unidad_de_analisis/seccion4_3,
+documents/capitulo4_marco_metodologico/4.4_Instrumentos_de_recoleccion_de_datos/seccion4_4,
+documents/capitulo4_marco_metodologico/4.5_Procesamiento_y_almacenamiento_de_datos/seccion4_5,
+documents/capitulo4_marco_metodologico/4.6_Modelo_de_evaluacion_criminologica/seccion4_6,
+documents/capitulo4_marco_metodologico/4.7_Estrategia_de_validacion/seccion4_7,
+documents/capitulo4_marco_metodologico/4.8_Metodologia_de_desarrollo_de_software/seccion4_8,
+% Capítulo 5: Análisis del sistema
 documents/capitulo5_analisis_sistema/5.1_Requerimientos/seccion5_1,
 documents/capitulo5_analisis_sistema/5.2_Reglas_negocio/seccion5_2,
 documents/capitulo5_analisis_sistema/5.3_Analisis_de_herramientas_a_utilizar/seccion5_3,
 documents/capitulo5_analisis_sistema/5.4_Analisis_de_riesgos/seccion5_4,
-documents/capitulo5_analisis_sistema/5.5_Analisis_de_Factibilidad/seccion5_5
+documents/capitulo5_analisis_sistema/5.5_Analisis_de_Factibilidad/seccion5_5,
+% Capítulo 6: Diseño del sistema
+documents/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/seccion6_1,
+documents/capitulo6_diseno_sistema/6.2_Casos_de_uso/seccion6_2,
+documents/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/seccion6_3,
+documents/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/seccion6_4,
+documents/capitulo6_diseno_sistema/6.5_Logica_algoritmica_y_procesamiento_geoespacial/seccion6_5,
+documents/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/seccion6_6,
+% Capítulo 7: Desarrollo e implementación
+documents/capitulo7_desarrollo_implementacion/7.1_Preprocesamiento_de_datos_y_modelo_de_riesgo/seccion7_1,
+documents/capitulo7_desarrollo_implementacion/7.2_Base_de_datos_y_red_de_grafos/seccion7_2,
+documents/capitulo7_desarrollo_implementacion/7.3_Motor_de_ruteo/seccion7_3,
+documents/capitulo7_desarrollo_implementacion/7.4_Aplicacion_movil/seccion7_4,
+% Capítulo 8: Pruebas
+documents/capitulo8_pruebas/8.1_Validacion_del_modelo_de_riesgo/seccion8_1,
+documents/capitulo8_pruebas/8.2_Pruebas_unitarias/seccion8_2,
+documents/capitulo8_pruebas/8.3_Pruebas_funcionales/seccion8_3,
+documents/capitulo8_pruebas/8.4_Comparacion_de_la_exposicion_al_riesgo/seccion8_4,
+% Capítulo 9: Conclusiones y trabajo futuro
+documents/capitulo9_conclusiones/9.1_Conclusiones/seccion9_1,
+documents/capitulo9_conclusiones/9.2_Trabajo_futuro/seccion9_2
 }
 
 \end{document}

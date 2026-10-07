@@ -1,0 +1,42 @@
+% =========================================================
+% 2.3 MOBILE SAFE-ROUTE SYSTEM (CDMX)
+% El \section{} de esta sección está en el chapter.tex del capítulo;
+% sus referencias van en seccion2_3.bib (misma carpeta).
+% =========================================================
+
+Complementando el enfoque analítico de RTM, el siguiente caso de estudio traslada principios similares a un contexto de aplicación móvil en México. Esta es una aplicación desarrollada por investigadores del IPN que integra datos sobre delitos (tanto oficiales como recopilados mediante colaboración ciudadana) en una aplicación móvil. Los datos son procesados semánticamente mediante una ontología y clasificados utilizando el algoritmo de Bayes para geocodificarlos y obtener rutas seguras\cite{TwitterApp2016}.
+
+Los datos obtenidos afectan la probabilidad de que un segmento de calle sea propicio para un evento delictivo. Cada evento delictivo tiene relevancia sobre el peso de cada segmento de calle, y este puede variar en relación con el día, la locación y la hora. Así, con estos pesos, y mediante la tecnología de OpenStreetMap y el algoritmo de Dijkstra, se busca una ruta que evite aquellos lugares donde se ha suscitado un crimen\cite{TwitterApp2016}. El Algoritmo~\ref{alg:enrutamiento-seguro} define ese proceso.
+
+\begin{algorithm}
+\caption{El algoritmo de enrutamiento seguro.}
+\label{alg:enrutamiento-seguro}
+\begin{algorithmic}[1]
+\REQUIRE $N = n_1, n_2, \dots, n_k$ Conjunto de nodos
+\REQUIRE $n_s$ nodo de inicio
+\REQUIRE $n_f$ nodo final
+\ENSURE $D = d_1, d_2, \dots, d_k$ Conjunto de valores de distancia (tasa de criminalidad ponderada)
+
+\STATE Asignar valores de distancia $d(n_s) = 0$, $d(n_i) = \infty \; \forall \; n_i \neq n_s$
+\STATE Sea $U = N - n_s$
+\STATE Sea el nodo actual $n_c = n_s$
+
+\WHILE{existe($n_c$)}
+    \FORALL{vecino($n_c$)}
+        \STATE Sea $n_j$ = vecino($n_c$)
+        \IF{$d(n_j) > \text{longitud}(n_j, n_c) + d(n_c)$}
+            \STATE $d(n_j) = \text{longitud}(n_j, n_c) + d(n_c)$
+            \STATE $U = U - n_j$
+        \ENDIF
+    \ENDFOR
+    \IF{$n_f \notin U$ \textbf{o} $\min(\text{longitud}(n_i, n_j)) = \infty \; \forall \; n_i, n_j \in U$}
+        \RETURN $d(n_k) \; \forall \; n_k \in N$
+    \ELSE
+        \STATE $n_c = d(n_i) = \min(d(n_j)) \; \forall \; n_j \in U$
+    \ENDIF
+\ENDWHILE
+
+\end{algorithmic}
+\end{algorithm}
+
+Además de ser el único caso del listado enfocado en la Ciudad de México, este trabajo es una referencia importante para el tratamiento de información mediante crowdsourcing. Si bien su enfoque en crímenes pasados sigue clasificando su método como reactivo, y en general no incorpora elementos de criminología ambiental, la clasificación de la información y la asignación de pesos resulta relevante para la construcción de nuestro propio algoritmo de asignación de pesos.

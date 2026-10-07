@@ -1,18 +1,31 @@
 % =========================================================
-% setup.tex — Preámbulo del documento
+% settings.tex — Preámbulo: paquetes, formato y comandos propios
+% ---------------------------------------------------------
+% TODOS los \usepackage del documento van aquí; main.tex no carga
+% paquetes. Junto a cada paquete se indica en qué secciones se usa,
+% para saber qué se rompe si se quita o se cambia.
+%
+% Reglas de orden (no cambiarlas sin probar):
+%   - babel antes de csquotes.
+%   - xcolor[table] antes de cualquier otro paquete que cargue xcolor.
+%   - float antes de caption.
+%   - hyperref al final de los paquetes; las definiciones propias, después.
+%   - Los tipos de columna con >{...} se definen aquí y no dentro de los
+%     capítulos, porque babel (spanish) activa < y > en el cuerpo.
 % =========================================================
 
 
 % ---------------------------------------------------------
-% 1. CODIFICACIÓN E IDIOMA
+% 1. CODIFICACIÓN E IDIOMA                       (todo el documento)
 % ---------------------------------------------------------
 \usepackage[utf8]{inputenc}     % Entrada en UTF-8 (acentos, ñ)
 \usepackage[T1]{fontenc}        % Codificación de fuente de salida (guiones y acentos correctos)
-\usepackage[spanish]{babel}     % Idioma: separación silábica, "Capítulo", "Cuadro/Tabla", etc.
+\usepackage[spanish]{babel}     % Idioma: separación silábica, "Capítulo", "Cuadro", etc.
+\usepackage{csquotes}           % \enquote{}: 2.1 SafetiPin, 2.2 RTMDX, 2.6 Comparativa
 
 
 % ---------------------------------------------------------
-% 2. PÁGINA Y MÁRGENES
+% 2. PÁGINA Y MÁRGENES                           (todo el documento)
 % ---------------------------------------------------------
 \usepackage{geometry}
 \geometry{
@@ -27,48 +40,48 @@
 % ---------------------------------------------------------
 % 3. MATEMÁTICAS Y ALGORITMOS
 % ---------------------------------------------------------
-\usepackage{amsmath}            % Entornos y símbolos matemáticos
-\usepackage{algorithm}          % Entorno flotante "algorithm" (con caption y lista)
-\usepackage{algorithmic}        % Comandos para escribir el pseudocódigo
-\usepackage{xfp}                % Evaluación de expresiones matemáticas en tiempor real durante la compilación
+\usepackage{amsmath}            % Entornos matemáticos (align*): 5.5.3 Factibilidad económica
+\usepackage{algorithm}          % Entorno flotante "algorithm": 2.3 Mobile Safe-Route (CDMX)
+\usepackage{algorithmic}        % Pseudocódigo (\REQUIRE, \STATE...): 2.3 Mobile Safe-Route (CDMX)
+\usepackage{xfp}                % Cálculos en compilación (\fpeval). Sin uso actual
 
 
 % ---------------------------------------------------------
 % 4. FIGURAS Y FLOTANTES
 % ---------------------------------------------------------
-\usepackage{graphicx}           % \includegraphics
-\graphicspath{{./figures/}}     % Carpeta donde se buscan las imágenes
-\usepackage{float}              % Opción [H] para fijar figuras/tablas en su lugar
+\usepackage{graphicx}           % \includegraphics: portada, 3.1, 3.2, 3.3, 5.5.2
+                                % \resizebox: 5.5.2, 5.5.3
+\graphicspath{{./figures/}}     % Carpeta de imágenes: figures/seccionN_X/
+\usepackage{float}              % Opción [H] para fijar flotantes: 1.1, 5.5.2, 5.5.3
 \usepackage{caption}            % Personalización de leyendas (captions)
-\usepackage{pdflscape}          % Páginas en horizontal (entorno landscape) rotadas en el PDF
+\usepackage{pdflscape}          % Páginas horizontales (landscape): 5.4 Análisis de riesgos
 
 
 % ---------------------------------------------------------
 % 5. TABLAS
 % ---------------------------------------------------------
-\usepackage{array}              % Base para definir tipos de columna (\newcolumntype) y \extrarowheight
-\usepackage{tabularx}           % Tablas con columnas X de ancho automático
-\usepackage{booktabs}           % Líneas profesionales: \toprule, \midrule, \bottomrule
-\usepackage{multirow}           % Celdas que abarcan varias filas (agregado a modo de prueba)
-\usepackage{longtable}          % Tablas que se parten entre páginas
-\usepackage{makecell}           % Para centrar perfectamente los encabezados de varias líneas
-
-% Columna "C": columna X con texto centrado
-\newcolumntype{C}{>{\centering\arraybackslash}X}
+\usepackage{array}              % Columnas >{...} y \extrarowheight: 5.3, 5.5.2, columnas C/K/Q, \tablaRF
+\usepackage{longtable}          % Tablas que se parten entre páginas: 5.1.2, 5.2, 5.4
+\usepackage{booktabs}           % \toprule, \midrule, \bottomrule: 3.2, 5.1.2, 5.2
+\usepackage[table]{xcolor}      % Colores y \cellcolor en tablas: 5.4 (semáforo de riesgos)
+\usepackage{tabularx}           % Columnas X de ancho automático: 2.6, 5.5.1, \tablaRF (5.1.1)
+\usepackage{multirow}           % Celdas que abarcan varias filas: 5.5.2
+\usepackage{makecell}           % Encabezados de varias líneas (\makecell): 5.5.2
 
 
 % ---------------------------------------------------------
 % 6. TEXTO EN COLUMNAS Y TEXTO DE RELLENO
 % ---------------------------------------------------------
-\usepackage{multicol}           % Texto en varias columnas
-\usepackage{lipsum}             % Texto de relleno (solo para pruebas; quitar en la versión final)
+\usepackage{multicol}           % Texto en varias columnas. Sin uso actual
+\usepackage{lipsum}             % Texto de relleno. Sin uso actual; quitar en la versión final
 
 
 % ---------------------------------------------------------
-% 7. TÍTULOS Y ESTRUCTURA
+% 7. TÍTULOS Y ESTRUCTURA                        (todo el documento)
 % ---------------------------------------------------------
-\usepackage{titling}            % Personalización de \maketitle (acceso a \thetitle, \theauthor, etc.)
-\usepackage{titlesec}           % Personalización del formato de capítulos y secciones
+\usepackage{titling}            % Personalización de \maketitle. La portada no lo usa:
+                                % \thetitle viene de setup/metadata.tex
+\usepackage{titlesec}           % Formato de \chapter (ver abajo)
 
 % Formato de \chapter: título centrado, en negritas y mayúsculas
 \titleformat{\chapter}[display]
@@ -82,30 +95,66 @@
 
 
 % ---------------------------------------------------------
-% 8. BIBLIOGRAFÍA Y ENLACES
+% 8. BIBLIOGRAFÍA Y ENLACES                      (todo el documento)
 % ---------------------------------------------------------
 \usepackage{cite}               % Citas numéricas ordenadas y comprimidas: [1-3]
-\usepackage{hyperref}           % Hipervínculos (índice, citas, URLs). Mejor cargarlo al final.
+\usepackage{hyperref}           % Hipervínculos; \texorpdfstring: 6.5; \phantomsection: main.tex
+                                % Debe ser el último paquete.
 
 
 % =========================================================
-% 9. TABLAS DE REQUERIMIENTOS FUNCIONALES
+% DEFINICIONES PROPIAS
+% (van después de cargar todos los paquetes)
 % =========================================================
-% Se definen en el preámbulo porque babel (spanish) activa los
-% caracteres < y > dentro del documento y rompe las columnas >{...}.
-% (Antes estaba en un archivo aparte: \input{rf_tablas_preambulo})
 
 % ---------------------------------------------------------
+% A. COLORES                                     (5.4 Análisis de riesgos)
+% ---------------------------------------------------------
+% Semáforo de la matriz de riesgos
+\definecolor{riskRed}{HTML}{C00000}
+\definecolor{riskOrange}{HTML}{FFC000}
+\definecolor{riskYellow}{HTML}{FFFF00}
+
+
+% ---------------------------------------------------------
+% B. TIPOS DE COLUMNA Y AJUSTES DE TABLAS
+% ---------------------------------------------------------
+% C: columna X con texto centrado                (2.6 Comparativa, 5.5.1 Factibilidad técnica)
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% K: columna de identificador en negritas (1.6 cm)
+% Q: columna de texto que ocupa el resto del ancho
+% Uso: \begin{longtable}{@{}KQ@{}}               (5.1.2 Requerimientos no funcionales, 5.2 Reglas del negocio)
+\newcolumntype{K}{>{\bfseries\raggedright\arraybackslash}p{1.6cm}}
+\newcolumntype{Q}{p{\dimexpr\textwidth-1.6cm-2\tabcolsep\relax}}
+
+% Las longtable quedan alineadas al margen izquierdo y derecho, sin sangría
+% (5.1.2, 5.2, 5.4)
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+
+
+% ---------------------------------------------------------
+% C. COMANDOS DE TEXTO
+% ---------------------------------------------------------
+% \keywords{lista}: línea "Palabras clave" del Resumen (documents/preliminares/resumen.tex)
+\newcommand{\keywords}[1]{\textbf{Palabras clave:} #1}
+
+
+% ---------------------------------------------------------
+% D. FICHAS DE REQUERIMIENTOS FUNCIONALES        (5.1.1 Requerimientos funcionales)
+% ---------------------------------------------------------
+% Se definen en el preámbulo porque babel (spanish) activa los
+% caracteres < y > dentro del documento y rompe las columnas >{...}.
+
 % \rfAncha{texto}
 % Celda que abarca las columnas 2 a 4 de la tabla.
 % Ancho: 1.00 + 0.60 + 1.45 = 3.05 (en unidades de \hsize),
 % más los separadores (4\tabcolsep) y las líneas (2\arrayrulewidth)
 % para que alinee con el resto de la tabla.
-% ---------------------------------------------------------
 \newcommand{\rfAncha}[1]{%
   \multicolumn{3}{>{\hsize=\dimexpr3.05\hsize+4\tabcolsep+2\arrayrulewidth\relax\raggedright\arraybackslash}X|}{#1}}
 
-% ---------------------------------------------------------
 % \tablaRF{Identificador}{Nombre}{Prioridad}{Requerimiento}
 %         {Entrada}{Salida}{Descripción}{Precondición}{Postcondición}
 %
@@ -114,7 +163,6 @@
 %   col 2 (1.00): valores
 %   col 3 (.60): etiquetas, en negritas
 %   col 4 (1.45): valores
-% ---------------------------------------------------------
 \newcommand{\tablaRF}[9]{%
   \par\noindent
   \begingroup
