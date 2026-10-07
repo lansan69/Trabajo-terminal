@@ -16,7 +16,7 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {Correo electrónico y contraseña}% Entrada
   {Cuenta registrada pendiente de verificación}% Salida
   {El sistema debe permitir que el usuario registre una cuenta proporcionando correo electrónico y contraseña.}% Descripción
-  {El correo electrónico no debe estar asociado a otra cuenta registrada.}% Precondición
+  {El correo electrónico no debe estar asociado a otra cuenta registrada y el dispositivo debe tener conexión a internet.}% Precondición
   {La cuenta queda registrada en estado no verificado.}% Postcondición
 
 \tablaRF{RF-02}% Identificador
@@ -25,41 +25,51 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El sistema permite verificar el correo electrónico registrado mediante un enlace.}% Requerimiento
   {Correo electrónico proporcionado en el registro}% Entrada
   {Correo con enlace de verificación}% Salida
-  {El sistema debe enviar un enlace de verificación al correo electrónico proporcionado durante el registro, conforme a RN-17.}% Descripción
+  {El sistema debe enviar un enlace de verificación al correo electrónico proporcionado durante el registro, conforme a RN-14.}% Descripción
   {El usuario debe haber registrado una cuenta con correo electrónico y contraseña.}% Precondición
-  {El enlace queda enviado al correo del usuario y, al abrirse, la cuenta queda verificada.}% Postcondición
+  {El enlace queda enviado al correo del usuario y, al abrirse dentro de la vigencia de RN-14, la cuenta queda verificada.}% Postcondición
 
 \tablaRF{RF-03}% Identificador
+  {Reenvío del enlace de verificación}% Nombre
+  {Alta}% Prioridad
+  {El sistema permite solicitar un nuevo enlace de verificación del correo electrónico.}% Requerimiento
+  {Solicitud de reenvío desde el aviso de verificación pendiente}% Entrada
+  {Correo con un nuevo enlace de verificación}% Salida
+  {El sistema debe permitir que el usuario con una cuenta no verificada solicite un nuevo enlace de verificación desde el aviso de verificación pendiente (RF-04); el nuevo enlace se rige por RN-14.}% Descripción
+  {La cuenta del usuario debe estar registrada sin haber sido verificada y el dispositivo debe tener conexión a internet.}% Precondición
+  {Un nuevo enlace de verificación queda enviado al correo del usuario.}% Postcondición
+
+\tablaRF{RF-04}% Identificador
   {Restricción de cuentas no verificadas}% Nombre
   {Alta}% Prioridad
   {El sistema restringe el acceso a la aplicación a las cuentas no verificadas.}% Requerimiento
   {Intento de acceso con una cuenta no verificada}% Entrada
   {Acceso denegado y aviso de verificación pendiente}% Salida
-  {El sistema debe restringir el acceso a las funciones de la aplicación mientras la cuenta no esté verificada.}% Descripción
+  {El sistema debe restringir el acceso a las funciones de la aplicación mientras la cuenta no esté verificada, conforme a RN-17, y debe ofrecer en el aviso de verificación pendiente la opción de reenviar el enlace (RF-03).}% Descripción
   {La cuenta del usuario debe estar registrada sin haber sido verificada.}% Precondición
   {Las funciones de la aplicación permanecen bloqueadas hasta que la cuenta se verifique.}% Postcondición
 
-\tablaRF{RF-04}% Identificador
+\tablaRF{RF-05}% Identificador
   {Inicio de sesión con correo electrónico}% Nombre
   {Alta}% Prioridad
   {El sistema permite iniciar sesión con correo electrónico y contraseña.}% Requerimiento
   {Correo electrónico y contraseña}% Entrada
   {Sesión iniciada}% Salida
   {El sistema debe permitir que el usuario inicie sesión mediante correo electrónico y contraseña.}% Descripción
-  {El usuario debe contar con una cuenta registrada y verificada.}% Precondición
+  {El usuario debe contar con una cuenta registrada y verificada, y el dispositivo debe tener conexión a internet.}% Precondición
   {La sesión del usuario queda activa y se muestra la pantalla principal.}% Postcondición
 
-\tablaRF{RF-05}% Identificador
+\tablaRF{RF-06}% Identificador
   {Autenticación con Google}% Nombre
   {Media}% Prioridad
   {El sistema permite registrarse e iniciar sesión con una cuenta de Google.}% Requerimiento
   {Autorización de la cuenta de Google}% Entrada
   {Cuenta registrada o sesión iniciada}% Salida
-  {El sistema debe permitir que el usuario registre una cuenta e inicie sesión mediante una cuenta de Google.}% Descripción
+  {El sistema debe permitir que el usuario registre una cuenta e inicie sesión mediante una cuenta de Google, sin requerir la verificación de RF-02 conforme a RN-17. Si el correo de la cuenta de Google ya está registrado con contraseña, el sistema debe vincular ambas formas de acceso a la misma cuenta.}% Descripción
   {El usuario debe contar con una cuenta de Google y el dispositivo debe tener conexión a internet.}% Precondición
   {La sesión del usuario queda activa y vinculada a su cuenta de Google.}% Postcondición
 
-\tablaRF{RF-06}% Identificador
+\tablaRF{RF-07}% Identificador
   {Cierre de sesión}% Nombre
   {Media}% Prioridad
   {El sistema permite que el usuario cierre su sesión.}% Requerimiento
@@ -69,39 +79,49 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El usuario debe tener una sesión iniciada.}% Precondición
   {La sesión queda cerrada y se muestra la pantalla de inicio de sesión.}% Postcondición
 
-\tablaRF{RF-07}% Identificador
+\tablaRF{RF-08}% Identificador
   {Cambio de contraseña}% Nombre
   {Media}% Prioridad
   {El sistema permite que el usuario cambie su contraseña.}% Requerimiento
   {Contraseña vigente y nueva contraseña}% Entrada
   {Contraseña actualizada}% Salida
   {El sistema debe permitir que el usuario autenticado cambie su contraseña, solicitando la contraseña vigente.}% Descripción
-  {El usuario debe tener una sesión iniciada con una cuenta de correo electrónico y contraseña.}% Precondición
+  {El usuario debe tener una sesión iniciada con una cuenta de correo electrónico y contraseña, y el dispositivo debe tener conexión a internet.}% Precondición
   {La nueva contraseña queda registrada y la anterior deja de ser válida.}% Postcondición
 
-\tablaRF{RF-08}% Identificador
+\tablaRF{RF-09}% Identificador
   {Recuperación de contraseña}% Nombre
   {Media}% Prioridad
   {El sistema permite recuperar la contraseña mediante un enlace enviado al correo electrónico.}% Requerimiento
   {Correo electrónico de la cuenta}% Entrada
   {Correo con enlace de restablecimiento}% Salida
   {El sistema debe permitir que el usuario solicite la recuperación de su contraseña mediante un enlace de restablecimiento enviado a su correo electrónico, sujeto a RN-14.}% Descripción
-  {El usuario debe contar con una cuenta registrada con correo electrónico y contraseña.}% Precondición
+  {El usuario debe contar con una cuenta registrada con correo electrónico y contraseña, y el dispositivo debe tener conexión a internet.}% Precondición
   {El enlace de restablecimiento queda enviado al correo del usuario.}% Postcondición
 
-\tablaRF{RF-09}% Identificador
+\tablaRF{RF-10}% Identificador
+  {Restablecimiento de contraseña}% Nombre
+  {Media}% Prioridad
+  {El sistema permite establecer una nueva contraseña mediante el enlace de restablecimiento.}% Requerimiento
+  {Enlace de restablecimiento y nueva contraseña}% Entrada
+  {Contraseña restablecida}% Salida
+  {El sistema debe permitir que el usuario establezca una nueva contraseña al abrir el enlace de restablecimiento enviado según RF-09, siempre que el enlace no haya sido usado ni haya expirado conforme a RN-14; en caso contrario, debe informarlo mediante un mensaje conforme a RNF-10.}% Descripción
+  {El usuario debe haber recibido un enlace de restablecimiento (RF-09) y el dispositivo debe tener conexión a internet.}% Precondición
+  {La nueva contraseña queda registrada, el enlace queda invalidado y se muestra la pantalla de inicio de sesión.}% Postcondición
+
+\tablaRF{RF-11}% Identificador
   {Eliminación de cuenta}% Nombre
   {Media}% Prioridad
   {El sistema permite que el usuario elimine su cuenta.}% Requerimiento
   {Solicitud de eliminación y confirmación explícita}% Entrada
   {Cuenta eliminada}% Salida
   {El sistema debe permitir que el usuario elimine su cuenta, aplicando el tratamiento de datos descrito en RN-15 y solicitando confirmación explícita antes de ejecutar la eliminación.}% Descripción
-  {El usuario debe tener una sesión iniciada.}% Precondición
+  {El usuario debe tener una sesión iniciada y el dispositivo debe tener conexión a internet.}% Precondición
   {La cuenta queda eliminada y sus datos reciben el tratamiento descrito en RN-15.}% Postcondición
 
 \subsubsection{Mapa y visualización}
 
-\tablaRF{RF-10}% Identificador
+\tablaRF{RF-12}% Identificador
   {Mapa base interactivo}% Nombre
   {Alta}% Prioridad
   {El sistema muestra un mapa interactivo que responde a gestos táctiles.}% Requerimiento
@@ -111,7 +131,7 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El usuario debe tener una sesión iniciada.}% Precondición
   {El mapa queda visible con el nivel de acercamiento y la posición resultantes del gesto.}% Postcondición
 
-\tablaRF{RF-11}% Identificador
+\tablaRF{RF-13}% Identificador
   {Búsqueda de origen y destino}% Nombre
   {Alta}% Prioridad
   {El sistema permite indicar el origen y el destino mediante la búsqueda de direcciones.}% Requerimiento
@@ -121,7 +141,7 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El usuario debe encontrarse en la pantalla del mapa y el dispositivo debe tener conexión a internet.}% Precondición
   {El origen o el destino quedan establecidos en la dirección seleccionada.}% Postcondición
 
-\tablaRF{RF-12}% Identificador
+\tablaRF{RF-14}% Identificador
   {Selección de origen y destino en el mapa}% Nombre
   {Media}% Prioridad
   {El sistema permite indicar el origen y el destino seleccionando un punto en el mapa.}% Requerimiento
@@ -131,7 +151,7 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El usuario debe encontrarse en la pantalla del mapa.}% Precondición
   {El origen o el destino quedan establecidos en el punto seleccionado.}% Postcondición
 
-\tablaRF{RF-13}% Identificador
+\tablaRF{RF-15}% Identificador
   {Gestión de lugares favoritos}% Nombre
   {Baja}% Prioridad
   {El sistema permite administrar lugares favoritos y usarlos como accesos rápidos.}% Requerimiento
@@ -141,121 +161,141 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El usuario debe tener una sesión iniciada.}% Precondición
   {Los lugares favoritos quedan disponibles como accesos rápidos al indicar origen o destino.}% Postcondición
 
-\tablaRF{RF-14}% Identificador
+\tablaRF{RF-16}% Identificador
   {Visualización de puntos de ayuda}% Nombre
   {Media}% Prioridad
   {El sistema muestra en el mapa los puntos de ayuda.}% Requerimiento
   {Área visible del mapa}% Entrada
   {Marcadores de puntos de ayuda}% Salida
-  {El sistema debe mostrar sobre el mapa, como marcadores, puntos de ayuda.}% Descripción
+  {El sistema debe mostrar sobre el mapa, como marcadores, los puntos de ayuda oficiales del catálogo administrado conforme a RN-11.}% Descripción
   {El usuario debe encontrarse en la pantalla del mapa.}% Precondición
   {Los puntos de ayuda del área visible quedan señalados en el mapa.}% Postcondición
 
-\tablaRF{RF-15}% Identificador
+\tablaRF{RF-17}% Identificador
   {Visualización de reportes validados}% Nombre
   {Media}% Prioridad
   {El sistema muestra en el mapa los reportes ciudadanos validados.}% Requerimiento
   {Área visible del mapa}% Entrada
   {Marcadores de reportes validados}% Salida
-  {El sistema debe mostrar sobre el mapa, como marcadores, los reportes ciudadanos en estado validado según RN-07, empleando la iconografía de RNF-09, distinta de la usada para los puntos de ayuda oficiales.}% Descripción
-  {Debe existir al menos un reporte en estado validado según RN-07.}% Precondición
+  {El sistema debe mostrar sobre el mapa, como marcadores, los reportes ciudadanos en estado validado según RN-07 y vigentes según RN-08, empleando la iconografía de RNF-08, distinta de la usada para los puntos de ayuda oficiales.}% Descripción
+  {Debe existir al menos un reporte en estado validado según RN-07 y vigente según RN-08.}% Precondición
   {Los reportes validados quedan señalados con una iconografía distinta a la de los puntos de ayuda oficiales.}% Postcondición
 
-\tablaRF{RF-16}% Identificador
+\tablaRF{RF-18}% Identificador
   {Leyenda del mapa}% Nombre
   {Baja}% Prioridad
   {El sistema ofrece una leyenda que explica los símbolos del mapa.}% Requerimiento
   {Selección de la opción de leyenda en la pantalla del mapa}% Entrada
-  {Leyenda de símbolos y categorías de riesgo}% Salida
-  {El sistema debe ofrecer, desde la pantalla del mapa, una leyenda que asocie cada símbolo con el tipo de elemento o categoría de riesgo que representa.}% Descripción
+  {Leyenda de símbolos, categorías de condición de riesgo y niveles de riesgo}% Salida
+  {El sistema debe ofrecer, desde la pantalla del mapa, una leyenda que asocie cada símbolo con el elemento que representa: los puntos de ayuda, las categorías del catálogo de RN-06 conforme a RNF-08 y los niveles de riesgo de RN-04 conforme a RNF-09.}% Descripción
   {El usuario debe encontrarse en la pantalla del mapa.}% Precondición
   {La leyenda queda visible hasta que el usuario la cierre.}% Postcondición
 
 \subsubsection{Cálculo y selección de rutas}
 
-\tablaRF{RF-17}% Identificador
+\tablaRF{RF-19}% Identificador
   {Validación del área de servicio}% Nombre
   {Alta}% Prioridad
   {El sistema verifica que el origen y el destino se encuentren dentro del área de servicio.}% Requerimiento
   {Origen y destino indicados por el usuario}% Entrada
   {Validación aprobada o mensaje de restricción de cobertura}% Salida
-  {El sistema debe validar que el origen y el destino indicados por el usuario se encuentren dentro del área de servicio definida en RN-01 y, en caso contrario, debe mostrar un mensaje conforme a RNF-11 que indique la restricción de cobertura.}% Descripción
+  {El sistema debe validar que el origen y el destino indicados por el usuario se encuentren dentro del área de servicio definida en RN-01 y, en caso contrario, debe mostrar un mensaje conforme a RNF-10 que indique la restricción de cobertura.}% Descripción
   {El usuario debe haber indicado un origen y un destino.}% Precondición
   {Solo los puntos dentro del área de servicio de RN-01 pasan al cálculo de rutas.}% Postcondición
 
-\tablaRF{RF-18}% Identificador
+\tablaRF{RF-20}% Identificador
   {Cálculo de rutas por criterio}% Nombre
   {Alta}% Prioridad
   {El sistema calcula una ruta por cada criterio de selección en una misma consulta.}% Requerimiento
   {Origen y destino validados}% Entrada
   {Una ruta por cada criterio de RN-02}% Salida
   {El sistema debe calcular y presentar, en una misma consulta, una ruta por cada uno de los criterios definidos en RN-02, y debe indicar explícitamente cuando dos o más criterios produzcan la misma ruta.}% Descripción
-  {El origen y el destino deben haber superado la validación del área de servicio (RF-17) y el dispositivo debe tener conexión a internet.}% Precondición
+  {El origen y el destino deben haber superado la validación del área de servicio (RF-19) y el dispositivo debe tener conexión a internet.}% Precondición
   {Las rutas quedan presentadas al usuario, señalando las que coinciden entre criterios.}% Postcondición
 
-\tablaRF{RF-19}% Identificador
+\tablaRF{RF-21}% Identificador
   {Resumen de cada ruta}% Nombre
   {Alta}% Prioridad
   {El sistema muestra la distancia, el tiempo estimado y el nivel de riesgo de cada ruta.}% Requerimiento
   {Rutas calculadas}% Entrada
   {Distancia, tiempo a pie y nivel de riesgo por ruta}% Salida
-  {El sistema debe mostrar, para cada ruta presentada, su distancia total, su tiempo estimado de recorrido a pie y su nivel de riesgo agregado según la escala de RN-04.}% Descripción
-  {Debe haberse calculado al menos una ruta (RF-18).}% Precondición
+  {El sistema debe mostrar, para cada ruta presentada, su distancia total, su tiempo estimado de recorrido a pie calculado con la velocidad de caminata de RN-18 y su nivel de riesgo determinado conforme a RN-04.}% Descripción
+  {Debe haberse calculado al menos una ruta (RF-20).}% Precondición
   {Cada ruta presentada queda acompañada de su distancia, su tiempo estimado y su nivel de riesgo.}% Postcondición
 
-\tablaRF{RF-20}% Identificador
+\tablaRF{RF-22}% Identificador
   {Riesgo por tramo en el trazo}% Nombre
   {Media}% Prioridad
   {El sistema representa sobre el trazo de cada ruta el nivel de riesgo de sus tramos.}% Requerimiento
   {Rutas calculadas con nivel de riesgo por tramo}% Entrada
   {Trazo con tramos diferenciados por nivel de riesgo}% Salida
   {El sistema debe representar sobre el trazo de cada ruta el nivel de riesgo de sus tramos, diferenciando visualmente los niveles de la escala de RN-04.}% Descripción
-  {Debe haberse calculado al menos una ruta (RF-18).}% Precondición
+  {Debe haberse calculado al menos una ruta (RF-20).}% Precondición
   {Los tramos de cada ruta quedan diferenciados visualmente según la escala de RN-04.}% Postcondición
 
-\tablaRF{RF-21}% Identificador
+\tablaRF{RF-23}% Identificador
+  {Detalle de la ruta}% Nombre
+  {Media}% Prioridad
+  {El sistema muestra el detalle de una ruta, incluidos los reportes validados presentes en su trayecto.}% Requerimiento
+  {Selección de una ruta calculada}% Entrada
+  {Detalle de la ruta con sus reportes validados}% Salida
+  {El sistema debe permitir que el usuario consulte el detalle de cualquiera de las rutas calculadas, mostrando su resumen (RF-21) y los reportes validados según RN-07 y vigentes según RN-08 ubicados sobre su trayecto, cada uno con el icono de su categoría conforme a RNF-08.}% Descripción
+  {Debe haberse calculado al menos una ruta (RF-20).}% Precondición
+  {El detalle de la ruta seleccionada queda visible para el usuario.}% Postcondición
+
+\tablaRF{RF-24}% Identificador
   {Aviso de ruta inexistente}% Nombre
   {Media}% Prioridad
   {El sistema informa cuando no existe una ruta peatonal válida entre el origen y el destino.}% Requerimiento
   {Origen y destino sin ruta peatonal válida}% Entrada
   {Mensaje de ruta inexistente}% Salida
-  {El sistema debe informar al usuario, mediante un mensaje conforme a RNF-11, cuando no exista ninguna ruta peatonal que conecte el origen y el destino dentro del área de servicio o que satisfaga el límite de desvío de RN-03.}% Descripción
+  {El sistema debe informar al usuario, mediante un mensaje conforme a RNF-10, cuando no exista ninguna ruta peatonal que conecte el origen y el destino dentro del área de servicio de RN-01.}% Descripción
   {El usuario debe haber solicitado el cálculo de rutas.}% Precondición
   {No se presenta ninguna ruta y el usuario queda informado de la causa.}% Postcondición
 
-\tablaRF{RF-22}% Identificador
+\tablaRF{RF-25}% Identificador
   {Bloqueo del cálculo sin conexión}% Nombre
   {Media}% Prioridad
   {El sistema impide calcular rutas cuando el dispositivo no tiene conexión a internet.}% Requerimiento
   {Solicitud de cálculo sin conexión a internet}% Entrada
   {Aviso de falta de conexión}% Salida
-  {El sistema debe impedir el cálculo de nuevas rutas cuando el dispositivo carezca de conexión a internet, y debe informar al usuario de esta condición.}% Descripción
+  {El sistema debe impedir el cálculo de nuevas rutas cuando el dispositivo carezca de conexión a internet, y debe informar al usuario de esta condición mediante un mensaje conforme a RNF-10.}% Descripción
   {El dispositivo debe carecer de conexión a internet.}% Precondición
   {No se realiza el cálculo y el usuario queda informado de la falta de conexión.}% Postcondición
 
-\tablaRF{RF-23}% Identificador
+\tablaRF{RF-26}% Identificador
   {Ponderación temporal de rutas}% Nombre
   {Media}% Prioridad
   {El sistema calcula las rutas según la hora de la consulta y permite consultar otra franja horaria.}% Requerimiento
   {Origen, destino y franja horaria}% Entrada
   {Ruta calculada para la franja horaria indicada}% Salida
   {El sistema debe aplicar al cálculo de rutas la ponderación temporal vigente al momento de la consulta según RN-05, y debe permitir que el usuario consulte la misma ruta para una franja horaria distinta.}% Descripción
-  {El origen y el destino deben encontrarse dentro del área de servicio.}% Precondición
+  {El origen y el destino deben haber superado la validación del área de servicio (RF-19) y el dispositivo debe tener conexión a internet.}% Precondición
   {La ruta queda calculada con la ponderación de RN-05 correspondiente a la franja horaria indicada.}% Postcondición
+
+\tablaRF{RF-27}% Identificador
+  {Selección de ruta e inicio de la navegación}% Nombre
+  {Alta}% Prioridad
+  {El sistema permite seleccionar una de las rutas calculadas e iniciar la navegación sobre ella.}% Requerimiento
+  {Ruta seleccionada por el usuario}% Entrada
+  {Navegación iniciada}% Salida
+  {El sistema debe permitir que el usuario seleccione una de las rutas presentadas (RF-20) e inicie la navegación guiada sobre ella hasta el destino.}% Descripción
+  {Debe haberse calculado al menos una ruta (RF-20) y el permiso de ubicación debe estar concedido (RF-28).}% Precondición
+  {La navegación queda en curso sobre la ruta seleccionada.}% Postcondición
 
 \subsubsection{Modo de navegación}
 
-\tablaRF{RF-24}% Identificador
+\tablaRF{RF-28}% Identificador
   {Permiso de ubicación}% Nombre
   {Alta}% Prioridad
   {El sistema solicita el permiso de ubicación y sigue operando si el usuario lo deniega.}% Requerimiento
   {Respuesta del usuario a la solicitud de permiso}% Entrada
   {Permiso concedido o funciones de ubicación en vivo deshabilitadas}% Salida
-  {El sistema debe solicitar al usuario el permiso de acceso a la ubicación del dispositivo, indicando el uso que se le dará conforme a RN-18, y debe permitir el uso de las funciones de consulta de rutas cuando el permiso sea denegado, deshabilitando únicamente las que dependen de la ubicación en vivo.}% Descripción
+  {El sistema debe solicitar al usuario el permiso de acceso a la ubicación del dispositivo, indicando el uso que se le dará conforme a RN-16, y debe permitir el uso de las funciones de consulta de rutas cuando el permiso sea denegado, deshabilitando únicamente las que dependen de la ubicación en vivo. Para las funciones que requieren la ubicación con la aplicación en segundo plano, como las alertas de reportes cercanos (RF-41) y el enlace de seguimiento (RF-42), debe solicitar además el permiso de ubicación en segundo plano.}% Descripción
   {La aplicación no debe contar con el permiso de acceso a la ubicación.}% Precondición
   {Las funciones que dependen de la ubicación en vivo quedan habilitadas o deshabilitadas según la respuesta del usuario.}% Postcondición
 
-\tablaRF{RF-25}% Identificador
+\tablaRF{RF-29}% Identificador
   {Posición actual en navegación}% Nombre
   {Alta}% Prioridad
   {El sistema muestra la posición actual del usuario mientras navega.}% Requerimiento
@@ -265,17 +305,17 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El permiso de ubicación debe estar concedido y la navegación debe estar en curso.}% Precondición
   {El marcador refleja la posición más reciente del usuario.}% Postcondición
 
-\tablaRF{RF-26}% Identificador
+\tablaRF{RF-30}% Identificador
   {Recálculo por desvío}% Nombre
   {Media}% Prioridad
   {El sistema recalcula la ruta cuando el usuario se aparta de la trayectoria.}% Requerimiento
   {Posición actual del usuario}% Entrada
   {Ruta recalculada}% Salida
-  {El sistema debe recalcular la ruta automáticamente cuando la posición del usuario se aparte de la trayectoria trazada más allá del umbral de desvío definido en RN-20.}% Descripción
+  {El sistema debe recalcular la ruta automáticamente cuando la posición del usuario se aparte de la trayectoria trazada más allá del umbral de desvío definido en RN-18.}% Descripción
   {La navegación debe estar en curso.}% Precondición
   {La nueva ruta queda trazada desde la posición actual del usuario hasta el destino.}% Postcondición
 
-\tablaRF{RF-27}% Identificador
+\tablaRF{RF-31}% Identificador
   {Pausa y reanudación de la navegación}% Nombre
   {Baja}% Prioridad
   {El sistema permite pausar y reanudar la navegación en curso.}% Requerimiento
@@ -285,27 +325,27 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {La navegación debe estar en curso.}% Precondición
   {La ruta trazada se conserva durante la pausa y el guiado continúa al reanudar.}% Postcondición
 
-\tablaRF{RF-28}% Identificador
+\tablaRF{RF-32}% Identificador
   {Llegada al destino}% Nombre
   {Media}% Prioridad
   {El sistema finaliza la navegación al llegar al destino y presenta una evaluación del trayecto.}% Requerimiento
   {Posición del usuario en el destino}% Entrada
   {Navegación finalizada y evaluación del trayecto}% Salida
-  {El sistema debe finalizar la navegación al detectar la llegada del usuario al destino y presentar una evaluación del trayecto recorrido.}% Descripción
+  {El sistema debe finalizar la navegación al detectar la llegada del usuario al destino, invalidar el enlace de seguimiento asociado conforme a RN-13 y presentar una evaluación del trayecto recorrido con su distancia, su duración y su nivel de riesgo según RN-04.}% Descripción
   {La navegación debe estar en curso.}% Precondición
-  {La navegación queda finalizada.}% Postcondición
+  {La navegación queda finalizada, el enlace de seguimiento asociado recibe el tratamiento de RN-13 y la evaluación del trayecto queda visible para el usuario.}% Postcondición
 
-\tablaRF{RF-29}% Identificador
+\tablaRF{RF-33}% Identificador
   {Cancelación de la navegación}% Nombre
   {Media}% Prioridad
   {El sistema permite cancelar la navegación antes de llegar al destino.}% Requerimiento
   {Selección de la opción de cancelar navegación}% Entrada
   {Navegación cancelada}% Salida
-  {El sistema debe permitir que el usuario cancele la navegación en curso antes de llegar al destino, aplicando RN-15 al enlace de seguimiento asociado.}% Descripción
+  {El sistema debe permitir que el usuario cancele la navegación en curso antes de llegar al destino, aplicando RN-13 al enlace de seguimiento asociado.}% Descripción
   {La navegación debe estar en curso.}% Precondición
-  {La navegación queda finalizada y el enlace de seguimiento asociado recibe el tratamiento de RN-15.}% Postcondición
+  {La navegación queda finalizada y el enlace de seguimiento asociado recibe el tratamiento de RN-13.}% Postcondición
 
-\tablaRF{RF-30}% Identificador
+\tablaRF{RF-34}% Identificador
   {Aviso de cambio de riesgo en la ruta}% Nombre
   {Media}% Prioridad
   {El sistema notifica al usuario cuando cambia el nivel de riesgo de un tramo pendiente de su ruta.}% Requerimiento
@@ -317,92 +357,111 @@ En esta sección se definen los requerimientos que requiere el software para cum
 
 \subsubsection{Reportes ciudadanos}
 
-\tablaRF{RF-31}% Identificador
+\tablaRF{RF-35}% Identificador
   {Registro de reportes}% Nombre
   {Alta}% Prioridad
   {El sistema permite registrar reportes de condiciones de riesgo.}% Requerimiento
   {Ubicación, categoría y descripción opcional}% Entrada
   {Reporte registrado}% Salida
-  {El sistema debe permitir que el usuario registre un reporte de condición de riesgo en su ubicación actual o en una ubicación que seleccione sobre el mapa, asignándole una categoría del catálogo de RN-06 y, opcionalmente, una descripción en texto libre.}% Descripción
-  {El usuario debe tener una sesión iniciada.}% Precondición
+  {El sistema debe permitir que el usuario registre un reporte de condición de riesgo en su ubicación actual o en una ubicación que seleccione sobre el mapa, dentro del área de servicio de RN-01, asignándole una categoría del catálogo de RN-06 y, opcionalmente, una descripción en texto libre.}% Descripción
+  {El usuario debe tener una sesión iniciada y el dispositivo debe tener conexión a internet.}% Precondición
   {El reporte queda registrado en estado pendiente de validación.}% Postcondición
 
-\tablaRF{RF-32}% Identificador
+\tablaRF{RF-36}% Identificador
   {Límite de reportes por usuario}% Nombre
   {Media}% Prioridad
   {El sistema limita el número de reportes que puede registrar cada usuario.}% Requerimiento
   {Nuevo reporte del usuario}% Entrada
   {Reporte rechazado y aviso de límite alcanzado}% Salida
-  {El sistema debe rechazar los reportes que excedan el límite por usuario establecido en RN-14 e informar al usuario del límite alcanzado.}% Descripción
-  {El usuario debe haber alcanzado el límite de reportes establecido en RN-14.}% Precondición
+  {El sistema debe rechazar los reportes que excedan el límite por usuario establecido en RN-12 e informar al usuario del límite alcanzado.}% Descripción
+  {El usuario debe haber alcanzado el límite de reportes establecido en RN-12.}% Precondición
   {El reporte no queda registrado.}% Postcondición
 
-\tablaRF{RF-33}% Identificador
+\tablaRF{RF-37}% Identificador
   {Validación de reportes}% Nombre
   {Alta}% Prioridad
   {El sistema valida cada reporte antes de que afecte el cálculo de riesgo.}% Requerimiento
-  {Reporte nuevo}% Entrada
-  {Reporte en estado pendiente de validación}% Salida
-  {El sistema debe registrar todo reporte nuevo en estado pendiente y someterlo al proceso de validación descrito en RN-07 antes de que afecte los pesos del grafo de riesgo.}% Descripción
-  {El reporte debe haberse registrado sin exceder el límite por usuario (RF-33).}% Precondición
-  {El reporte no modifica los pesos del grafo de riesgo hasta ser validado según RN-07.}% Postcondición
+  {Reporte nuevo y respuestas de otros usuarios (RF-39)}% Entrada
+  {Reporte validado o descartado y reputación del autor actualizada}% Salida
+  {El sistema debe registrar todo reporte nuevo en estado pendiente y someterlo al proceso de validación descrito en RN-07, cambiándolo a validado o descartado según las confirmaciones y desmentidos recibidos (RF-39) y actualizando la reputación de su autor; el reporte no debe afectar los pesos del grafo de riesgo antes de ser validado.}% Descripción
+  {El reporte debe haberse registrado sin exceder el límite por usuario (RF-36).}% Precondición
+  {El reporte no modifica los pesos del grafo de riesgo hasta ser validado según RN-07; una vez validado, su contribución queda limitada por RN-09 y cesa al perder vigencia según RN-08. Al validarse o descartarse, la reputación de su autor queda actualizada conforme a RN-07.}% Postcondición
 
-\tablaRF{RF-34}% Identificador
+\tablaRF{RF-38}% Identificador
+  {Visualización de reportes pendientes cercanos}% Nombre
+  {Alta}% Prioridad
+  {El sistema muestra al usuario los reportes pendientes de otros usuarios que se encuentran en su cercanía.}% Requerimiento
+  {Ubicación actual del usuario}% Entrada
+  {Reportes pendientes cercanos}% Salida
+  {El sistema debe mostrar al usuario los reportes en estado pendiente según RN-07, registrados por otros usuarios y que aún no haya confirmado ni desmentido, que se encuentren dentro del radio de confirmación definido en RN-18 respecto de su ubicación actual, con el icono de su categoría conforme a RNF-08 y de forma distinguible de los reportes validados.}% Descripción
+  {El permiso de ubicación debe estar concedido y el dispositivo debe tener conexión a internet.}% Precondición
+  {Los reportes pendientes cercanos quedan disponibles para ser confirmados o desmentidos (RF-39).}% Postcondición
+
+\tablaRF{RF-39}% Identificador
   {Confirmación de reportes cercanos}% Nombre
-  {Media}% Prioridad
+  {Alta}% Prioridad
   {El sistema permite confirmar o desmentir reportes pendientes de otros usuarios.}% Requerimiento
   {Reporte pendiente y respuesta del usuario}% Entrada
   {Confirmación o desmentido registrado}% Salida
-  {El sistema debe permitir que el usuario confirme o desmienta reportes pendientes registrados por otros usuarios en su cercanía.}% Descripción
-  {Debe existir un reporte pendiente de otro usuario en la cercanía del usuario.}% Precondición
+  {El sistema debe permitir que el usuario confirme o desmienta, una sola vez por reporte conforme a RN-07, los reportes pendientes registrados por otros usuarios dentro del radio de confirmación de RN-18 (RF-38).}% Descripción
+  {Debe existir un reporte pendiente de otro usuario dentro del radio de confirmación de RN-18 y el dispositivo debe tener conexión a internet.}% Precondición
   {La respuesta queda registrada para el proceso de validación de RN-07.}% Postcondición
 
+\tablaRF{RF-40}% Identificador
+  {Consulta de reputación}% Nombre
+  {Baja}% Prioridad
+  {El sistema permite que el usuario consulte su reputación.}% Requerimiento
+  {Selección de la opción de reputación en el menú principal}% Entrada
+  {Reputación del usuario en estrellas}% Salida
+  {El sistema debe permitir que el usuario consulte su reputación vigente en la escala de 0 a 5 estrellas de RN-07, junto con la cantidad de confirmaciones que requieren sus reportes para validarse.}% Descripción
+  {El usuario debe tener una sesión iniciada y el dispositivo debe tener conexión a internet.}% Precondición
+  {La reputación del usuario queda visible.}% Postcondición
 
 \subsubsection{Seguridad personal}
 
-\tablaRF{RF-35}% Identificador
+\tablaRF{RF-41}% Identificador
   {Alertas de reportes cercanos}% Nombre
   {Baja}% Prioridad
   {El sistema permite activar alertas de nuevos reportes validados cerca del usuario.}% Requerimiento
   {Activación de las notificaciones}% Entrada
   {Notificación de reporte validado cercano}% Salida
-  {El sistema debe permitir que el usuario active notificaciones que lo alerten cuando se valide un nuevo reporte dentro del radio de proximidad definido en RN-20 respecto de su ubicación actual.}% Descripción
-  {El permiso de ubicación debe estar concedido.}% Precondición
-  {El usuario recibe una alerta por cada reporte validado dentro del radio definido en RN-20.}% Postcondición
+  {El sistema debe permitir que el usuario active notificaciones que lo alerten cuando se valide un nuevo reporte dentro del radio de proximidad definido en RN-18 respecto de su ubicación actual, solicitando el permiso de notificaciones cuando el sistema operativo lo requiera.}% Descripción
+  {El permiso de ubicación en segundo plano debe estar concedido (RF-28).}% Precondición
+  {El usuario recibe una alerta por cada reporte validado dentro del radio definido en RN-18.}% Postcondición
 
-\tablaRF{RF-36}% Identificador
+\tablaRF{RF-42}% Identificador
   {Enlace de seguimiento}% Nombre
   {Media}% Prioridad
   {El sistema permite generar y compartir un enlace de seguimiento del trayecto.}% Requerimiento
   {Solicitud de enlace y aplicación de mensajería elegida}% Entrada
   {Enlace de seguimiento compartido}% Salida
-  {El sistema debe permitir que el usuario genere un enlace de seguimiento de su trayecto en curso y lo comparta mediante las aplicaciones de mensajería instaladas en el dispositivo.}% Descripción
-  {La navegación debe estar en curso y el permiso de ubicación debe estar concedido.}% Precondición
-  {El enlace queda activo y permite a sus destinatarios seguir el trayecto.}% Postcondición
+  {El sistema debe permitir que el usuario genere un enlace de seguimiento de su trayecto en curso, con un identificador conforme a RNF-17, y lo comparta mediante las aplicaciones de mensajería instaladas en el dispositivo.}% Descripción
+  {La navegación debe estar en curso, el permiso de ubicación debe estar concedido y el dispositivo debe tener conexión a internet.}% Precondición
+  {El enlace queda activo con la vigencia de RN-13 y permite a sus destinatarios seguir el trayecto.}% Postcondición
 
-\tablaRF{RF-37}% Identificador
+\tablaRF{RF-43}% Identificador
   {Revocación del enlace de seguimiento}% Nombre
   {Media}% Prioridad
   {El sistema permite revocar un enlace de seguimiento activo.}% Requerimiento
   {Selección de la opción de revocar enlace}% Entrada
   {Enlace de seguimiento revocado}% Salida
-  {El sistema debe permitir que el usuario revoque manualmente un enlace de seguimiento activo antes de finalizar la navegación.}% Descripción
+  {El sistema debe permitir que el usuario revoque manualmente un enlace de seguimiento activo antes de finalizar la navegación, conforme a RN-13.}% Descripción
   {Debe existir un enlace de seguimiento activo.}% Precondición
   {El enlace deja de mostrar la ubicación del usuario.}% Postcondición
 
-\tablaRF{RF-38}% Identificador
+\tablaRF{RF-44}% Identificador
   {Botón de emergencia}% Nombre
   {Alta}% Prioridad
   {El sistema permite iniciar una llamada de emergencia desde la aplicación.}% Requerimiento
   {Pulsación del botón de emergencia y confirmación}% Entrada
-  {Llamada telefónica al número de RN-12}% Salida
-  {El sistema debe integrar un botón de emergencia que inicie una llamada telefónica al número definido en RN-12, solicitando una confirmación previa que evite llamadas accidentales.}% Descripción
+  {Llamada telefónica al número de RN-19}% Salida
+  {El sistema debe integrar un botón de emergencia, disponible aun cuando la cuenta no esté verificada conforme a RN-17, que inicie una llamada telefónica al número definido en RN-19, solicitando una confirmación previa que evite llamadas accidentales.}% Descripción
   {El dispositivo debe tener capacidad para realizar llamadas telefónicas.}% Precondición
   {La llamada queda iniciada únicamente después de la confirmación del usuario.}% Postcondición
 
 \subsubsection{Ayuda y transparencia}
 
-\tablaRF{RF-39}% Identificador
+\tablaRF{RF-45}% Identificador
   {Sección de ayuda}% Nombre
   {Baja}% Prioridad
   {El sistema ofrece una sección de ayuda sobre el uso de la aplicación.}% Requerimiento
@@ -412,12 +471,12 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {El usuario debe tener acceso al menú principal.}% Precondición
   {El contenido de ayuda queda visible para el usuario.}% Postcondición
 
-\tablaRF{RF-40}% Identificador
+\tablaRF{RF-46}% Identificador
   {Aviso de privacidad y consentimiento}% Nombre
   {Alta}% Prioridad
   {El sistema presenta el aviso de privacidad y registra el consentimiento del usuario.}% Requerimiento
   {Aceptación del aviso de privacidad}% Entrada
   {Consentimiento registrado}% Salida
-  {El sistema debe presentar el aviso de privacidad al primer uso, registrar el consentimiento del usuario conforme a RN-18 y mantenerlo accesible desde la sección de ayuda.}% Descripción
+  {El sistema debe presentar el aviso de privacidad al primer uso, antes del registro de la cuenta, registrar el consentimiento del usuario conforme a RN-16 y mantenerlo accesible desde el menú principal.}% Descripción
   {Debe tratarse del primer uso de la aplicación.}% Precondición
-  {El consentimiento queda registrado conforme a RN-18 y el aviso queda accesible desde la sección de ayuda.}% Postcondición
+  {El consentimiento queda registrado conforme a RN-16 y el aviso queda accesible desde el menú principal.}% Postcondición

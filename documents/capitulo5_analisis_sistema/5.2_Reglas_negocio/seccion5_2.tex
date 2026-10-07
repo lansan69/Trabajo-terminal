@@ -20,9 +20,9 @@ ID & \textbf{Regla} \\
 \endlastfoot
 RN-01 & El área de servicio del sistema es el polígono conformado por las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero. El origen, el destino y la totalidad del trazo de cualquier ruta calculada deben estar contenidos dentro de ese polígono. \\
 RN-02 & El sistema ofrece exactamente tres criterios de enrutamiento: \textit{segura}, que minimiza el riesgo acumulado del trayecto; \textit{rápida}, que minimiza la distancia peatonal; y \textit{balanceada}, que optimiza el compromiso entre ambos sujeto al límite de desvío de RN-03. \\
-RN-03 & La longitud de la ruta balanceada no debe exceder en más de 30\% la longitud de la ruta rápida para el mismo par origen--destino. Si ninguna alternativa satisface esa condición, se entrega la ruta más cercana posible. \\
-RN-04 & El riesgo de cada tramo vial se expresa como un valor normalizado en el intervalo $[0,1]$. \\
-RN-05 & El riesgo de cada tramo se pondera según la franja horaria de la consulta. Las franjas consideradas son diurna y nocturna. \\
+RN-03 & La longitud de la ruta balanceada no debe exceder en más de 30\% la longitud de la ruta rápida para el mismo par origen--destino. Si ninguna alternativa distinta de la ruta rápida satisface esa condición, la ruta balanceada coincide con la ruta rápida. \\
+RN-04 & El riesgo de cada tramo vial se obtiene de la ecuación de riesgo descrita en el marco metodológico, que combina las variables ambientales con la contribución de los reportes ciudadanos limitada por RN-09, y se expresa como un valor normalizado en el intervalo $[0,1]$. El riesgo acumulado de una ruta es la suma del riesgo de sus tramos ponderado por su longitud, y su nivel de riesgo se obtiene del promedio del riesgo de sus tramos ponderado por su longitud. Tanto los tramos como las rutas se clasifican en tres niveles: bajo, medio y alto, delimitados por umbrales [Por definir]. \\
+RN-05 & El riesgo de cada tramo se pondera según la franja horaria de la consulta. Las franjas consideradas son la nocturna, de 19:00 a 6:00 horas, y la diurna, de 6:01 a 18:59 horas, en hora local de la Ciudad de México. \\
 \end{longtable}
 
 \subsection*{Datos de riesgo y reportes ciudadanos}
@@ -39,8 +39,8 @@ ID & \textbf{Regla} \\
 \bottomrule
 \endlastfoot
 RN-06 & El catálogo de categorías de condición de riesgo es único para toda la aplicación y está conformado por las variables resultantes del análisis de las variables propuestas en el marco metodológico. \\
-RN-07 & Todo reporte ciudadano se registra inicialmente en estado \textit{pendiente}. La cantidad de confirmaciones necesarias para validarlo dependerá de la calificación del autor: si el autor tiene 5 estrellas, el reporte pasa automáticamente a estado \textit{validado}; si tiene 4 estrellas, requiere 2 confirmaciones de usuarios distintos al autor; y si tiene 3 estrellas, requiere 3 confirmaciones de usuarios distintos al autor. Los reportes que no cumplan con las condiciones de validación permanecerán en estado \textit{pendiente}. Únicamente los reportes validados modificarán los pesos del grafo de riesgo. \\
-RN-08 & Un reporte validado pierde vigencia a los [Por definir] días de su última confirmación y deja de afectar los pesos del grafo, de modo que el modelo refleje condiciones actuales del entorno. \\
+RN-07 & Todo reporte ciudadano se registra inicialmente en estado \textit{pendiente}. Cada usuario tiene una reputación de 0 a 5 estrellas, que inicia en 2.5 estrellas; aumenta 0.5 estrellas por cada reporte suyo que resulte validado y disminuye 0.5 estrellas por cada reporte suyo que resulte descartado, sin rebasar los límites de 0 y 5 estrellas. La cantidad de confirmaciones de usuarios distintos al autor necesarias para validar un reporte depende de la reputación del autor: 3 confirmaciones si es menor a 4 estrellas, 2 si es de 4 o 4.5 estrellas y 1 si es de 5 estrellas. Cada usuario puede confirmar o desmentir un mismo reporte una sola vez. Independientemente de la reputación del autor, un reporte pasa a estado \textit{descartado} al acumular 3 desmentidos de usuarios distintos al autor. Los reportes que no alcancen ninguno de estos umbrales permanecerán en estado \textit{pendiente}. Únicamente los reportes validados modificarán los pesos del grafo de riesgo. \\
+RN-08 & Un reporte validado pierde vigencia a los [Por definir] días de su validación y deja de afectar los pesos del grafo, de modo que el modelo refleje condiciones actuales del entorno. \\
 RN-09 & La contribución de los reportes ciudadanos al riesgo de un tramo no puede modificar en más de [Por definir] el valor obtenido del preprocesamiento de variables ambientales e incidencia oficial. \\
 RN-10 & El grafo base de riesgo se recalcula a partir del proceso de preprocesamiento con una periodicidad de [Por definir]. Cada recálculo produce una versión identificada del grafo, referida por RNF-01. \\
 RN-11 & El catálogo de puntos de ayuda oficiales es administrado por el responsable del sistema. Los usuarios de la aplicación no pueden crear, modificar ni eliminar registros de este catálogo. \\
@@ -63,7 +63,23 @@ ID & \textbf{Regla} \\
 RN-13 & Un enlace de seguimiento es válido únicamente durante la navegación que lo originó. Se invalida de forma automática al finalizar o cancelar esa navegación, y de forma manual cuando el usuario lo revoca. Un enlace invalidado no puede reutilizarse para consultar trayectos posteriores. \\
 RN-14 & Los enlaces de verificación de correo y de restablecimiento de contraseña son de un solo uso y expiran a los 10 minutos de su emisión. \\
 RN-15 & Al eliminar una cuenta, todos los datos personales asociados a ella deberán eliminarse en un plazo máximo de 7 días. Los reportes realizados por la cuenta podrán conservarse únicamente de forma anonimizada, eliminando cualquier información que permita identificar al usuario, con el fin de utilizarlos para la retroalimentación y mejora del sistema. \\
-RN-16 & La ubicación del usuario se utiliza exclusivamente para el cálculo de rutas, la navegación, el registro de reportes y el enlace de seguimiento. No se cede a terceros sin consentimiento expreso del usuario. El tratamiento se rige por el aviso de privacidad, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares. \\
-RN-17 & La verificación del correo electrónico es condición previa para el uso de cualquier función de la aplicación distinta del registro, el inicio de sesión y la recuperación de contraseña. \\
-RN-18 & Parámetros operativos del sistema: radio de proximidad para notificaciones de nuevos reportes, 1.5 metros; umbral de desvío que dispara el recálculo de la ruta, 50 metros. Ambos son configurables sin necesidad de publicar una nueva versión de la aplicación. \\
+RN-16 & La ubicación del usuario se utiliza exclusivamente para el cálculo de rutas, la navegación, el registro y la confirmación de reportes, las alertas de reportes cercanos y el enlace de seguimiento. No se cede a terceros sin consentimiento expreso del usuario. El tratamiento se rige por el aviso de privacidad, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares. \\
+RN-17 & La verificación del correo electrónico es condición previa para el uso de cualquier función de la aplicación distinta del registro, la verificación del correo y el reenvío de su enlace, el inicio de sesión, la recuperación y el restablecimiento de contraseña, la consulta y aceptación del aviso de privacidad y el botón de emergencia. Las cuentas registradas mediante Google no requieren esta verificación. \\
+RN-18 & Parámetros operativos del sistema: radio de proximidad para notificaciones de nuevos reportes, 1.5 kilómetros; radio de confirmación dentro del cual un usuario puede confirmar o desmentir reportes pendientes, 500 metros; umbral de desvío que dispara el recálculo de la ruta, 50 metros; velocidad de caminata para estimar el tiempo de recorrido, 4.5 km/h. Todos son configurables sin necesidad de publicar una nueva versión de la aplicación. \\
+\end{longtable}
+
+\subsection*{Seguridad personal}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Regla} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Regla} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RN-19 & La llamada iniciada desde el botón de emergencia se dirige al número único de atención a emergencias 911. \\
 \end{longtable}
