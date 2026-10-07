@@ -1,0 +1,126 @@
+
+\subsubsection{Fiabilidad}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-01 & Dados el mismo origen, destino, criterio de selección, franja horaria y la misma versión identificada del grafo de riesgo, el sistema debe devolver la misma ruta en el 100\% de las solicitudes. Toda respuesta de cálculo debe incluir el identificador de la versión del grafo empleada. \\
+RNF-02 & Ante fallos de conexión a internet, de señal GPS o de los servicios de mapas, el sistema no debe cerrarse ni dejar de responder; debe informar la condición conforme a RNF-11 y mantener disponibles las funciones que no dependan del servicio afectado. \\
+RNF-03 & El sistema debe conservar el estado de la navegación en curso cuando la aplicación pase a segundo plano, incluida la interrupción por una llamada telefónica, y debe restaurarlo al volver a primer plano. \\
+\end{longtable}
+
+\subsubsection{Rendimiento}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-04 & El tiempo transcurrido entre la solicitud de cálculo y la presentación de las rutas no debe exceder 5 segundos. \\
+RNF-05 & El sistema debe responder a los gestos de desplazamiento y acercamiento sobre el mapa en un tiempo no mayor a 100 ms en los dispositivos de referencia definidos en RNF-20. \\
+\end{longtable}
+
+\subsubsection{Usabilidad y accesibilidad}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-06 & El sistema debe permitir alcanzar, desde la pantalla principal y en un máximo de tres toques, las funciones de búsqueda de origen y destino, selección de ruta, registro de reportes y botón de emergencia. \\
+RNF-07 & Los controles de navegación en curso deben ubicarse dentro del tercio inferior de la pantalla, de modo que puedan accionarse con una sola mano mientras el usuario camina. \\
+RNF-08 & Cada categoría del catálogo de RN-06 debe representarse mediante un icono propio, empleado de forma idéntica en el mapa, en la leyenda, en el formulario de reporte y en el detalle de la ruta. \\
+RNF-09 & El nivel de riesgo debe comunicarse mediante la combinación de un indicador visual y una etiqueta textual (bajo, medio o alto), sin depender únicamente del color ni exponer los valores numéricos internos del modelo. \\
+RNF-10 & Ante cualquier error o estado de excepción, el sistema debe mostrar un mensaje que describa en lenguaje no técnico lo ocurrido y, cuando exista, la acción concreta que el usuario puede realizar para resolverlo. \\
+RNF-11 & La aplicación debe emplear un mismo sistema de diseño, entendido como una paleta de colores, una familia tipográfica, un conjunto de iconos y una ubicación de los controles principales comunes a todas las pantallas. \\
+RNF-12 & Los elementos interactivos deben tener un área táctil mínima de 48 dp por lado. \\
+RNF-13 & La totalidad de los textos de la interfaz debe presentarse en español de México. \\
+\end{longtable}
+
+\subsubsection{Seguridad}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-14 & Las contraseñas deben almacenarse de forma cifrada; no deben almacenarse en texto plano ni mediante ningún método reversible. \\
+RNF-15 & La comunicación entre la aplicación y los servicios del sistema deberá realizarse de forma segura, protegiendo la información durante su transmisión.\\
+RNF-16 & La ubicación del usuario debe recolectarse y transmitirse únicamente mientras se ejecuta alguna de las funciones que la requieren (cálculo de rutas, navegación, registro de reportes y enlace de seguimiento), y debe dejar de recolectarse al terminar dichas funciones. \\
+RNF-17 & El identificador del enlace de seguimiento debe generarse de forma aleatoria con una entropía mínima de 128 bits, de modo que no sea deducible ni enumerable a partir de otros enlaces. \\
+\end{longtable}
+
+\subsubsection{Mantenibilidad}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-18 & La capa de dominio no debe depender de frameworks, motores de base de datos ni servicios externos; toda dependencia externa debe residir en la capa de infraestructura, de modo que el proveedor de mapas o de datos geoespaciales pueda sustituirse sin modificar el dominio ni la interfaz. El cumplimiento debe verificarse mediante reglas automatizadas de análisis de dependencias ejecutadas en cada integración de código. \\
+\end{longtable}
+
+\subsubsection{Compatibilidad}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-19 & La aplicación debe ejecutarse en dispositivos con Android 10 o superior, con sensor GPS. \\
+\end{longtable}
+
+\subsubsection{Verificabilidad}
+
+\begin{longtable}{@{}KQ@{}}
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endfirsthead
+\toprule
+ID & \textbf{Requisito} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+RNF-20 & Cada requerimiento funcional debe contar con al menos un criterio de aceptación verificable, registrado en una matriz de trazabilidad requisito $\rightarrow$ prueba. \\
+RNF-21 & La lógica de negocio (cálculo y calificación de rutas, ponderación temporal, validación de reportes y validación del área de servicio) debe alcanzar una cobertura mínima de 60\% mediante pruebas unitarias automatizadas, ejecutadas en cada integración de código. \\
+\end{longtable}

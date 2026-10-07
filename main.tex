@@ -1,0 +1,184 @@
+\documentclass[12pt, oneside]{report}
+
+% Configuración para permitir acentos
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel} % Recomendado para correcta separación de sílabas
+\usepackage{csquotes}
+
+% imports de la seccion 5.4
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{pdflscape}
+%------------------------------
+
+% Definición de los colores del semáforo
+\definecolor{riskRed}{HTML}{C00000}
+\definecolor{riskOrange}{HTML}{FFC000}
+\definecolor{riskYellow}{HTML}{FFFF00}
+
+
+\input{setup/acronyms}
+% Import all settings and packages
+\input{setup/settings.tex}
+
+\begin{document}
+
+% =========================================================
+% PORTADA
+% =========================================================
+\include{documents/cover/cover_page}
+
+% =========================================================
+% AGRADECIMIENTOS
+% =========================================================
+\chapter*{Agradecimientos}
+% =========================================================
+% RESUMEN
+% =========================================================
+\chapter*{Resumen}
+
+La inseguridad en México expone a la ciudadanía a riesgos latentes durante sus traslados cotidianos. Sin embargo, los peatones no siempre cuentan con herramientas para evaluar el nivel de vulnerabilidad de las rutas elegidas. Esta investigación propone el desarrollo de un prototipo de aplicación móvil enfocado en la generación de rutas peatonales seguras, fundamentado en algoritmos de búsqueda de caminos óptimos (\textit{Pathfinding} y \textit{Shortest Path Problem}), Teoría de Grafos, técnicas de cartografía participativa (\textit{crowdmapping}) y Sistemas de Información Geográfica (SIG). El modelo computacional pondera variables asociadas a la incidencia delictiva, morfología urbana, Criminología Ambiental y percepción ciudadana, con el fin de calcular trayectos con el menor nivel de exposición al riesgo.
+
+\keywords{Aplicación móvil, Teoría de Grafos, Sistemas de Información Geográfica, Criminología Ambiental}
+
+% =========================================================
+% ABSTRACT
+% =========================================================
+\chapter*{Abstract}
+
+Insecurity in Mexico exposes citizens to latent risks during their daily commutes. However, pedestrians often lack analytical tools to evaluate the level of vulnerability associated with their chosen routes. This research proposes the development of a mobile application prototype designed to generate safe pedestrian routes, grounded in optimal pathfinding algorithms (Shortest Path Problem), Graph Theory, crowdmapping techniques, and Geographic Information Systems (GIS). The computational model weighs variables related to crime incidence, urban morphology, Environmental Criminology, and citizen perception in order to compute paths with minimal risk exposure.
+
+\vspace{0.5cm}
+\noindent\textbf{Keywords:} Mobile application, Graph Theory, Geographic Information Systems, Environmental Criminology.
+
+% =========================================================
+% ÍNDICES
+% =========================================================
+\tableofcontents
+\cleardoublepage
+\listoftables
+\cleardoublepage
+\listoffigures
+\cleardoublepage
+
+% =========================================================
+% GLOSARIO DE TÉRMINOS
+% =========================================================
+\chapter*{Glosario de Términos}
+\addcontentsline{toc}{chapter}{Glosario de Términos}
+% Incluir el contenidos de los términos aquí
+\cleardoublepage
+
+% =========================================================
+% ACRÓNIMOS Y ABREVIATURAS
+% =========================================================
+\chapter*{Acrónimos y abreviaturas}
+\addcontentsline{toc}{chapter}{Acrónimos y abreviaturas}
+% Incluir contenido o listado de acrónimos aquí
+\cleardoublepage
+
+% =========================================================
+% INTRODUCCIÓN
+% =========================================================
+\chapter*{Introducción}
+\addcontentsline{toc}{chapter}{Introducción}
+% =========================================================
+% CAPÍTULO 1: ANTECEDENTES
+% =========================================================
+\chapter{Antecedentes}
+\label{cap:antecedentes}
+\input{documents/capitulo1_antecedentes/chapter}
+
+% =========================================================
+% CAPÍTULO 2: ESTADO DEL ARTE
+% =========================================================
+\chapter{Estado del Arte}
+\label{cap:estado_arte}
+\input{documents/capitulo2_estado_arte/chapter}
+
+% =========================================================
+% CAPÍTULO 3: MARCO TEÓRICO
+% =========================================================
+\chapter{Marco teórico}
+\label{cap:marco_teorico}
+\input{documents/capitulo3_marco_teorico/chapter}
+
+% =========================================================
+% CAPÍTULO 4: MARCO METODOLÓGICO
+% =========================================================
+\chapter{Marco metodológico}
+\label{cap:marco_metodologico}
+\input{documents/capitulo4_marco_metodologico/chapter}
+
+% =========================================================
+% CAPÍTULO 5: ANÁLISIS DEL SISTEMA
+% =========================================================
+\chapter{Análisis del sistema}
+\label{cap:analisis_sistema}
+\input{documents/capitulo5_analisis_sistema/chapter}
+
+% =========================================================
+% CAPÍTULO 6: DISEÑO DEL SISTEMA
+% =========================================================
+\chapter{Diseño del sistema}
+\label{cap:diseno_sistema}
+\input{documents/capitulo6_diseño_sistema/chapter}
+
+
+% *************************************************
+% SECCIONES PARA TT 2
+
+% =========================================================
+% CAPÍTULO 7: DESARROLLO E IMPLEMENTACIÓN 
+% =========================================================
+\chapter{Desarrollo e Implementación}
+\label{cap:desarrollo_implementacion}
+\input{documents/capitulo7_desarrollo_implementacion/chapter}
+
+
+% =========================================================
+% CAPÍTULO 8: PRUEBAS
+% =========================================================
+\chapter{Pruebas}
+\label{cap:pruebas}
+\input{documents/capitulo8_pruebas/chapter}
+
+% *************************************************
+
+% =========================================================
+% CAPÍTULO 9: CONCLUSIONES Y TRABAJO FUTURO
+% =========================================================
+\chapter{Conclusiones y trabajo futuro}
+\label{cap:conclusiones}
+\input{documents/capitulo9_conclusiones/chapter}
+
+% =========================================================
+% REFERENCIAS / BIBLIOGRAFÍA
+% =========================================================
+\renewcommand{\bibname}{Referencias}
+\addcontentsline{toc}{chapter}{Referencias}
+
+\bibliographystyle{IEEEtran}
+\bibliography{
+% Capítulo 1
+documents/capitulo1_antecedentes/chapter,
+% Capítulo 2
+documents/capitulo2_estado_arte/chapter,
+% Capítulo 3
+documents/capitulo3_marco_teorico/3.1_criminologia_ambiental/seccion3_1,
+documents/capitulo3_marco_teorico/3.2_contexto_geografico/seccion3_2,
+documents/capitulo3_marco_teorico/3.5_teoria_de_grafos/seccion3_5,
+% Capítulo 4
+documents/capitulo4_marco_metodologico/chapter,
+% Capítulo 5
+documents/capitulo5_analisis_sistema/5.1_Requerimientos/seccion5_1,
+documents/capitulo5_analisis_sistema/5.2_Reglas_negocio/seccion5_2,
+documents/capitulo5_analisis_sistema/5.3_Analisis_de_herramientas_a_utilizar/seccion5_3,
+documents/capitulo5_analisis_sistema/5.4_Analisis_de_riesgos/seccion5_4,
+documents/capitulo5_analisis_sistema/5.5_Analisis_de_Factibilidad/seccion5_5
+}
+
+\end{document}

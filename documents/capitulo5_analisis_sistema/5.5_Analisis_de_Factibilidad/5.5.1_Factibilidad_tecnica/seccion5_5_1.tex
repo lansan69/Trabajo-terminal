@@ -1,0 +1,146 @@
+%---------------------
+%FACTIBILIDAD TÉCNICA
+%---------------------
+Para determinar la factibilidad técnica es necesario evaluar los aspectos tecnológicos del proyecto para  averiguar si es posible desarrollar el nuevo sistema teniendo en cuenta los recursos técnicos actuales\cite{kendall_analisis}. De esta manera y debido a las características propias del prototipo, se evalúa únicamente el software necesario para conseguir una plataforma para desarrollar la aplicación móvil y el sistema para almacenar la base de datos con soporte para análisis geoespacial. 
+
+\subsubsection{Software}
+\label{subsubsec: software}
+Primero, para el desarrollo del prototipo móvil es necesario la utilización de un marco de trabajo que nos permita realizar aplicaciones móviles para android. Múltiples candidatos cumplen con los requisitos básicos. La tabla \ref{tab:tabla-comparativa-framework} muestra una comparativa entre las opciones nativas y frameworks multi-plataforma más populares del mercado.
+
+
+\begin{table}[h]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\caption{Comparación de tecnologías de desarrollo de aplicaciones móviles}
+\begin{tabularx}{\textwidth}{ |C|C|C|C| }
+\hline
+\textbf{Característica} &
+\textbf{Flutter} &
+\textbf{Kotlin} &
+\textbf{React Native}
+\\ \hline
+Lenguaje base &
+Dart \cite{flutter_businessvalue} &
+Kotlin \cite{kotlin_docs}&
+JavaScript \cite{reactnative_docs}
+\\ \hline
+Renderizado de la interfaz &
+Motor propio (Impeller) \cite{flutter_businessvalue} &
+Componentes nativos \cite{kotlin_docs} &
+Componentes nativos de la plataforma \cite{reactnative_docs}
+\\ \hline
+Desarrollo multiplataforma &
+Sí \cite{flutter_businessvalue} &
+Parcial \cite{kotlin_docs} &
+Sí \cite{reactnative_docs}
+\\ \hline
+Soporte de mapas &
+Sí \cite{pub_dev} & 
+Sí \cite{google_maps_compose_codelab} & 
+Sí \cite{react_native_maps}
+\\ \hline
+Repositorio de paquetes &
+Centralizado y evaluado (\textit{pub.dev}) \cite{pub_dev} &
+Descentralizado (Maven) \cite{kotlin_docs} &
+General y no exclusivo (npm) \cite{reactnative_docs}
+\\ \hline
+Aplicación de cambios sin reiniciar &
+Sí (\textit{Hot reload}) \cite{flutter_businessvalue} &
+Parcial \cite{kotlin_docs} &
+Sí (\textit{Fast Refresh}) \cite{reactnative_docs}
+\\ \hline
+Porcentaje de reutilización de código &
+$\approx$90\,\% \cite{suri2022cross} &
+No aplica &
+$\approx$95\,\% \cite{suri2022cross}
+\\ \hline
+Consumo de CPU &
+$\approx$27\,\% \cite{suri2022cross} &
+$\approx$20\,\% \cite{suri2022cross} &
+$\approx$100\,\% \cite{suri2022cross}
+\\ \hline
+Consumo de memoria respecto a Kotlin &
+$+1.6\,\%$ \cite{suri2022cross} &
+Referencia &
+$+13.3\,\%$ \cite{suri2022cross}
+\\ \hline
+\end{tabularx}
+\footnotesize{\textbf{Nota:} Tanto consumo de CPU como consumo de memoria fueron calculados con base en un estudio empírico que compara el rendimiento de estos tres frameworks en condiciones similares.}
+\label{tab:tabla-comparativa-framework}
+\end{table}
+
+Se puede observar que Flutter ofrece un entorno óptimo para la construcción de un producto mínimo viable (MVP) por ventajas como el hot reload, su renderizado a nivel de pixel, su repositorio oficial de paquetes centralizado y su naturaleza multiplataforma. Si bien el desarrollo del presente proyecto se enfoca únicamente en Android, el uso de esta tecnología y herramientas garantiza que, como parte del trabajo a futuro, el proyecto pueda retomarse y expandirse a otros sistemas operativos de manera sencilla, manteniendo la interfaz diseñada y reutilizando apróximadamente el 90\% del código escrito\cite{suri2022cross}.
+
+Kotlin no posee un entorno tan versatil como el de Flutter y carece de características de desarrollo que permitan la retoma del proyecto como se desea. Asimismo, React Native a pesar de adaptarse mejor en témrinos de reutilización de código, carece de características óptimas de rendimiento. 
+
+Segundo, una vez definida la herramienta a utilizar para el desarrollo del prototipo de aplicación móvil, lo siguiente por analizar es el sistema gestor de base de datos que almacenará la base de datos con la red vial de la Gustavo A. Madero y tendrá el modelo integrado con las ponderaciones de criminología ambiental. Se buscan alternativas con soporte para bases de datos espaciales, con integraciones de seguridad y con una alta disponibilidad.
+
+Asímismo, a pesar del gran número de herramientas open-source autohosteadas que existen en el mercado como Appwrite, Convex, entre otros. Al no contar con la infraestructura de hardware y el tiempo necesario para la configuración de los microservicios, se opta por la adopción de herramientas de Backend como servicio que nos facilita la implementación, aseguran disponibilidades altas, ofrecen tiempos de respuesta óptimos y proveen herramientas en tiempo real. La tabla \ref{tab:comparativa-dbms} muestra una comparativa de las herramientas tomadas en cuenta.
+
+\begin{table}[hbt!]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\caption{Comparación técnica de Sistemas Gestores de Bases de Datos}
+\begin{tabularx}{\textwidth}{ |C|C|C|C| }
+\hline
+\textbf{Característica} & \textbf{Supabase} & \textbf{Firebase} & \textbf{MongoDB} \\ \hline
+
+Modelo de datos &
+Relacional (PostgreSQL) \cite{supabase_arquitectura} &
+No relacional (Firestore, documentos) \cite{firebase_modelo} &
+No relacional (documentos) \cite{mongodb_atlas} \\ \hline
+
+Disponibilidad &
+99,9\% para el plan Enterprise \cite{supabase_sla} &
+Firestore: 99,99\% regional y 99,999\% multirregional \cite{firebase_sla} &
+99,995\% para clusters iguales o mayores al M10 \cite{mongodb_trust} \\ \hline
+
+Soporte geoespacial &
+Sí (extensión PostGIS) \cite{supabase_postgis} &
+Parcial (sin consultas nativas; geohashes con GeoFire) \cite{firebase_geoqueries} &
+Sí (nativo con GeoJSON) \cite{mongodb_geojson} \\ \hline
+
+Motor de ruteo en grafos &
+Sí (extensión pgRouting) \cite{supabase_pgrouting} &
+No \cite{firebase_geoqueries} &
+No (solo recorridos con \texttt{\$graphLookup}) \cite{mongodb_graphlookup} \\ \hline
+
+Integración oficial con Flutter &
+Sí (\texttt{supabase\_flutter}) \cite{supabase_flutter} &
+Sí (FlutterFire) \cite{firebase_flutter} &
+No oficial (controlador comunitario \texttt{mongo\_dart}) \cite{mongo_dart} \\ \hline
+
+Enfoque de autenticación &
+Servicio integrado (Supabase Auth) con JWT \cite{supabase_auth} &
+Servicio integrado (Firebase Authentication) \cite{firebase_auth} &
+Sin servicio para usuarios finales (App Services Authentication retirado en 2025); requiere gestión externa \cite{mongodb_appservices,mongodb_deprecacion} \\ \hline
+
+Seguridad &
+Row Level Security (políticas SQL por fila) \cite{supabase_seguridad} &
+Security Rules \cite{firebase_reglas} &
+Control de acceso por roles y cifrado; sin equivalente a RLS \cite{mongodb_seguridad} \\ \hline
+
+API &
+Sí (REST autogenerada con PostgREST) \cite{supabase_arquitectura} &
+Sí (REST y gRPC sobre Firestore) \cite{firebase_api} &
+No gestionada (Data API y GraphQL retirados; acceso por drivers) \cite{mongodb_deprecacion} \\ \hline
+\end{tabularx}
+\label{tab:comparativa-dbms}
+\end{table}
+
+Si bien los tres son operables a nivel de autenticación, seguridad, API, integraciones y disponibilidad con base en los requerimientos del sistema, solo \textit{Supabase} y \textit{MongoDB} ofrecen las herramientas necesarias para la gestión de bases de datos geoespaciales y entre estos, solo Supabase nos permite integrar un motor de ruteo con una simple extensión, lo que a corto plazo permite integrar de manera más rápida el prototipo de palicación móvil con el backend.
+
+De este modo, se consolida Supabase como el gestor de base de datos y backend como servicio del presente proyecto. Generando así una combinación nativa con Flutter con herramientas de autenticación integradas, documentación minuciosa, integración geoespacial con ruteo y una API que nos permite realizar una implementación sencilla.
+
+\subsubsection{Hardware}
+Con la elección de tecnologías de la sección \ref{subsubsec: software}, podemos determianr que Supabase no requiere condiciones de hardware específicas dado que no se planea hostearlo en equipo propio y por tanto, funciona directamente en la web. Por el otro lado, para el uso de Flutter se eligió Visual Studio Code, misma integración que no requiere especificaciones de hardware que necesiten ser listadas. Sin embargo, para probar la aplicación Flutter en dispositivos android se tienen solo dos caminos: (1) un emulador de android y (2) un dispositivo físico de android.
+
+Así, para el desarrollo del prototipo de aplicación se necesitan aproximadamente 8 GB de memoria RAM y 8 GB de espacio libre en disco para ejecutar Android Studio, que provee el SDK de Android, si las pruebas se hacen en un dispositivo físico. Si además se utiliza el emulador, los requisitos suben a 16 GB de RAM y 16 GB de espacio libre, con una resolución de pantalla mínima de 1280 $\times$ 800 píxeles \cite{androidstudio_install}.
+
+\subsubsection{Personal y capacidades técnicas}
+Las capacidades técnicas requeridas se concentran en dos tecnologías. Por un lado, Supabase expone métodos simples para interactuar con la base de datos, ya que la aplicación consulta la lógica de rutas mediante funciones remotas (RPC) \cite{supabase_arquitectura}, por lo que su curva de aprendizaje es baja y no requiere administrar infraestructura propia. Por el otro, el mayor reto técnico del proyecto es el lenguaje Dart y el marco Flutter, con los que se construye la interfaz y la lógica del cliente \cite{supabase_flutter}.
+
+Por esta razón, los integrantes del equipo se encuentran en un proceso de preparación en Dart y Flutter, y el avance del prototipo depende directamente de la curva de aprendizaje de ambas herramientas. Este riesgo se mitiga con el enfoque incremental y de prototipos adoptado en la etapa de programación, que permite validar funcionalidades en ciclos cortos y ajustar el alcance de cada iteración conforme el equipo gane dominio técnico.
+

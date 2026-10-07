@@ -1,0 +1,73 @@
+
+
+En estas sección se presenta el Análisis de Riesgos para el proyecto de trabajo terminal donde se identifican y evalúan las posibles amenazas que puedan llegar a afectar el trabajo en general para finalmente ofrecer una solución o alternativa para tratar los problemas analizados por el equipo. 
+
+En la tabla \ref{tab:matriz-riesgos-detallada} se muestra el análisis de riesgo a detalle. 
+
+\begin{landscape}
+\small % Reduce un poco el tamaño de letra para que quepan bien las columnas
+\begin{longtable}{|c|p{3cm}|p{5cm}|p{2cm}|p{1cm}|c|c|p{6cm}|}
+\caption{Matriz de Análisis de Riesgos} \label{tab:matriz-riesgos-detallada} \\
+\hline
+\textbf{ID} & \textbf{Nombre del Riesgo} & \textbf{Descripción} & \textbf{Categoría} & \textbf{Prob.} & \textbf{Cons.} & \textbf{Nivel} & \textbf{Estrategia de Mitigación} \\
+\hline
+\endfirsthead
+
+\multicolumn{8}{c}%
+{{\bfseries Continuación de la Tabla \ref{tab:matriz_riesgos}}} \\
+\hline
+\textbf{ID} & \textbf{Nombre del Riesgo} & \textbf{Descripción} & \textbf{Categoría} & \textbf{Prob.} & \textbf{Cons.} & \textbf{Nivel} & \textbf{Estrategia de Mitigación} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+R-01 & Dependencia de fuentes externas de información & El proyecto depende de fuentes externas para obtener información necesaria para caracterizar el entorno, por lo que cambios en su disponibilidad, acceso o condiciones de consulta pueden afectar el desarrollo del sistema. & Externo & 3 & 4 & \cellcolor{riskOrange} & Utilizar múltiples fuentes de información y evitar la dependencia de una sola fuente. Mantener identificadas fuentes alternativas para cada variable y documentar la fecha, cobertura, condiciones de acceso y limitaciones de cada fuente. \\ \hline
+
+R-02 & Errores en la representación geoespacial & La información utilizada para construir la red vial puede contener errores de geometría, conectividad o clasificación de segmentos. & Técnico & 3 & 4 & \cellcolor{riskOrange} & Validar la información geoespacial mediante fuentes adicionales y realizar revisiones de geometría, conectividad y clasificación de los segmentos antes de incorporarlos al grafo. \\ \hline
+
+R-03 & Subrepresentación de la incidencia delictiva & Los registros oficiales utilizados para caracterizar la incidencia delictiva no representan todos los delitos ocurridos debido a la existencia de eventos no denunciados o que no derivan en una carpeta de investigación. & Externo & 5 & 2 & \cellcolor{riskOrange} & No utilizar la incidencia delictiva oficial como única medida del riesgo. Complementarla con las condiciones físicas observables del entorno, la percepción de inseguridad y los reportes de usuarios, estableciendo límites a la influencia que los registros oficiales pueden tener sobre el valor final de riesgo. \\ \hline
+
+R-04 & Cobertura insuficiente del entorno mediante imágenes & Las imágenes disponibles para analizar las características físicas de las calles pueden no cubrir todos los tramos requeridos o no permitir identificar adecuadamente las condiciones actuales del entorno. & Externo & 2 & 4 & \cellcolor{riskYellow} & Identificar los tramos sin imágenes adecuadas y evitar asignar valores derivados de imágenes que no permitan una evaluación confiable. Complementar los casos faltantes mediante otras fuentes autorizadas de información y registrar qué tramos presentan información visual limitada. \\ \hline
+
+R-05 & Clasificación incorrecta del riesgo por tramo & El procedimiento utilizado para transformar las variables observadas en un nivel de riesgo puede producir resultados que no representen adecuadamente las condiciones del entorno. & Técnico & 2 & 5 & \cellcolor{riskOrange} & Definir una rúbrica clara para la asignación del riesgo, realizar pruebas sobre una muestra de tramos y comparar los resultados obtenidos antes de incorporarlos al modelo definitivo. \\ \hline
+
+R-06 & Cambios temporales en el entorno & Las condiciones de las calles pueden cambiar con el tiempo debido a modificaciones en iluminación, comercios, construcciones, grafiti u otras características del entorno. & Externo & 4 & 3 & \cellcolor{riskOrange} & Registrar la fecha de actualización de los datos y establecer mecanismos para actualizar periódicamente la información del modelo, así como permitir la incorporación de reportes recientes de los usuarios. \\ \hline
+
+R-07 & Error en el algoritmo de enrutamiento multicriterio & El algoritmo puede calcular incorrectamente los costos de las rutas o no respetar adecuadamente el equilibrio establecido entre tiempo de traslado y riesgo. & Técnico & 2 & 4 & \cellcolor{riskYellow} & Realizar pruebas con diferentes escenarios y casos controlados, verificando que los costos y las rutas generadas correspondan con los criterios definidos. \\ \hline
+
+R-08 & Generación de rutas no transitables & El sistema puede generar rutas que incluyan segmentos que no sean adecuados para el tránsito peatonal debido a errores en la representación o configuración de la red. & Técnico & 2 & 4 & \cellcolor{riskYellow} & Establecer criterios para excluir segmentos no transitables, validar la conectividad de la red y probar rutas entre diferentes puntos de origen y destino. \\ \hline
+
+R-09 & Tiempo de procesamiento elevado & El cálculo de rutas o la consulta de información puede requerir demasiado tiempo debido al tamaño del grafo o a la cantidad de variables o las operaciones necesarias para generar las rutas. & Técnico & 4 & 3 & \cellcolor{riskOrange} & Optimizar algoritmos y estructuras de datos, reducir operaciones innecesarias y realizar pruebas de rendimiento durante el desarrollo. \\ \hline
+
+R-10 & Fallas en servicios de mapas o geolocalización & La indisponibilidad o funcionamiento incorrecto de servicios externos puede impedir la visualización del mapa, la obtención de coordenadas o la generación de rutas. & Externo & 3 & 5 & \cellcolor{riskRed} & Implementar manejo de errores, validar las respuestas de los servicios y conservar información suficiente para realizar pruebas sin depender completamente de ellos. \\ \hline
+
+R-11 & Problemas de integración entre componentes & El frontend, backend, base de datos, servicios de mapas o módulos de procesamiento pueden presentar incompatibilidades que impidan el funcionamiento conjunto del prototipo. & Técnico & 2 & 5 & \cellcolor{riskOrange} & Realizar pruebas de integración periódicas, establecer interfaces claras entre componentes y controlar las versiones del software utilizado. \\ \hline
+
+R-12 & Reportes falsos o incorrectos & Los usuarios pueden proporcionar información incorrecta, incompleta o deliberadamente falsa sobre las condiciones de una zona. & Externo & 4 & 3 & \cellcolor{riskOrange} & Implementar mecanismos de validación y confirmación de reportes, evitando que un reporte individual no verificado modifique directamente el nivel de riesgo de un tramo. \\ \hline
+
+R-13 & Baja cantidad de reportes de usuarios & La cantidad de reportes generados mediante crowdmapping puede ser insuficiente para actualizar de manera representativa las condiciones del entorno. & Externo & 4 & 3 & \cellcolor{riskOrange} & Implementar un sistema de reputación (estrellas) que incentive la participación recurrente y facilite la validación automática para usuarios confiables. \\ \hline
+
+R-14 & Información contradictoria entre reportes & Diferentes usuarios pueden registrar información distinta sobre una misma zona o tramo, dificultando determinar cuál debe incorporarse al modelo. & Externo & 3 & 3 & \cellcolor{riskYellow} & Establecer criterios de validación, considerar la cantidad de confirmaciones y asignar niveles de confianza a los reportes recibidos. \\ \hline
+
+R-15 & Pérdida o corrupción de información & Los datos utilizados para el modelo, la base de datos o los reportes pueden perderse o dañarse durante el desarrollo. & Técnico & 2 & 5 & \cellcolor{riskOrange} & Realizar respaldos periódicos de código y datos, conservar diferentes versiones de los datasets y utilizar control de versiones. \\ \hline
+
+R-16 & Retrasos en el desarrollo & Las actividades de programación, procesamiento de datos, integración o pruebas pueden requerir más tiempo del previsto. & De tiempo & 4 & 4 & \cellcolor{riskRed} & Dividir el proyecto en entregables, establecer fechas internas de revisión y priorizar las funciones esenciales del prototipo. \\ \hline
+
+R-17 & Tiempo insuficiente para realizar pruebas & El periodo disponible puede no ser suficiente para evaluar adecuadamente el algoritmo, la aplicación y el modelo de riesgo antes de la entrega. & De tiempo & 4 & 5 & \cellcolor{riskRed} & Planificar las pruebas desde etapas tempranas y desarrollar casos de prueba conforme se complete cada componente. \\ \hline
+
+R-18 & Dificultad para validar el modelo & Puede ser difícil determinar si una ruta con menor riesgo estimado representa efectivamente una menor exposición al riesgo en el entorno real, debido a la ausencia de una medida directa que permita comprobarlo. & Técnico & 4 & 5 & \cellcolor{riskRed} & Definir métricas y escenarios de evaluación, comparar el comportamiento del modelo bajo diferentes configuraciones y documentar sus alcances y limitaciones. \\ \hline
+
+R-19 & Abandono de un integrante del equipo & Uno de los integrantes puede dejar de participar en el proyecto, reduciendo la capacidad disponible para desarrollar las actividades asignadas. & Personal & 2 & 4 & \cellcolor{riskYellow} & Documentar el trabajo realizado por cada integrante, compartir el conocimiento de los módulos desarrollados y redistribuir las actividades en caso de ser necesario. \\ \hline
+
+R-20 & Mala distribución de actividades & Una asignación inadecuada de responsabilidades puede provocar duplicidad de trabajo, tareas pendientes o retrasos en el desarrollo. & Organizacional & 2 & 4 & \cellcolor{riskYellow} & Definir responsabilidades desde el inicio, establecer reuniones periódicas de seguimiento y mantener un registro de actividades y avances. \\ \hline
+
+R-21 & Exposición de información de ubicación & Una implementación inadecuada puede provocar que información relacionada con la ubicación o los reportes de los usuarios sea expuesta o almacenada de manera insegura. & Técnico & 2 & 4 & \cellcolor{riskYellow} & Minimizar la información almacenada, proteger las comunicaciones, establecer controles de acceso y evitar conservar datos personales que no sean necesarios para el funcionamiento del prototipo. \\ \hline
+
+R-22 & Cambios en los requerimientos del sistema & Las modificaciones en los requerimientos o reglas de negocio durante el desarrollo pueden provocar retrabajo, afectar componentes ya implementados y generar retrasos en las pruebas. & Organizacional & 3 & 3 & \cellcolor{riskYellow} & Establecer el alcance y las reglas de negocio antes del desarrollo, documentar los cambios solicitados y evaluar su impacto antes de incorporarlos. \\ \hline
+\end{longtable}
+\end{landscape}

@@ -1,0 +1,63 @@
+En esta sección se describen las herramientas tecnológicas empleadas para el desarrollo del trabajo terminal, abarcando desde la administración y gestión del proyecto hasta los entornos de codificación y colaboración del equipo.
+
+\subsection{Herramientas de Administración}
+
+Estas herramientas se emplean en las actividades de documentación y gestión del trabajo, conforme a la metodología descrita en el capítulo \ref{cap:marco_metodologico}.
+
+\subsubsection{Editor de Texto}
+Toda la redacción técnica relacionada con el proyecto se documenta por medio de \textbf{Overleaf}, un editor de LaTeX disponible directamente en el navegador web.
+
+La principal ventaja de esta herramienta es la posibilidad de trabajar de forma colaborativa en línea, sin necesidad de instalar programas específicos. Asimismo, conserva un historial de versiones del documento y compila en línea, lo que facilita la revisión de cambios entre los integrantes. A diferencia de procesadores de texto como Microsoft Word, maneja documentos extensos de forma consistente, ya que la estructura y el formato se controlan mediante código.
+
+\subsubsection{Software de Gestión del Trabajo}
+El control de actividades se lleva a cabo mediante la aplicación de productividad \textbf{Notion}, que permite adaptar un espacio de trabajo compartido y personalizado para todos los integrantes del equipo, con elementos visuales que facilitan el seguimiento de las tareas. A través de esta plataforma se implementa el tablero Kanban para la asignación, gestión y control de actividades. Asimismo, se registran los \textit{sprints} completados, junto con la evidencia de las reuniones del equipo (retroalimentaciones, puntos importantes y grabaciones de las sesiones) o algún otro material de apoyo.
+
+\subsubsection{Plataforma de Videoconferencias}
+Todas las reuniones se realizan en \textbf{Google Meet}, una herramienta de fácil acceso, sólida y que no requiere descargas obligatorias. Además, permite grabar las sesiones y generar notas de las reuniones.
+
+\subsection{Herramientas de Desarrollo}
+Estas herramientas se emplean en el desarrollo del prototipo de aplicación móvil.
+
+\subsubsection{IDE}
+El desarrollo del sistema se realiza en \textbf{Visual Studio Code}, empleado para la escritura, depuración y ejecución del código del prototipo. Se eligió por su versatilidad y por su facilidad de instalación y configuración.
+
+\subsubsection{Framework}
+Se utiliza \textbf{Flutter}, un framework de código abierto para el desarrollo de aplicaciones multiplataforma con el lenguaje de programación Dart\cite{flutter_businessvalue}, para construir el cliente móvil del prototipo. Su elección se justifica en la sección \ref{sec:factibilidad_técnica}.
+
+\subsubsection{Sistema Operativo}
+El desarrollo se lleva a cabo sobre \textbf{Windows 11}, porque el equipo ya cuenta con este sistema y funciona correctamente con el resto de las herramientas descritas en esta sección.
+
+\subsubsection{Sistema de Control de Versiones}
+Se utiliza \textbf{Git} para llevar el historial de cambios del código y facilitar el trabajo colaborativo.
+
+\subsubsection{Gestor de Repositorios}
+Se utiliza \textbf{GitHub} para el alojamiento del código y la revisión de los cambios del equipo.
+
+\subsubsection{Gestor de Base de Datos}
+Se utiliza \textbf{Supabase}, que provee una base de datos PostgreSQL con soporte para las extensiones PostGIS, para el análisis geoespacial, y pgRouting, para el cálculo de rutas. Además, expone una capa de API sobre la base de datos y cuenta con un paquete para Flutter disponible en pub.dev, lo que facilita la integración con el cliente móvil. La justificación completa se presenta en la sección \ref{sec:factibilidad_tecnica}.
+
+\subsubsection{APIs}
+Se utilizan la API de \textbf{Google Street View}, para la obtención de imágenes del entorno, y \textbf{Google Places API}, para la consulta de puntos de interés. Google ofrece una cobertura amplia y actualizada de la zona de estudio, por lo que se eligieron estas APIs como fuentes de datos.
+
+El Cuadro \ref{tab:herramientas_proyecto} resume el software seleccionado para cubrir las características requeridas por el sistema.
+
+\begin{table}[hbt!]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{| >{\centering\arraybackslash}m{6cm} | >{\centering\arraybackslash}p{6cm} |}
+\hline
+\textbf{Características} & \textbf{Herramientas de software} \\ \hline
+\textbf{Sistema Operativo} & Windows 11 \\ \hline
+\textbf{Editor de Texto} & Overleaf \\ \hline
+\textbf{Gestión del trabajo} & Notion \\ \hline
+\textbf{Videoconferencias} & Google Meet \\ \hline
+\textbf{IDE} & Visual Studio Code \\ \hline
+\textbf{Framework} & Flutter (Dart) \\ \hline
+\textbf{Sistema de control de versiones} & Git \\ \hline
+\textbf{Gestor de repositorios} & GitHub \\ \hline
+\textbf{Gestor de Base de Datos} & Supabase (PostgreSQL, PostGIS, pgRouting) \\ \hline
+\textbf{APIs} & Google Street View, Google Places API \\ \hline
+\end{tabular}
+\caption{Herramientas para el desarrollo del proyecto}
+\label{tab:herramientas_proyecto}
+\end{table}

@@ -1,0 +1,97 @@
+% =========================================================
+% PLANTEAMIENTO DEL PROBLEMA
+% =========================================================
+
+\section{Planteamiento del Problema}
+
+La inseguridad constituye una de las principales problemáticas urbanas de la Ciudad de México, afectando de manera particular la movilidad peatonal de sus habitantes. De acuerdo con la Encuesta Nacional de Seguridad Pública Urbana (ENSU) de junio de 2026, el $69\%$ de la población de la alcaldía Gustavo A. Madero declaró sentirse insegura, cifra que supera en casi diez puntos porcentuales la media nacional de $59.8\%$ \cite[p. 5]{2026ensu}.
+
+Esta percepción varía dependiendo de las características del lugar y de la cantidad de personas que lo utilizan. Como se muestra en el Cuadro \ref{tab:percepcion_inseguridad}, basado en la Encuesta Nacional de Victimización y Percepción sobre Seguridad Pública (ENVIPE) 2025 y la ENSU 2026, los espacios de tránsito cotidiano como los cajeros automáticos en la vía pública, el transporte público y las calles presentan los mayores niveles de percepción de inseguridad a nivel nacional \cite[p. 31]{ENVIPE2025}; \cite[p. 8]{2026ensu}.
+
+
+\begin{table}[H]
+    \centering
+    \caption[Percepción de inseguridad ciudadana por tipo de espacio]{Percepción de inseguridad ciudadana por tipo de espacio a nivel nacional \cite{ENVIPE2025, 2026ensu}.}
+    \vspace{0.2cm}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Tipo de Espacio} & \textbf{2025} & \textbf{Marzo 2026} & \textbf{Junio 2026} \\ \hline
+        Cajero automático en vía pública & 73.5\% & 70.6\% & 70.3\% \\ \hline
+        Transporte público & 65.1\% & 64.1\% & 62.4\% \\ \hline
+        Calle (vía pública abierta) & 62.0\% & 65.3\% & 63.4\% \\ \hline
+        Parque o centro recreativo & 49.9\% & 46.7\% & 45.4\% \\ \hline
+        Centro comercial & 39.7\% & 34.4\% & 32.1\% \\ \hline
+        Trabajo & 25.8\% & 28.2\% & 26.9\% \\ \hline
+        Casa & 16.2\% & 16.1\% & 15.8\% \\ \hline
+        Escuela & 33.6\% & 15.2\% & 14.3\% \\ \hline
+    \end{tabular}
+    \label{tab:percepcion_inseguridad}
+\end{table}
+
+
+Estos datos muestran que los espacios públicos forman parte importante de la percepción de inseguridad de la población y es por esta razón que el análisis del riesgo peatonal no puede basarse únicamente en los delitos que son registrados por las autoridades. También es importante considerar cómo perciben
+las personas la seguridad de los lugares por los que transitan. 
+
+En los años 2017-2024, el robo o asalto en la calle y el transporte público registró una tasa de 6,003 delitos por cada 100 mil habitantes \cite[p. 11]{ENVIPE2025}. Sin embargo, las cifras oficiales no muestran todos los delitos que ocurren. De acuerdo con las encuestas de victimización, el 90.4 \% de los delitos ocurridos no fueron denunciados. Al considerar también aquellos casos en los que hubo una denuncia pero no se inició una carpeta de investigación, la llamada cifra negra alcanzó el 93.2 \% en 2025 \cite[p. 23]{ENVIPE2025}. Esta situación también se presenta en los delitos que ocurren en la vía pública. Por ejemplo, la ENVIPE 2022 estimó una cifra Negra cercana al 94 \% para el robo a transeúnte a nivel nacional \cite{alvaro_Obregon_cifra}..
+
+La falta de denuncias puede deberse a diferentes factores, como la poca confianza en las autoridades, el tiempo que implica realizar una denuncia o la percepción de que recuperar los bienes robados es poco probable. Por esta razón, los registros oficiales deben entenderse como una parte del problema y no como una representación completa de los delitos que ocurren en el espacio público.
+
+A pesar de esta problemática, los peatones no cuentan actualmente con herramientas tecnológicas que les permitan evaluar de manera objetiva el nivel de riesgo asociado a una ruta antes de recorrerla. Las aplicaciones de navegación que se usan actualmente usan exclusivamente variables de distancia y tiempo de traslado, sin incorporar ningún criterio relacionado con la seguridad del entorno urbano. Por otra parte, los sistemas existentes que sí intentan representar el riesgo delictivo lo hacen fundamentalmente a partir de estadísticas oficiales de incidencia delictiva, es decir, de los delitos que efectivamente fueron denunciados.
+
+En consecuencia, cualquier modelo que dependa únicamente de carpetas de investigación como fuente de riesgo estará ignorando sistemáticamente a la gran mayoría de los eventos delictivos realmente ocurridos, así como a las condiciones del entorno físico que, sin haber derivado en un delito denunciado, pueden representar igualmente una amenaza para el peatón.
+
+Por todo lo anterior, se identifica la necesidad de desarrollar una herramienta que permita a los peatones de zonas de alta afluencia y vulnerabilidad, como es el caso de las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero, generar rutas que consideren de manera simultánea el tiempo de traslado y las condiciones de riesgo del entorno urbano, superando así la dependencia exclusiva de estadísticas delictivas oficiales.
+
+% =========================================================
+% FIN DEL PLANTEAMIENTO DEL PROBLEMA
+% =========================================================
+
+% =========================================================
+% PROPUESTA DE SOLUCION
+% =========================================================
+
+\subsection{Propuesta de Solución}
+
+Como respuesta a esta problemática, se propone el desarrollo de un prototipo de aplicación móvil orientado a la generación de rutas peatonales que equilibren tiempo de traslado y exposición al riesgo dentro del polígono delimitado por las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero.
+
+La propuesta consiste en modelar la red vial peatonalmente transitable del área de estudio como un grafo ponderado, en el que cada tramo vial almacena, además de su distancia física, un valor de riesgo derivado de la integración de variables de diseño ambiental (como iluminación, presencia de grafiti, baldíos o fachadas ciegas), incidencia delictiva oficial y percepción ciudadana de inseguridad. Estas variables se obtienen mediante un proceso de preprocesamiento apoyado en imágenes de calle y datos geoespaciales, evaluadas a través de una rúbrica que permite traducir las condiciones observables del entorno en un valor cuantitativo de riesgo por tramo.
+
+Sobre esta red ponderada, el sistema aplica un algoritmo de enrutamiento multicriterio que permite calcular trayectos entre un punto de origen y uno de destino, ofreciendo al usuario la posibilidad de priorizar en distinta medida la seguridad o la rapidez del recorrido, en lugar de limitarse a una única ruta óptima en distancia. Adicionalmente, la propuesta contempla la incorporación de técnicas de cartografía participativa (crowdmapping), mediante las cuales los propios usuarios pueden reportar condiciones de riesgo no capturadas en el preprocesamiento inicial, permitiendo actualizar dinámicamente los pesos del grafo y mantener la vigencia del modelo frente a cambios en el entorno.
+
+De esta manera, la solución no se limita a señalar en dónde han ocurrido delitos en el pasado, sino que busca advertir sobre las condiciones del entorno que propician el delito, proveyendo al usuario información específica sobre el estado de las calles que conforman su trayecto y devolviéndole la capacidad de tomar decisiones informadas sobre su propia movilidad.
+
+
+% =========================================================
+% OBJETIVO GENERAL
+% =========================================================
+\section{Objetivo General}
+
+Desarrollar un prototipo de aplicación móvil que genere rutas óptimas para peatones en una zona delimitada de la alcaldía Gustavo A. Madero mediante el uso de un algoritmo de enrutamiento multicriterio basado en factores de diseño ambiental y dinámicas temporales para minimizar la exposición al riesgo. 
+
+% =========================================================
+% OBJETIVOS ESPECÍFICOS
+% =========================================================
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+    \item Modelar la red vial de la alcaldía Gustavo A. Madero como un grafo ponderado, integrando datos geoespaciales y delictivos, para establecer la base de datos del sistema.
+    \item Implementar un algoritmo de enrutamiento multicriterio, evaluando dinámicamente los pesos del grafo, para generar y clasificar alternativas de rutas seguras.
+    \item Desarrollar la interfaz gráfica del prototipo de la aplicación móvil, utilizando servicios de mapas y geolocalización, para permitir la consulta de trayectos y la captura de retroalimentación del usuario.
+    \item Evaluar el desempeño del prototipo mediante pruebas, para validar su efectividad en la evasión de zonas que propician el delito.
+\end{enumerate}
+
+% =========================================================
+% JUSTIFICACIÓN
+% =========================================================
+\section{Justificación}
+
+En el diseño de rutas peatonales seguras, los sistemas actuales suelen fundamentarse en modelos reactivos impulsados por estadísticas de delitos pasados. Sin embargo, en México este enfoque presenta un sesgo metodológico crítico al omitir la cifra negra, la cual supera el 90\% de los actos delictivos no reportados. Al priorizar únicamente las áreas con carpetas de investigación, las rutas generadas ignoran el riesgo latente en zonas no documentadas, generando la necesidad de recurrir a variables auxiliares para superar esta limitación. La Criminología Ambiental y la Teoría de Patrones Delictivos sugieren que el crimen no es aleatorio, sino que está estructurado por un 'telón de fondo ambiental' compuesto por la infraestructura física y las actividades rutinarias \cite{brantingham1995criminality}.  Al integrar estas variables espaciales, es posible transitar de un modelo reactivo a uno predictivo, capaz de calcular rutas seguras evaluando la vulnerabilidad del entorno, mitigando así la dependencia exclusiva de los índices de denuncia.
+
+El presente Trabajo Terminal propone solucionar este vacío, mediante el desarrollo de un prototipo de aplicación móvil que implemente un modelado de riesgo socio-espacial. A diferencia de los mapas de calor tradicionales, este sistema ponderará factores de diseño ambiental estáticos (como callejones o baldíos) y dinámicos (alumbrado público, horarios comerciales), así como incidencias de crímenes para generar rutas que minimicen la exposición al riesgo a nivel de calle. Mientras que las soluciones actuales nos mencionan estadísticas como “Aquí asaltaron ayer”, nuestro sistema advierte “Este entorno propicia el delito”. De esta manera, no solo se provee al usuario de “la mejor ruta”, sino que también se le propician datos específicos sobre el estado de las calles por las que transita. Asimismo, no se limita a buscar una ruta segura, pues es muy probable que las personas no estén dispuestas a desviarse por mucho de la ruta más corta. Así, con la culminación del trabajo presentado, se tendrá una combinación de un modelo preventivo para generar rutas seguras, acompañado de un análisis de distancia para asegurar una ruta “óptima” o “balanceada”.
+
+Frente a la necesidad de transitar por zonas desconocidas en la alcaldía Gustavo A. Madero, la aplicación busca devolver a los transeúntes la tranquilidad para poder recorrer su ciudad con libertad mediante la mitigación del sentimiento de vulnerabilidad. Según datos de la Encuesta Nacional de Seguridad Pública Urbana (ENSU), tan solo en el primer trimestre de 2025, el 40.5\% de los entrevistados reconoció haber cambiado hábitos en cuanto a caminar de noche por los alrededores de su vivienda y el 25.5\% cambió rutinas relacionadas con visitar parientes o amistades \cite{inegi2025ensu}. Al proveer información sobre las condiciones de seguridad ambiental y la incidencia delictiva de las rutas disponibles, el proyecto empodera al usuario y lo llama a tomar decisiones informadas, brindando la posibilidad de reducir su riesgo de victimización, una ruta a la vez.
+
+Finalmente, la materialización de este proyecto exige la aplicación de conocimientos adquiridos en el mapa curricular, destacando Análisis y Diseño de Algoritmos para la lógica de enrutamiento, Inteligencia Artificial para el modelado de riesgo socio-espacial, Bases de Datos para la gestión topológica de la información, y Desarrollo de Aplicaciones Móviles Nativas para la interfaz de usuario. En términos de factibilidad técnica y económica, el proyecto es altamente factible debido a la arquitectura “pre-procesamiento” donde la utilización de modelos de IA y la API de Google Maps (Street View y Places) se destinarán de manera exclusiva al poblado inicial de la base de datos. Esta estrategia elimina la dependencia y los costos asociados a llamadas de API en tiempo real durante la operación de la aplicación. Con el polígono de estudio delimitado a la alcaldía Gustavo A. Madero, se asegura que la recolección de datos y el modelado puedan ejecutarse dentro de los tiempos establecidos y a su vez, permite que periódicamente se realicen actualizaciones sobre el índice de riesgo de las calles.
+
+
+

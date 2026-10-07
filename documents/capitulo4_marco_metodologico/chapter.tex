@@ -1,0 +1,169 @@
+\section{Diseño de la investigación}
+
+El presente trabajo se enmarca dentro de la investigación \textit{aplicada} y \textit{no experimental}, en tanto su propósito no es la generación de conocimiento por sí mismo, sino su aplicación práctica. Asimismo, es de corte \textit{transversal}, pues la recolección de los datos se realiza en un único momento, aunque la información analizada comprende un periodo de enero de 2024 a \textit{agosto} de 2026. Se establece, además, un alcance \textit{correlacional} con fines predictivos, en el que se busca determinar la relación entre las variables de criminología ambiental y la incidencia delictiva dentro del área de estudio delimitada. El modelo predictivo constituye el componente que alimenta el cálculo de rutas del prototipo.
+
+\section{Enfoque}
+Se adopta un enfoque mixto. El componente cualitativo participa en la fase inicial de selección de variables, pues este proceso se fundamenta en la revisión de literatura y antecedentes de estudios similares. Por su parte, el enfoque cuantitativo es empleado en la construcción del modelo predictivo de inseguridad mediante el modelado de terreno de riesgo (\textit{Risk Terrain Modeling}).
+
+\section{Área de estudio y unidad de análisis}
+El estudio se circunscribe a las zonas territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero, con una delimitación temporal de enero de 2024 a \textit{mes} de 2026. La unidad de análisis es el segmento de calle (\emph{street segment}).
+
+Se considera la totalidad de la red vial que puede ser recorrida a pie dentro del polígono de estudio. La muestra espacial comprende todas las vialidades ubicadas dentro del polígono de estudio que sean de uso público, tengan acceso permitido y puedan ser recorridas a pie. Se excluyen las vialidades de acceso privado o restringido, así como aquellas que no permitan el desplazamiento peatonal debido a sus características físicas.
+
+\section{Instrumentos de recolección de datos}
+La recolección de información se realiza a partir de tres fuentes complementarias:
+
+\begin{itemize}
+    \item \textbf{Datos oficiales.} Se utilizan los datos de incidencia de delitos violentos (\textit{especificar tipos}) de la Fiscalía General de Justicia, así como el portal de datos abiertos, correspondientes al periodo de enero de 2024 a \textit{agosto} de 2026.
+    \item \textbf{Imágenes de Google Street View.} Utilizadas para la extracción de variables del entorno construido, corresponden a enero de 2025. Se asume que las características físicas del entorno se mantienen relativamente estables durante el periodo de análisis.
+    \item \textbf{Datos crowdsourced.} Se plantea la utilización de fuentes alternas de información como lo pueden ser reportes en redes sociales, encuestas y datos extraídos del mismo prototipo de aplicación móvil.
+\end{itemize}
+
+\section{Procesamiento y almacenamiento de datos}
+El almacenamiento y procesamiento de la información se realiza mediante una base de datos con capacidades de análisis espacial, lo que permite tanto el análisis geoespacial de los factores de riesgo como el cálculo posterior de rutas óptimas dentro del grafo vial del área de estudio. Los detalles técnicos de la infraestructura empleada se desarrollan en la sección de diseño del sistema.
+
+\section{Modelo de evaluación criminológica}
+El presente proyecto estudia únicamente delitos violentos y se fundamenta principalmente en la teoría de patrones delictivos, complementada con otras teorías de criminología ambiental\cite{brantingham1993}, que sustentan la construcción del modelo.
+
+\subsection{Definición de variables}
+
+A partir de la revisión de literatura y de los antecedentes analizados, se definió un conjunto de variables candidatas, organizadas en cuatro categorías: variables físicas del entorno, variables de percepción, variables de control socioeconómico y variables de control por generadores de crimen. Su selección definitiva estará sujeta a la disponibilidad de datos para el área de estudio.
+
+\subsubsection{Variable dependiente}
+Determina los datos reales y reportados con los cuales se hará el cálculo de la relevancia por variable. Se utiliza únicamente la variable mostrada en la tabla \ref{tab:variable-dependiente}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
+\hline
+\textbf{Variable} & \textbf{Descripción} & \textbf{Unidad} \\ \hline
+Incidencia delictiva & Número de delitos violentos reportados por segmento de calle dentro del periodo de estudio & Conteo \\ \hline
+\end{tabular}
+\caption{Variable dependiente del modelo}
+\label{tab:variable-dependiente}
+\end{table}
+
+\subsubsection{Variables físicas del entorno construido}
+Funcionan como una serie de variables a nivel micro que definen aspectos físicos de las calles. Estas se muestran en la tabla \ref{tab:variables-fisicas}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
+\hline
+\textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
+Iluminación & Infraestructura de alumbrado del segmento: presencia y densidad de luminarias (escala 1--4) & Street View / crowdsourced \\ \hline
+Apertura / visibilidad & Presencia de obstrucciones visuales, muros ciegos o esquinas sin línea de visión & Street View \\ \hline
+Vía peatonal & Estado de la banqueta (ninguna, mala, regular, buena) & Street View / crowdsourced \\ \hline
+Vegetación & Porcentaje de la imagen ocupado por vegetación & Street View \\ \hline
+Presencia de personas & Porcentaje o conteo aproximado de personas visibles & Street View / crowdsourced \\ \hline
+Mantenimiento del entorno & Presencia de grafiti, basura o edificios en mal estado & Street View \\ \hline
+Uso de suelo & Categoría del uso de suelo (residencial, comercial, mixto) & OSM / catastro \\ \hline
+\end{tabular}
+\caption{Variables físicas derivadas del entorno construido}
+\label{tab:variables-fisicas}
+\end{table}
+
+Las variables extraídas de Street View reflejan las condiciones diurnas de un instante determinado, por lo que no capturan variaciones horarias del entorno (por ejemplo, la iluminación efectiva durante la noche o la presencia habitual de personas). Esta limitación se considera en la interpretación de los resultados.
+
+\subsubsection{Variables de percepción}
+Recogen cómo los individuos perciben su entorno y cómo lo hace el modelo de inteligencia artificial (\textit{describir el modelo empleado}). Su salida se contrasta con una muestra de segmentos etiquetada manualmente para verificar su fiabilidad. Estas variables se establecen en la tabla \ref{tab:variables-percepcion}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
+\hline
+\textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
+Percepción de seguridad & Grado en que el segmento es percibido como seguro & Modelo de percepción \\ \hline
+Percepción de abandono & Grado en que el segmento es percibido como deteriorado o descuidado & Modelo de percepción \\ \hline
+\end{tabular}
+\caption{Variables de percepción del entorno}
+\label{tab:variables-percepcion}
+\end{table}
+
+\subsubsection{Variables de control por generadores de crimen}
+
+Con el fin de aislar el efecto de las variables de criminología ambiental de otros factores conocidos como generadores de crimen, se contempla la inclusión de las siguientes variables de control, calculadas mediante un área de influencia alrededor de cada segmento, con decaimiento exponencial en función de la distancia. Estas se muestran en la tabla \ref{tab:variables-control}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
+\hline
+\textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
+Proximidad a expendios de alcohol & Distancia ponderada a bares o tiendas de conveniencia con venta de alcohol & OSM / Google Places API \\ \hline
+Proximidad a lotes baldíos & Distancia ponderada a predios sin uso o abandonados & Street View / catastro \\ \hline
+Proximidad a transporte público & Distancia ponderada a paradas de metro, metrobús o autobús & OSM / datos públicos \\ \hline
+Densidad de actividad comercial & Número de comercios dentro del área de influencia del segmento & OSM / Google Places API \\ \hline
+\end{tabular}
+\caption{Variables de control por generadores de crimen}
+\label{tab:variables-control}
+\end{table}
+
+\subsubsection{Variables de control socioeconómico}
+
+Adaptadas al contexto mexicano a partir de datos disponibles a nivel de Área Geoestadística Básica (AGEB) publicados por el INEGI, con el fin de controlar el efecto de la desventaja social concentrada sobre la incidencia delictiva. Estas variables se muestran en la tabla \ref{tab:variables-control-socioeconomico}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
+\hline
+\textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
+Nivel educativo & Porcentaje de población con educación superior en el AGEB & INEGI \\ \hline
+Densidad poblacional & Población total por AGEB & INEGI \\ \hline
+Grupo etario predominante & Porcentaje de población entre 15 y 29 años & INEGI \\ \hline
+\end{tabular}
+\caption{Variables de control socioeconómico}
+\label{tab:variables-control-socioeconomico}
+\end{table}
+
+\subsubsection{Nota metodológica sobre la dirección de las relaciones}
+
+La dirección e intensidad de todas las variables será determinada experimentalmente durante la fase de construcción del modelo de criminología ambiental para el prototipo con base en lo que establece el modelado del terreno de riesgo.
+
+\subsection{Ponderación de los factores}
+El método de ponderación de las variables elegidas es totalmente empírico. Se utilizarán los datos históricos de incidencia delictiva real para estimar la relevancia de cada variable y, en algunos casos, descartarla, para así construir un modelo. Los coeficientes resultantes del modelo estadístico determinarán tanto la significancia estadística como el peso específico de cada factor dentro del índice final, garantizando que la ponderación refleje las condiciones empíricas del entorno analizado.
+
+\section{Estrategia de validación}
+La validación se realiza en dos niveles. Por un lado, la ecuación de riesgo se evalúa mediante una división temporal de los datos de incidencia delictiva (calibración y prueba), comparando su desempeño contra modelos de referencia. Por otro, el prototipo se valida mediante pruebas funcionales y una comparación de la exposición al riesgo entre las rutas recomendadas y las rutas más cortas. El detalle se presenta en el capítulo de pruebas y resultados.
+
+\section{Metodología de desarrollo de software}
+
+Se utiliza \textbf{Scrumban} como marco de gestión del proyecto y, en la etapa de programación del sistema, se combinan los modelos \textbf{Incremental} y de \textbf{Prototipos}, lo que configura una estrategia de \textit{Desarrollo Evolutivo}: el sistema se construye en incrementos funcionales y cada uno se refina a partir de la retroalimentación obtenida del prototipo.
+
+Se eligió esta estrategia porque los requisitos del sistema pueden ajustarse conforme se valida el prototipo, y porque el equipo es pequeño y requiere flexibilidad para redistribuir el trabajo sin la rigidez de un proceso completamente predictivo.
+
+\subsection{Marco de gestión: Scrumban}
+
+
+Scrumban combina la estructura de roles y eventos de Scrum con el flujo continuo de Kanban. En este proyecto se aplica de la siguiente forma:
+
+\begin{itemize}
+    \item \textbf{\textit{Sprints}:} El trabajo se organiza en \textit{sprints} de [dos] semanas, con una reunión de planeación al inicio, una reunión de seguimiento semanal y una revisión con retrospectiva al cierre.
+    \item \textbf{Tablero Kanban:} Las tareas se gestionan en [herramienta] con las columnas \textit{Backlog}, \textit{En desarrollo}, \textit{En pruebas} y \textit{Terminado}. Se establece un límite de trabajo en curso (WIP) de [n] tareas por integrante para evitar la acumulación de tareas abiertas.
+    \item \textbf{\textit{Product Backlog}:} Se prioriza según el valor que cada elemento aporta al sistema, tomando como base los requisitos funcionales y no funcionales definidos.
+    \item \textbf{Definición de terminado:} Un elemento se considera terminado cuando cumple sus criterios de aceptación, ha sido revisado por el equipo, ha pasado las pruebas correspondientes y ha sido validado por el \textit{Product Owner}.
+\end{itemize}
+
+\subsection{Ciclo de desarrollo: Incremental y Prototipos}
+
+La programación del sistema se divide en incrementos funcionales, cada uno correspondiente a un módulo o conjunto de requisitos. Cada incremento sigue el ciclo:
+
+\begin{enumerate}
+    \item Diseño de la interfaz y de la lógica del módulo.
+    \item Construcción de un prototipo funcional.
+    \item Pruebas y revisión con el \textit{Product Owner}.
+    \item Refinamiento a partir de la retroalimentación e integración al sistema.
+\end{enumerate}
+
+Los incrementos se priorizan de modo que el sistema disponga desde etapas tempranas de un flujo mínimo funcional (buscar un destino y obtener una ruta), al que posteriormente se agregan las funciones complementarias.
+
+\subsection{Roles del equipo}
+\label{Roles_equip}
+
+Los roles se distribuyen entre los tres integrantes del equipo, quienes además participan en la codificación.
+
+\begin{itemize}
+    \item \textbf{Scrum Master:} Rebeca Hernández Simón facilita la aplicación de la metodología, remueve los obstáculos que generen retrasos y modera las reuniones y la planeación de los \textit{sprints}. Administra las cargas de trabajo en el tablero Kanban, controla las fechas de entrega y prepara estimaciones de esfuerzo para acordar los siguientes entregables.
+    \item \textbf{\textit{Product Owner}:} Fernando Mendoza Segura revisa el desarrollo de los incrementos y valida que cada módulo cumpla con los requerimientos funcionales y no funcionales. Crea y ordena el \textit{Product Backlog} según el valor de cada elemento y da seguimiento al progreso general de la base de datos, el \textit{frontend} y la lógica de negocio.
+    \item \textbf{Líder de QA:} Alan Ivan Sánchez supervisa que el sistema sea usable, intuitivo y robusto. Colabora en el diseño de interfaces, evalúa la experiencia de usuario antes de codificar los incrementos complejos, verifica la integridad del \textit{frontend} y ejecuta pruebas de integración sobre la lógica del sistema. Coordina las pruebas de cada incremento y reporta sus resultados en el capítulo de pruebas y resultados.
+    \item \textbf{Equipo de desarrollo:} Los tres integrantes participan en la codificación y se especializan en áreas como bases de datos, \textit{frontend}, lógica algorítmica (incluido el modelo de riesgo y su calibración) o UI/UX. Las tareas se distribuyen según las fortalezas técnicas de cada integrante, sin una fragmentación estricta, para que todos conozcan el funcionamiento general de cada módulo.
+\end{itemize}
