@@ -3,9 +3,27 @@
 % El \section{} de esta sección está en el chapter.tex del capítulo;
 % sus referencias van en seccion6_1.bib (misma carpeta).
 % =========================================================
+Para documentar la arquitectura del sistema se utiliza el modelo C4, propuesto por Simon Brown entre 2006 y 2011 \cite{}. Este modelo describe la arquitectura de software mediante diagramas jerárquicos que van de lo general a lo particular, de modo que cada nivel constituye un acercamiento del anterior. Define cuatro niveles de abstracción: contexto, contenedores, componentes y código. En este trabajo se emplean los tres primeros, dado que el nivel de código es opcional y su detalle puede obtenerse directamente del código fuente.
+
 
 \subsection{Diagrama de contexto}
+El diagrama de contexto presenta el sistema como una sola caja, junto con los usuarios y los sistemas externos con los que interactúa \cite{}. La figura \ref{fig:diagrama_contexto} muestra el diagrama correspondiente al presente proyecto.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{figures/capitulo6/Diagrama_contexto_sistema.png}
+    \caption{Diagrama de contexto del sistema}
+    \label{fig:diagrama_contexto}
+\end{figure}
 
 \subsection{Diagrama de contenedores}
+El diagrama de contenedores descompone el sistema en las aplicaciones y los almacenes de datos que lo conforman, e indica la tecnología utilizada y la comunicación entre ellos \cite{}. La figura \ref{fig:diagrama_contenedor} muestra el diagrama correspondiente al presente proyecto.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/capitulo6/Diagrama de contenedor Sistema de rutas.drawio.png}
+    \caption{Diagrama de contenedor del sistema}
+    \label{fig:diagrama_contenedor}
+\end{figure}
 
 \subsection{Diagrama de componentes}
+El diagrama de componentes detalla la estructura interna de un contenedor \cite{}. La figura \ref{fig:diagrama_componentes} muestra el diagrama correspondiente al presente proyecto.
