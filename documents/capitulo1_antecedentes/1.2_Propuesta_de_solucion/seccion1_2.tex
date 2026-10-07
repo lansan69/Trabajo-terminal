@@ -1,0 +1,13 @@
+% =========================================================
+% 1.2 PROPUESTA DE SOLUCIÓN
+% El \section{} de esta sección está en el chapter.tex del capítulo;
+% sus referencias van en seccion1_2.bib (misma carpeta).
+% =========================================================
+
+Como respuesta a esta problemática, se propone el desarrollo de un prototipo de aplicación móvil orientado a la generación de rutas peatonales que equilibren tiempo de traslado y exposición al riesgo dentro del polígono delimitado por las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero.
+
+La propuesta consiste en modelar la red vial peatonalmente transitable del área de estudio como un grafo ponderado, en el que cada tramo vial almacena, además de su distancia física, un valor de riesgo derivado de la integración de variables de diseño ambiental (como iluminación, presencia de grafiti, baldíos o fachadas ciegas), incidencia delictiva oficial y percepción ciudadana de inseguridad. Estas variables se obtienen mediante un proceso de preprocesamiento apoyado en imágenes de calle y datos geoespaciales, evaluadas a través de una rúbrica que permite traducir las condiciones observables del entorno en un valor cuantitativo de riesgo por tramo.
+
+Sobre esta red ponderada, el sistema aplica un algoritmo de enrutamiento multicriterio que permite calcular trayectos entre un punto de origen y uno de destino, ofreciendo al usuario la posibilidad de priorizar en distinta medida la seguridad o la rapidez del recorrido, en lugar de limitarse a una única ruta óptima en distancia. Adicionalmente, la propuesta contempla la incorporación de técnicas de cartografía participativa (crowdmapping), mediante las cuales los propios usuarios pueden reportar condiciones de riesgo no capturadas en el preprocesamiento inicial, permitiendo actualizar dinámicamente los pesos del grafo y mantener la vigencia del modelo frente a cambios en el entorno.
+
+De esta manera, la solución no se limita a señalar en dónde han ocurrido delitos en el pasado, sino que busca advertir sobre las condiciones del entorno que propician el delito, proveyendo al usuario información específica sobre el estado de las calles que conforman su trayecto y devolviéndole la capacidad de tomar decisiones informadas sobre su propia movilidad.

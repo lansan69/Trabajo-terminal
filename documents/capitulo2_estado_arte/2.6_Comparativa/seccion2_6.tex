@@ -1,0 +1,31 @@
+% =========================================================
+% 2.6 COMPARATIVA
+% El \section{} de esta sección está en el chapter.tex del capítulo;
+% sus referencias van en seccion2_6.bib (misma carpeta).
+% =========================================================
+
+El proceso de construcción del aplicativo propuesto se divide en tres fases principales: (1) la recolección de información a nivel de segmento de calle, (2) la definición del modelo de criminología ambiental y (3) la aplicación del modelo dentro de una plataforma móvil. En este sentido, destaca que las soluciones planteadas por \enquote{Micro Built Environment} y \enquote{RTMDx} son las que ofrecen el marco referencial más profundo e influyente para nuestro trabajo, si bien cada una cubre únicamente dos de las tres fases planteadas.
+ 
+Por otro lado, aplicativos como \enquote{Mobile Safe-Route CDMX} y \enquote{SafeRoute} ofrecen una metodología puramente práctica. Si bien sus métodos son estructurados y precisos, ambos parten de la premisa de evitar zonas donde el crimen ya ha ocurrido, lo cual, concluimos que resulta insuficiente para lograr un impacto significativo en la prevención del crimen.
+ 
+Por último, \enquote{SafetiPin} guarda relación directa con las tres fases planteadas por nuestro proyecto: parte de una base fundamentada en la criminología ambiental, ofrece un mecanismo de recolección de información a escala global y consolida esta información en un aplicativo capaz de generar rutas seguras. Sin embargo, depende en gran medida del crowdsourcing, no está enfocada exclusivamente en la optimización de rutas, su presencia en México es limitada, y se desconoce el modelo específico con el que genera las rutas, lo cual impide evaluar su nivel de refinamiento.
+ 
+En conjunto, estos antecedentes evidencian un vacío que nuestro proyecto busca atender: una solución robusta que parta de una base teórica sólida en criminología ambiental, que emplee métodos existentes y validados para la recolección de información y la construcción del modelo de inseguridad, y que cuente con la madurez suficiente para aplicar dicho modelo de manera efectiva en un sistema consolidado de generación de rutas seguras. La tabla \ref{tab:tabla-comparativa} plasma estas diferencias.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\textwidth}{ |C|C|C|C|C|C|C| }
+\hline
+\textbf{Nombre} & \textbf{Integración de criminología ambiental} & \textbf{Criterios distancia / seguridad} & \textbf{Uso de Crowdmapping} & \textbf{Utilización de imágenes de Google Street View} & \textbf{Implementa\-ción práctica (app)} & \textbf{Enfoque predictivo} \\ \hline
+SafetiPin & x & & x & & x & x \\ \hline
+RTMDX & x & & & & x & x \\ \hline
+Mobile Safe-Route CDMX & & x & x & & x & \\ \hline
+Micro Built Environment & x & & & x & & x \\ \hline
+SafeRoute & & x & & & & \\ \hline
+Nuestra & x & x & x & x & x & x \\ \hline
+\end{tabularx}
+\caption{Comparación de características entre soluciones existentes y la propuesta}
+\label{tab:tabla-comparativa}
+\end{table}
