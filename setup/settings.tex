@@ -190,3 +190,22 @@
   \endgroup
   \par\bigskip                         % Espacio antes de la siguiente tabla
 }
+
+
+% ---------------------------------------------------------
+% E. PANTALLAS DE LA INTERFAZ                    (6.6 Diseño de interfaces de usuario)
+% ---------------------------------------------------------
+% \pantallaUI{archivo}{Leyenda}{etiqueta}
+%
+% Captura de una pantalla móvil (360 x 800) con su propia leyenda y
+% número de figura. Se colocan tres por renglón dentro de un entorno
+% figure, separadas con \hfill. "archivo" es el nombre del PNG dentro de
+% figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/
+\newcommand{\pantallaUI}[3]{%
+  \begin{minipage}[t]{0.28\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/#1}
+    \caption{#2}
+    \label{#3}
+  \end{minipage}%
+}

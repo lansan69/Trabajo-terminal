@@ -2,8 +2,82 @@
 % 6.6 DISEÑO DE INTERFACES DE USUARIO (UI/UX)
 % El \section{} de esta sección está en el chapter.tex del capítulo;
 % sus referencias van en seccion6_6.bib (misma carpeta).
+% Las capturas de pantalla se exportan de Figma (360 x 800) a
+% figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/
+% en las subcarpetas modo_claro/ y modo_oscuro/.
 % =========================================================
+Las interfaces de usuario del prototipo se diseñaron en Figma como maquetas de alta fidelidad para un dispositivo móvil con una resolución de $360 \times 800$ píxeles. En esta sección se presentan los elementos de identidad visual de la aplicación, es decir, el logo y la paleta de colores, así como las pantallas que la conforman en sus modos claro y oscuro.
+
+\subsection{Logo}
+El logo de la aplicación es un perro (figura \ref{fig:logo}). Se eligió esta figura porque el perro es un símbolo ampliamente asociado con la lealtad, la compañía y la protección, cualidades que la aplicación busca transmitir al acompañar al peatón en sus trayectos. Con ello se pretende generar confianza en los usuarios, aspecto fundamental en una herramienta cuyo propósito es sugerir rutas seguras, así como lograr una imagen de impacto que sea fácil de reconocer y recordar.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/logo.png}
+    \caption{Logo de la aplicación}
+    \label{fig:logo}
+\end{figure}
 
 \subsection{Paleta de colores}
+La paleta de colores de la aplicación se compone de verde, azul y naranja terracota (figura \ref{fig:paleta_colores}). En conjunto, estos tonos hacen alusión a un atardecer: el azul remite al cielo, el naranja terracota a la luz del sol al ocultarse y el verde a la vegetación del paisaje, lo que da a la interfaz una apariencia cálida y armónica. Dentro de la interfaz, el naranja terracota se utiliza en el marcador de ubicación sobre el mapa para destacar el lugar seleccionado, mientras que el verde se emplea en los mensajes de confirmación, como el aviso de reporte enviado.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/paleta_colores.png}
+    \caption{Paleta de colores de la aplicación}
+    \label{fig:paleta_colores}
+\end{figure}
+
 \subsection{Modo claro}
+En el modo claro predominan los fondos claros con texto oscuro. Las figuras \ref{fig:claro_principal} a \ref{fig:claro_reporte_limite} muestran las pantallas que conforman los flujos principales de la aplicación: exploración del mapa, búsqueda de lugares, selección de rutas, navegación y reporte de incidentes.
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_claro/principal.png}{Pantalla principal (modo claro)}{fig:claro_principal}\hfill
+    \pantallaUI{modo_claro/busqueda_recientes.png}{Búsqueda con lugares recientes (modo claro)}{fig:claro_busqueda_recientes}\hfill
+    \pantallaUI{modo_claro/busqueda_sin_recientes.png}{Búsqueda sin lugares recientes (modo claro)}{fig:claro_busqueda_sin_recientes}
+
+    \bigskip
+    \pantallaUI{modo_claro/busqueda_resultados.png}{Resultados de búsqueda (modo claro)}{fig:claro_busqueda_resultados}\hfill
+    \pantallaUI{modo_claro/busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo claro)}{fig:claro_busqueda_sin_resultados}\hfill
+    \pantallaUI{modo_claro/seleccion_lugar.png}{Selección de lugar (modo claro)}{fig:claro_seleccion_lugar}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_claro/busqueda_lugar.png}{Detalle del lugar buscado (modo claro)}{fig:claro_busqueda_lugar}\hfill
+    \pantallaUI{modo_claro/rutas.png}{Selección de ruta (modo claro)}{fig:claro_rutas}\hfill
+    \pantallaUI{modo_claro/navegacion.png}{Navegación (modo claro)}{fig:claro_navegacion}
+
+    \bigskip
+    \pantallaUI{modo_claro/reportar_incidente.png}{Reporte de incidente (modo claro)}{fig:claro_reportar_incidente}\hfill
+    \pantallaUI{modo_claro/reporte_enviado.png}{Reporte enviado (modo claro)}{fig:claro_reporte_enviado}\hfill
+    \pantallaUI{modo_claro/reporte_limite.png}{Límite de reportes alcanzado (modo claro)}{fig:claro_reporte_limite}
+\end{figure}
+
 \subsection{Modo oscuro}
+El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituye los fondos claros por tonos oscuros, lo que reduce el brillo de la pantalla y favorece el uso de la aplicación en condiciones de poca luz, como durante la noche. Las figuras \ref{fig:oscuro_principal} a \ref{fig:oscuro_reporte_limite} muestran las pantallas correspondientes.
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_oscuro/principal.png}{Pantalla principal (modo oscuro)}{fig:oscuro_principal}\hfill
+    \pantallaUI{modo_oscuro/busqueda_recientes.png}{Búsqueda con lugares recientes (modo oscuro)}{fig:oscuro_busqueda_recientes}\hfill
+    \pantallaUI{modo_oscuro/busqueda_sin_recientes.png}{Búsqueda sin lugares recientes (modo oscuro)}{fig:oscuro_busqueda_sin_recientes}
+
+    \bigskip
+    \pantallaUI{modo_oscuro/busqueda_resultados.png}{Resultados de búsqueda (modo oscuro)}{fig:oscuro_busqueda_resultados}\hfill
+    \pantallaUI{modo_oscuro/busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo oscuro)}{fig:oscuro_busqueda_sin_resultados}\hfill
+    \pantallaUI{modo_oscuro/seleccion_lugar.png}{Selección de lugar (modo oscuro)}{fig:oscuro_seleccion_lugar}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_oscuro/busqueda_lugar.png}{Detalle del lugar buscado (modo oscuro)}{fig:oscuro_busqueda_lugar}\hfill
+    \pantallaUI{modo_oscuro/rutas.png}{Selección de ruta (modo oscuro)}{fig:oscuro_rutas}\hfill
+    \pantallaUI{modo_oscuro/navegacion.png}{Navegación (modo oscuro)}{fig:oscuro_navegacion}
+
+    \bigskip
+    \pantallaUI{modo_oscuro/reportar_incidente.png}{Reporte de incidente (modo oscuro)}{fig:oscuro_reportar_incidente}\hfill
+    \pantallaUI{modo_oscuro/reporte_enviado.png}{Reporte enviado (modo oscuro)}{fig:oscuro_reporte_enviado}\hfill
+    \pantallaUI{modo_oscuro/reporte_limite.png}{Límite de reportes alcanzado (modo oscuro)}{fig:oscuro_reporte_limite}
+\end{figure}
