@@ -4,7 +4,8 @@
 % sus referencias van en seccion6_6.bib (misma carpeta).
 % Las capturas de pantalla se exportan de Figma (360 x 800) a
 % figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/
-% en las subcarpetas modo_claro/ y modo_oscuro/.
+% en las subcarpetas modo_claro/ y modo_oscuro/, con el mismo nombre en
+% ambas. El prefijo indica el flujo: login_, mapas_, lugares_, perfil_.
 % =========================================================
 Las interfaces de usuario del prototipo se diseñaron en Figma como maquetas de alta fidelidad para un dispositivo móvil con una resolución de $360 \times 800$ píxeles. En esta sección se presentan los elementos de identidad visual de la aplicación, es decir, el logo y la paleta de colores, así como las pantallas que la conforman en sus modos claro y oscuro.
 
@@ -19,7 +20,7 @@ El logo de la aplicación es un perro (figura \ref{fig:logo}). Se eligió esta f
 \end{figure}
 
 \subsection{Paleta de colores}
-La paleta de colores de la aplicación se compone de verde, azul y naranja terracota (figura \ref{fig:paleta_colores}). En conjunto, estos tonos hacen alusión a un atardecer: el azul remite al cielo, el naranja terracota a la luz del sol al ocultarse y el verde a la vegetación del paisaje, lo que da a la interfaz una apariencia cálida y armónica. Dentro de la interfaz, el naranja terracota se utiliza en el marcador de ubicación sobre el mapa para destacar el lugar seleccionado, mientras que el verde se emplea en los mensajes de confirmación, como el aviso de reporte enviado.
+La paleta de colores de la aplicación se compone de verde, azul y naranja terracota (figura \ref{fig:paleta_colores}). En conjunto, estos tonos hacen alusión a un atardecer: el azul remite al cielo, el naranja terracota a la luz del sol al ocultarse y el verde a la vegetación del paisaje, lo que da a la interfaz una apariencia cálida y armónica. Dentro de la interfaz, el naranja terracota es el color principal y se utiliza en los botones de acción, en el elemento activo de la barra de navegación y en el marcador de ubicación sobre el mapa; el verde se emplea en el trazo de la ruta y en los mensajes de confirmación, y el azul se usa como color de apoyo, por ejemplo en algunos marcadores del mapa y en los campos de edición del perfil.
 
 \begin{figure}[H]
     \centering
@@ -29,55 +30,129 @@ La paleta de colores de la aplicación se compone de verde, azul y naranja terra
 \end{figure}
 
 \subsection{Modo claro}
-En el modo claro predominan los fondos claros con texto oscuro. Las figuras \ref{fig:claro_principal} a \ref{fig:claro_reporte_limite} muestran las pantallas que conforman los flujos principales de la aplicación: exploración del mapa, búsqueda de lugares, selección de rutas, navegación y reporte de incidentes.
+La aplicación ofrece dos modos de apariencia, claro y oscuro, que el usuario elige desde la sección \enquote{Apariencia} de su perfil (figura \ref{fig:claro_perfil_principal}). En el modo claro predominan los fondos blancos y los encabezados en un tono durazno claro, sobre los cuales destacan los botones de acción en naranja terracota.
+
+Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recuperación de contraseña (figuras \ref{fig:claro_login_iniciar_sesion} a \ref{fig:claro_login_restablecer_contrasena_exito}); exploración del mapa, búsqueda de lugares, selección de rutas, navegación y reporte de incidentes (figuras \ref{fig:claro_mapas_principal} a \ref{fig:claro_mapas_reporte_limite}); gestión de los lugares guardados (figuras \ref{fig:claro_lugares_vacio} a \ref{fig:claro_lugares_guardar}), y perfil del usuario (figuras \ref{fig:claro_perfil_principal} a \ref{fig:claro_perfil_eliminar_cuenta}).
 
 \begin{figure}[H]
     \centering
-    \pantallaUI{modo_claro/principal.png}{Pantalla principal (modo claro)}{fig:claro_principal}\hfill
-    \pantallaUI{modo_claro/busqueda_recientes.png}{Búsqueda con lugares recientes (modo claro)}{fig:claro_busqueda_recientes}\hfill
-    \pantallaUI{modo_claro/busqueda_sin_recientes.png}{Búsqueda sin lugares recientes (modo claro)}{fig:claro_busqueda_sin_recientes}
+    \pantallaUI{modo_claro/login_iniciar_sesion.png}{Inicio de sesión (modo claro)}{fig:claro_login_iniciar_sesion}\hfill
+    \pantallaUI{modo_claro/login_registro.png}{Registro (modo claro)}{fig:claro_login_registro}\hfill
+    \pantallaUI{modo_claro/login_verificar_correo.png}{Verificación de correo (modo claro)}{fig:claro_login_verificar_correo}
 
     \bigskip
-    \pantallaUI{modo_claro/busqueda_resultados.png}{Resultados de búsqueda (modo claro)}{fig:claro_busqueda_resultados}\hfill
-    \pantallaUI{modo_claro/busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo claro)}{fig:claro_busqueda_sin_resultados}\hfill
-    \pantallaUI{modo_claro/seleccion_lugar.png}{Selección de lugar (modo claro)}{fig:claro_seleccion_lugar}
+    \pantallaUI{modo_claro/login_recuperar_contrasena.png}{Recuperación de contraseña (modo claro)}{fig:claro_login_recuperar_contrasena}\hfill
+    \pantallaUI{modo_claro/login_recuperar_contrasena_enviado.png}{Correo de recuperación enviado (modo claro)}{fig:claro_login_recuperar_contrasena_enviado}\hfill
+    \pantallaUI{modo_claro/login_restablecer_contrasena.png}{Restablecimiento de contraseña (modo claro)}{fig:claro_login_restablecer_contrasena}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \pantallaUI{modo_claro/busqueda_lugar.png}{Detalle del lugar buscado (modo claro)}{fig:claro_busqueda_lugar}\hfill
-    \pantallaUI{modo_claro/rutas.png}{Selección de ruta (modo claro)}{fig:claro_rutas}\hfill
-    \pantallaUI{modo_claro/navegacion.png}{Navegación (modo claro)}{fig:claro_navegacion}
+    \pantallaUI{modo_claro/login_restablecer_contrasena_exito.png}{Contraseña actualizada (modo claro)}{fig:claro_login_restablecer_contrasena_exito}\hfill
+    \pantallaUI{modo_claro/mapas_principal.png}{Pantalla principal (modo claro)}{fig:claro_mapas_principal}\hfill
+    \pantallaUI{modo_claro/mapas_busqueda_recientes.png}{Búsqueda con lugares recientes (modo claro)}{fig:claro_mapas_busqueda_recientes}
 
     \bigskip
-    \pantallaUI{modo_claro/reportar_incidente.png}{Reporte de incidente (modo claro)}{fig:claro_reportar_incidente}\hfill
-    \pantallaUI{modo_claro/reporte_enviado.png}{Reporte enviado (modo claro)}{fig:claro_reporte_enviado}\hfill
-    \pantallaUI{modo_claro/reporte_limite.png}{Límite de reportes alcanzado (modo claro)}{fig:claro_reporte_limite}
+    \pantallaUI{modo_claro/mapas_busqueda_sin_recientes.png}{Búsqueda sin lugares recientes (modo claro)}{fig:claro_mapas_busqueda_sin_recientes}\hfill
+    \pantallaUI{modo_claro/mapas_busqueda_resultados.png}{Resultados de búsqueda (modo claro)}{fig:claro_mapas_busqueda_resultados}\hfill
+    \pantallaUI{modo_claro/mapas_busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo claro)}{fig:claro_mapas_busqueda_sin_resultados}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_claro/mapas_seleccion_lugar.png}{Selección de lugar (modo claro)}{fig:claro_mapas_seleccion_lugar}\hfill
+    \pantallaUI{modo_claro/mapas_busqueda_lugar.png}{Detalle del lugar buscado (modo claro)}{fig:claro_mapas_busqueda_lugar}\hfill
+    \pantallaUI{modo_claro/mapas_rutas.png}{Selección de ruta (modo claro)}{fig:claro_mapas_rutas}
+
+    \bigskip
+    \pantallaUI{modo_claro/mapas_navegacion.png}{Navegación (modo claro)}{fig:claro_mapas_navegacion}\hfill
+    \pantallaUI{modo_claro/mapas_reportar_incidente.png}{Reporte de incidente (modo claro)}{fig:claro_mapas_reportar_incidente}\hfill
+    \pantallaUI{modo_claro/mapas_reporte_enviado.png}{Reporte enviado (modo claro)}{fig:claro_mapas_reporte_enviado}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_claro/mapas_reporte_limite.png}{Límite de reportes alcanzado (modo claro)}{fig:claro_mapas_reporte_limite}\hfill
+    \pantallaUI{modo_claro/lugares_vacio.png}{Lista de lugares vacía (modo claro)}{fig:claro_lugares_vacio}\hfill
+    \pantallaUI{modo_claro/lugares_guardados.png}{Lista de lugares guardados (modo claro)}{fig:claro_lugares_guardados}
+
+    \bigskip
+    \pantallaUI{modo_claro/lugares_anadir.png}{Añadir lugar: búsqueda sin recientes (modo claro)}{fig:claro_lugares_anadir}\hfill
+    \pantallaUI{modo_claro/lugares_busqueda_recientes.png}{Añadir lugar: búsquedas recientes (modo claro)}{fig:claro_lugares_busqueda_recientes}\hfill
+    \pantallaUI{modo_claro/lugares_busqueda_resultados.png}{Añadir lugar: resultados de búsqueda (modo claro)}{fig:claro_lugares_busqueda_resultados}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_claro/lugares_detalle.png}{Añadir lugar: detalle del lugar (modo claro)}{fig:claro_lugares_detalle}\hfill
+    \pantallaUI{modo_claro/lugares_guardar.png}{Guardar lugar (modo claro)}{fig:claro_lugares_guardar}\hfill
+    \pantallaUI{modo_claro/perfil_principal.png}{Perfil del usuario (modo claro)}{fig:claro_perfil_principal}
+
+    \bigskip
+    \pantallaUI{modo_claro/perfil_editar.png}{Edición de perfil (modo claro)}{fig:claro_perfil_editar}\hfill
+    \pantallaUI{modo_claro/perfil_cambiar_contrasena.png}{Cambio de contraseña (modo claro)}{fig:claro_perfil_cambiar_contrasena}\hfill
+    \pantallaUI{modo_claro/perfil_eliminar_cuenta.png}{Confirmación de eliminación de cuenta (modo claro)}{fig:claro_perfil_eliminar_cuenta}
 \end{figure}
 
 \subsection{Modo oscuro}
-El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituye los fondos claros por tonos oscuros, lo que reduce el brillo de la pantalla y favorece el uso de la aplicación en condiciones de poca luz, como durante la noche. Las figuras \ref{fig:oscuro_principal} a \ref{fig:oscuro_reporte_limite} muestran las pantallas correspondientes.
+El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituye los fondos blancos por grises oscuros, los encabezados por un tono café y el mapa por una versión en colores oscuros, mientras que los botones de acción mantienen el naranja terracota. Esto reduce el brillo de la pantalla y favorece el uso de la aplicación en condiciones de poca luz, como durante la noche. Las figuras \ref{fig:oscuro_login_iniciar_sesion} a \ref{fig:oscuro_perfil_eliminar_cuenta} muestran las pantallas correspondientes, en el mismo orden que en el modo claro.
 
 \begin{figure}[H]
     \centering
-    \pantallaUI{modo_oscuro/principal.png}{Pantalla principal (modo oscuro)}{fig:oscuro_principal}\hfill
-    \pantallaUI{modo_oscuro/busqueda_recientes.png}{Búsqueda con lugares recientes (modo oscuro)}{fig:oscuro_busqueda_recientes}\hfill
-    \pantallaUI{modo_oscuro/busqueda_sin_recientes.png}{Búsqueda sin lugares recientes (modo oscuro)}{fig:oscuro_busqueda_sin_recientes}
+    \pantallaUI{modo_oscuro/login_iniciar_sesion.png}{Inicio de sesión (modo oscuro)}{fig:oscuro_login_iniciar_sesion}\hfill
+    \pantallaUI{modo_oscuro/login_registro.png}{Registro (modo oscuro)}{fig:oscuro_login_registro}\hfill
+    \pantallaUI{modo_oscuro/login_verificar_correo.png}{Verificación de correo (modo oscuro)}{fig:oscuro_login_verificar_correo}
 
     \bigskip
-    \pantallaUI{modo_oscuro/busqueda_resultados.png}{Resultados de búsqueda (modo oscuro)}{fig:oscuro_busqueda_resultados}\hfill
-    \pantallaUI{modo_oscuro/busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo oscuro)}{fig:oscuro_busqueda_sin_resultados}\hfill
-    \pantallaUI{modo_oscuro/seleccion_lugar.png}{Selección de lugar (modo oscuro)}{fig:oscuro_seleccion_lugar}
+    \pantallaUI{modo_oscuro/login_recuperar_contrasena.png}{Recuperación de contraseña (modo oscuro)}{fig:oscuro_login_recuperar_contrasena}\hfill
+    \pantallaUI{modo_oscuro/login_recuperar_contrasena_enviado.png}{Correo de recuperación enviado (modo oscuro)}{fig:oscuro_login_recuperar_contrasena_enviado}\hfill
+    \pantallaUI{modo_oscuro/login_restablecer_contrasena.png}{Restablecimiento de contraseña (modo oscuro)}{fig:oscuro_login_restablecer_contrasena}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \pantallaUI{modo_oscuro/busqueda_lugar.png}{Detalle del lugar buscado (modo oscuro)}{fig:oscuro_busqueda_lugar}\hfill
-    \pantallaUI{modo_oscuro/rutas.png}{Selección de ruta (modo oscuro)}{fig:oscuro_rutas}\hfill
-    \pantallaUI{modo_oscuro/navegacion.png}{Navegación (modo oscuro)}{fig:oscuro_navegacion}
+    \pantallaUI{modo_oscuro/login_restablecer_contrasena_exito.png}{Contraseña actualizada (modo oscuro)}{fig:oscuro_login_restablecer_contrasena_exito}\hfill
+    \pantallaUI{modo_oscuro/mapas_principal.png}{Pantalla principal (modo oscuro)}{fig:oscuro_mapas_principal}\hfill
+    \pantallaUI{modo_oscuro/mapas_busqueda_recientes.png}{Búsqueda con lugares recientes (modo oscuro)}{fig:oscuro_mapas_busqueda_recientes}
 
     \bigskip
-    \pantallaUI{modo_oscuro/reportar_incidente.png}{Reporte de incidente (modo oscuro)}{fig:oscuro_reportar_incidente}\hfill
-    \pantallaUI{modo_oscuro/reporte_enviado.png}{Reporte enviado (modo oscuro)}{fig:oscuro_reporte_enviado}\hfill
-    \pantallaUI{modo_oscuro/reporte_limite.png}{Límite de reportes alcanzado (modo oscuro)}{fig:oscuro_reporte_limite}
+    \pantallaUI{modo_oscuro/mapas_busqueda_sin_recientes.png}{Búsqueda sin lugares recientes (modo oscuro)}{fig:oscuro_mapas_busqueda_sin_recientes}\hfill
+    \pantallaUI{modo_oscuro/mapas_busqueda_resultados.png}{Resultados de búsqueda (modo oscuro)}{fig:oscuro_mapas_busqueda_resultados}\hfill
+    \pantallaUI{modo_oscuro/mapas_busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo oscuro)}{fig:oscuro_mapas_busqueda_sin_resultados}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_oscuro/mapas_seleccion_lugar.png}{Selección de lugar (modo oscuro)}{fig:oscuro_mapas_seleccion_lugar}\hfill
+    \pantallaUI{modo_oscuro/mapas_busqueda_lugar.png}{Detalle del lugar buscado (modo oscuro)}{fig:oscuro_mapas_busqueda_lugar}\hfill
+    \pantallaUI{modo_oscuro/mapas_rutas.png}{Selección de ruta (modo oscuro)}{fig:oscuro_mapas_rutas}
+
+    \bigskip
+    \pantallaUI{modo_oscuro/mapas_navegacion.png}{Navegación (modo oscuro)}{fig:oscuro_mapas_navegacion}\hfill
+    \pantallaUI{modo_oscuro/mapas_reportar_incidente.png}{Reporte de incidente (modo oscuro)}{fig:oscuro_mapas_reportar_incidente}\hfill
+    \pantallaUI{modo_oscuro/mapas_reporte_enviado.png}{Reporte enviado (modo oscuro)}{fig:oscuro_mapas_reporte_enviado}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_oscuro/mapas_reporte_limite.png}{Límite de reportes alcanzado (modo oscuro)}{fig:oscuro_mapas_reporte_limite}\hfill
+    \pantallaUI{modo_oscuro/lugares_vacio.png}{Lista de lugares vacía (modo oscuro)}{fig:oscuro_lugares_vacio}\hfill
+    \pantallaUI{modo_oscuro/lugares_guardados.png}{Lista de lugares guardados (modo oscuro)}{fig:oscuro_lugares_guardados}
+
+    \bigskip
+    \pantallaUI{modo_oscuro/lugares_anadir.png}{Añadir lugar: búsqueda sin recientes (modo oscuro)}{fig:oscuro_lugares_anadir}\hfill
+    \pantallaUI{modo_oscuro/lugares_busqueda_recientes.png}{Añadir lugar: búsquedas recientes (modo oscuro)}{fig:oscuro_lugares_busqueda_recientes}\hfill
+    \pantallaUI{modo_oscuro/lugares_busqueda_resultados.png}{Añadir lugar: resultados de búsqueda (modo oscuro)}{fig:oscuro_lugares_busqueda_resultados}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \pantallaUI{modo_oscuro/lugares_detalle.png}{Añadir lugar: detalle del lugar (modo oscuro)}{fig:oscuro_lugares_detalle}\hfill
+    \pantallaUI{modo_oscuro/lugares_guardar.png}{Guardar lugar (modo oscuro)}{fig:oscuro_lugares_guardar}\hfill
+    \pantallaUI{modo_oscuro/perfil_principal.png}{Perfil del usuario (modo oscuro)}{fig:oscuro_perfil_principal}
+
+    \bigskip
+    \pantallaUI{modo_oscuro/perfil_editar.png}{Edición de perfil (modo oscuro)}{fig:oscuro_perfil_editar}\hfill
+    \pantallaUI{modo_oscuro/perfil_cambiar_contrasena.png}{Cambio de contraseña (modo oscuro)}{fig:oscuro_perfil_cambiar_contrasena}\hfill
+    \pantallaUI{modo_oscuro/perfil_eliminar_cuenta.png}{Confirmación de eliminación de cuenta (modo oscuro)}{fig:oscuro_perfil_eliminar_cuenta}
 \end{figure}
