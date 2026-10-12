@@ -209,3 +209,17 @@
     \label{#3}
   \end{minipage}%
 }
+
+
+% ---------------------------------------------------------
+% F. MUESTRAS DE COLOR                           (6.6 Diseño de interfaces de usuario)
+% ---------------------------------------------------------
+% \muestraColor{HEX}
+%
+% Recuadro relleno con el color, seguido de su código hexadecimal.
+% El borde gris permite distinguir los tonos muy claros del fondo.
+% HEX va sin "#", p. ej. \muestraColor{C85A17}.
+\newcommand{\muestraColor}[1]{%
+  {\setlength{\fboxsep}{0pt}\fcolorbox[HTML]{808080}{#1}{\rule[-0.5ex]{0pt}{2.3ex}\rule{4ex}{0pt}}}%
+  \ \texttt{\##1}%
+}
