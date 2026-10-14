@@ -4,19 +4,40 @@ A continuación se presenta el análisis de costos asociados al desarrollo del p
 
 Para la realización del proyecto se contempla la participación del equipo de trabajo terminal, compuesto por tres integrantes que colaboran de manera conjunta en todas las etapas del desarrollo, especializándose respectivamente en el diseño y construcción de la base de datos y la lógica algorítmica, el desarrollo de la aplicación móvil, y el análisis y tratamiento de los datos geoespaciales y delictivos. Dado que el proyecto se desarrolla bajo la metodología Scrumban, las funciones de coordinación del equipo son rotativas entre sus integrantes y se ejercen dentro del mismo horario de trabajo individual, por lo que no representan un costo adicional de recursos humanos.
 
-Se considera una dedicación de 2 horas diarias por integrante a lo largo del periodo efectivo de desarrollo del proyecto, comprendido entre el 24 de agosto de 2026 y mediados de mayo de 2027 (aproximadamente 9 meses) conforme al cronograma de actividades. De acuerdo con el Calendario Escolar 2026-2027 del Instituto Politécnico Nacional \cite{ipn_calendario2026}, el cálculo de días hábiles efectivos se obtiene de la siguiente manera:
+
+%Se considera una dedicación de 2 horas diarias por integrante a lo largo del periodo 
+%efectivo de desarrollo del proyecto, comprendido entre el 24 de agosto de 2026 y mediados de mayo del 2027 (aproximadamente 9 meses) conforme al cronograma de actividades. De acuerdo con el Calendario Escolar 2026-2027 del Instituto Politécnico Nacional \cite{ipn_calendario2026}, el cálculo de días hábiles efectivos se obtiene de la siguiente manera:
+
+
+
+Se considera una dedicación de 4 horas diarias por integrante a lo largo del periodo 
+efectivo de desarrollo del proyecto, comprendido entre el 16 de agosto de 2026 e inicios de junio del 2027 (aproximadamente 10 meses) conforme al cronograma de actividades. De acuerdo con el Calendario Escolar 2026-2027 del Instituto Politécnico Nacional \cite{ipn_calendario2026}, el cálculo de días hábiles efectivos se obtiene de la siguiente manera:
+
+% \begin{align*}
+% \text{Días hábiles totales (24 ago. 2026 -- 15 may. 2027)} &= 190 \\
+% (-)\ \text{Días festivos (descanso obligatorio y acuerdo sindical)} &= 12 \\
+% (-)\ \text{Periodos vacacionales (dic.--ene. y mar.--abr.)} &= 22 \\
+% \hline
+% \text{Días hábiles efectivos} &= 156
+% \end{align*}
+
+% \[
+% 156 \text{ días} \times 2 \text{ horas/día} = 312 \text{ horas efectivas por integrante}
+% \]
+
 
 \begin{align*}
-\text{Días hábiles totales (24 ago. 2026 -- 15 may. 2027)} &= 190 \\
+\text{Días hábiles totales (16 ago. 2026 -- 7 jun. 2027)} &= 211 \\
 (-)\ \text{Días festivos (descanso obligatorio y acuerdo sindical)} &= 12 \\
-(-)\ \text{Periodos vacacionales (dic.--ene. y mar.--abr.)} &= 22 \\
+(-)\ \text{Periodos vacacionales (dic.--ene. y mar.--abr.)} &= 19 \\
 \hline
-\text{Días hábiles efectivos} &= 156
+\text{Días hábiles efectivos} &= 180
 \end{align*}
 
 \[
-156 \text{ días} \times 2 \text{ horas/día} = 312 \text{ horas efectivas por integrante}
+180 \text{ días} \times 4 \text{ horas/día} = 720 \text{ horas efectivas por integrante}
 \]
+
 
 La Tabla~\ref{tab:sueldos_mercado} presenta el sueldo mensual promedio en México para cada rol del equipo, obtenido de fuentes de empleo consultado el 6 de octubre del 2026.
 
@@ -36,7 +57,7 @@ La Tabla~\ref{tab:sueldos_mercado} presenta el sueldo mensual promedio en Méxic
     \label{tab:sueldos_mercado}
 \end{table}
 
-El costo por hora de cada rol se obtiene dividiendo el sueldo mensual promedio entre 160 horas mensuales, correspondientes a una jornada estándar de 8 horas diarias durante 20 días hábiles al mes. Este costo por hora se multiplica por las 312 horas efectivas estimadas por integrante, obteniendo el costo total de recursos humanos mostrado en la Tabla~\ref{tab:recursos_humanos}.
+El costo por hora de cada rol se obtiene dividiendo el sueldo mensual promedio entre 160 horas mensuales, correspondientes a una jornada estándar de 8 horas diarias durante 20 días hábiles al mes. Este costo por hora se multiplica por las 720 horas efectivas estimadas por integrante, obteniendo el costo total de recursos humanos mostrado en la Tabla~\ref{tab:recursos_humanos}.
 
 \begin{table}[H]
     \centering
@@ -46,25 +67,24 @@ El costo por hora de cada rol se obtiene dividiendo el sueldo mensual promedio e
     \begin{tabular}{|l|c|c|c|}
         \hline
         \textbf{Cargo} & \textbf{Horas estimadas} & \textbf{Costo/hora} & \textbf{Costo total} \\ \hline
-        Backend Developer & 312 & \$ 120.06 & \$ 37,458.72 \\ \hline
-        Analista de Datos & 312 & \$ 95.13 & \$ 29,680.56 \\ \hline
-        Desarrollador Móvil & 312 & \$ 108.14 & \$ 33,739.68 \\ \hline
-        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 100,878.96} \\ \hline
+        Backend Developer & 720 & \$ 120.06 & \$ 86,443.20 \\ \hline
+        Analista de Datos & 720 & \$ 95.13 & \$ 68,493.60 \\ \hline
+        Desarrollador Móvil & 720 & \$ 108.14 & \$ 77,860.80 \\ \hline
+        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 232,797.60} \\ \hline
     \end{tabular}%
     }
     \label{tab:recursos_humanos}
 \end{table}
 
-
 \paragraph{Recursos tecnológicos}
 
-Para la realización del proyecto se contempla el uso de los siguientes recursos de hardware, software y servicios en la nube. El equipo de cómputo empleado es propiedad de los integrantes del equipo, por lo que no representa un costo de adquisición adicional para el proyecto. El consumo eléctrico y de internet asociado a su uso durante el desarrollo se contabiliza por separado en la sección de Recursos materiales. Para el desarrollo de la aplicación móvil se emplea el framework Flutter (Dart), mientras que para la gestión de la base de datos y el motor de ruteo geoespacial se utiliza Supabase (PostgreSQL con las extensiones PostGIS y pgRouting), justificado técnicamente en la sección~\ref{sec:factibilidad_técnica}.
+Para la realización del proyecto se contempla el uso de los siguientes recursos de hardware, software y servicios en la nube. El equipo de cómputo empleado es propiedad de los integrantes del equipo, por lo que no representa un costo de adquisición adicional para el proyecto. El consumo eléctrico y de internet asociado a su uso durante el desarrollo se contabiliza por separado en la sección de Recursos materiales. Para el desarrollo de la aplicación móvil se emplea el framework Flutter (Dart), mientras que para la gestión de la base de datos y el motor de ruteo geoespacial se utiliza Supabase (PostgreSQL con las extensiones PostGIS y pgRouting), justificado técnicamente en la sección~\ref{sec:factibilidad_tecnica}. Asimismo la obtención de la red vial se auxilia en OpenStreetMap (OSM) bajo licencia ODbL operando de forma gratuita sin generar costos. 
 
 El plan gratuito de Supabase ofrece 500 MB de base de datos, 500 MB de almacenamiento de archivos, 5 GB de transferencia de datos mensual y solicitudes de API ilimitadas \cite{supabase_pricing}. El polígono de estudio delimitado en la Figura~\ref{fig:mapa_zona_estudio} abarca una superficie de 26.31 km\textsuperscript{2} y su red vial comprende aproximadamente 11{,}700 segmentos de calle. Considerando un peso promedio de 1 a 3 KB por segmento, el volumen estimado de la base de datos se ubica entre 12 y 35 MB, muy por debajo del límite mencionado, por lo que se opta por el plan gratuito.
 
 Para el preprocesamiento de la información se emplea la Street View Static API de Google Maps Platform, mediante la cual se obtendrán tres imágenes por cada segmento de calle, es decir, aproximadamente 35{,}100 solicitudes. Esta API ofrece una cuota gratuita de 10{,}000 solicitudes mensuales y cobra \$7.00 USD por cada 1{,}000 solicitudes adicionales \cite{google_maps_pricing}, por lo que se generarían 25{,}100 solicitudes facturables, equivalentes a \$175.70 USD (\$3,156.80 MXN). Posteriormente, las imágenes se analizan con el modelo Qwen3.7-Flash \cite{qwen_pricing}, cuyo costo para solicitudes de hasta 32{,}000 tokens es de \$0.03 USD por millón de tokens de entrada y \$0.13 USD por millón de tokens de salida. Considerando un consumo aproximado de 2{,}000 tokens de entrada y 500 de salida por imagen, el análisis de las 35{,}100 imágenes requiere 70.2 millones de tokens de entrada y 17.55 millones de salida, con un costo total de \$4.39 USD (\$78.83 MXN). Durante la operación de la aplicación se utiliza el SDK de Maps para dispositivos móviles, cuyo uso es ilimitado y sin costo, y Places API (New), cuyas SKU de Autocomplete y Place Details Essentials incluyen 10{,}000 solicitudes gratuitas mensuales cada una \cite{google_maps_pricing}. Los montos expresados en dólares estadounidenses se convirtieron a pesos mexicanos con el tipo de cambio FIX publicado por el Banco de México el 6 de octubre de 2026, equivalente a \$17.9670 MXN por dólar \cite{banxico_fix}.
 
-Adicionalmente, el equipo utiliza dos servicios por suscripción mensual durante el desarrollo del proyecto: Overleaf, para la redacción del documento en LATEX, y Udemy, para la capacitación técnica de los integrantes. Considerando una duración de nueve meses, el costo de estos servicios se desglosa en la Tabla~\ref{tab:servicios_adicionales}.
+Adicionalmente, el equipo utiliza dos servicios por suscripción mensual durante el desarrollo del proyecto: Overleaf, para la redacción del documento en LATEX, y Udemy, para la capacitación técnica de los integrantes. Considerando una duración de diez meses, el costo de estos servicios se desglosa en la Tabla~\ref{tab:servicios_adicionales}.
 
 El proyecto contempla como entregable un prototipo funcional de la aplicación móvil, cuya conclusión no depende de su publicación en una tienda de aplicaciones. No obstante, de presentarse la oportunidad, el prototipo podrá publicarse en Google Play Store, lo que requiere un pago único de registro de desarrollador de \$25.00 USD (\$449.18 MXN) \cite{google_play_console}. Al tratarse de un gasto opcional, no se incluye en el total del presupuesto.
 
@@ -81,6 +101,7 @@ El proyecto contempla como entregable un prototipo funcional de la aplicación m
         \multicolumn{3}{|l|}{\textit{Software y servicios en la nube}} \\ \hline
         1 & Flutter / Dart (código abierto) & \$ 0.00 \\ \hline
         1 & Supabase -- plan gratuito (PostgreSQL, PostGIS, pgRouting) & \$ 0.00 \\ \hline
+        1 & OpenStreetMap (OSM) -- datos abiertos (Licencia ODbL, dentro de la cuota gratuita) & \$ 0.00 \\ \hline
         1 & Git / GitHub (plan gratuito) & \$ 0.00 \\ \hline
         1 & Google Meet (plan gratuito) & \$ 0.00 \\ \hline
         1 & Notion (plan estudiante, gratuito) & \$ 0.00 \\ \hline
@@ -106,9 +127,9 @@ El proyecto contempla como entregable un prototipo funcional de la aplicación m
     \begin{tabular}{|c|l|c|c|}
         \hline
         \textbf{Meses} & \textbf{Descripción} & \textbf{Costo mensual} & \textbf{Costo total} \\ \hline
-        9 & Overleaf (suscripción mensual) & \$ 99.00 & \$ 891.00 \\ \hline
-        9 & Udemy (suscripción mensual) & \$ 209.00 & \$ 1,881.00 \\ \hline
-        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 2,772.00} \\ \hline
+        10 & Overleaf (suscripción mensual) & \$ 131.00 & \$ 1,310.00 \\ \hline
+        10 & Udemy (suscripción mensual) & \$ 209.00 & \$ 2,090.00 \\ \hline
+        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 3,400.00} \\ \hline
     \end{tabular}%
     }
     \label{tab:servicios_adicionales}
@@ -116,14 +137,14 @@ El proyecto contempla como entregable un prototipo funcional de la aplicación m
 
 \paragraph{Recursos materiales}
 
-Para la realización del proyecto se contemplan los siguientes recursos materiales asociados a la operación básica del equipo de trabajo. El costo de la energía eléctrica se estima a partir del consumo de los equipos de cómputo durante las horas efectivas de trabajo. Considerando las 312 horas efectivas por integrante calculadas en la sección de recursos humanos, y una potencia aproximada de 65 W por equipo, el consumo se obtiene de la siguiente manera:
+Para la realización del proyecto se contemplan los siguientes recursos materiales asociados a la operación básica del equipo de trabajo. El costo de la energía eléctrica se estima a partir del consumo de los equipos de cómputo durante las horas efectivas de trabajo. Considerando las 720 horas efectivas por integrante calculadas en la sección de recursos humanos, y una potencia aproximada de 65 W por equipo, el consumo se obtiene de la siguiente manera:
 
 \begin{align*}
-\text{Horas de uso} &= 312 \text{ h} \times 3 \text{ integrantes} = 936 \text{ h} \\
-\text{Consumo} &= 936 \text{ h} \times 0.065 \text{ kW} = 60.84 \text{ kWh} \approx 61 \text{ kWh}
+\text{Horas de uso} &= 720 \text{ h} \times 3 \text{ integrantes} = 2{,}160 \text{ h} \\
+\text{Consumo} &= 2{,}160 \text{ h} \times 0.065 \text{ kW} = 140.4 \text{ kWh} \approx 140 \text{ kWh}
 \end{align*}
 
-Dicho consumo se valora con la cuota del consumo excedente de la Tarifa 1 de la Comisión Federal de Electricidad para octubre de 2026, equivalente a \$4.054 por kilowatt-hora \cite{cfe_tarifa1}, considerada como valor conservador. Respecto al servicio de internet, cada integrante cuenta con un paquete residencial de 100 Mbps con costo mensual de \$390.00 \cite{totalplay_paquetes}, el cual se contabiliza durante los 9 meses de desarrollo del proyecto.
+Dicho consumo se valora con la cuota del consumo excedente de la Tarifa 1 de la Comisión Federal de Electricidad para octubre de 2026, equivalente a \$4.054 por kilowatt-hora \cite{cfe_tarifa1}, considerada como valor conservador. Respecto al servicio de internet, cada integrante cuenta con un paquete residencial de 100 Mbps con costo mensual de \$390.00 \cite{totalplay_paquetes}, el cual se contabiliza durante los 10 meses de desarrollo del proyecto.
 
 \begin{table}[H]
     \centering
@@ -133,18 +154,17 @@ Dicho consumo se valora con la cuota del consumo excedente de la Tarifa 1 de la 
     \begin{tabular}{|l|l|c|c|}
         \hline
         \textbf{Cantidad} & \textbf{Descripción} & \textbf{Costo} & \textbf{Total} \\ \hline
-        61 & Energía eléctrica, Tarifa 1 CFE (kWh) & \$ 4.054 & \$ 247.29 \\ \hline
-        27 & Internet residencial 100 Mbps (3 integrantes $\times$ 9 meses) & \$ 390.00 & \$ 10,530.00 \\ \hline
-        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 10,777.29} \\ \hline
+        140 & Energía eléctrica, Tarifa 1 CFE (kWh) & \$ 4.054 & \$ 567.56 \\ \hline
+        30 & Internet residencial 100 Mbps (3 integrantes $\times$ 10 meses) & \$ 390.00 & \$ 11,700.00 \\ \hline
+        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 12,267.56} \\ \hline
     \end{tabular}%
     }
     \label{tab:recursos_materiales}
 \end{table}
 
-
 \paragraph{Flujo de pago}
 
-El costo total estimado del proyecto se resume en la Tabla~\ref{tab:flujo_pago} y asciende a \$129,430.27 MXN, que resulta de sumar los recursos humanos, tecnológicos y materiales (\$117,663.88 MXN) y un 10\% de imprevistos calculado sobre dicho subtotal (\$11,766.39 MXN). No se considera el pago opcional de registro en Google Play Store. De este monto, \$100,878.96 corresponden al valor de mercado del trabajo del equipo, el cual, al ser realizado directamente por los integrantes del trabajo terminal sin una relación de contratación formal, no representa un desembolso. De igual forma, los recursos materiales (energía eléctrica e internet) corresponden a servicios que los integrantes ya tienen contratados, por lo que se contabilizan para dimensionar el costo real del proyecto sin implicar un gasto adicional. En consecuencia, el egreso efectivo se limita a los recursos tecnológicos, por un monto de \$6,007.63 MXN, equivalente a aproximadamente \$2,002.54 MXN por integrante a lo largo de los nueve meses de desarrollo (\$222.50 MXN mensuales).
+El costo total estimado del proyecto se resume en la Tabla~\ref{tab:flujo_pago} y asciende a \$276,870.87 MXN, que resulta de sumar los recursos humanos, tecnológicos y materiales (\$251,700.79 MXN) y un 10\% de imprevistos calculado sobre dicho subtotal (\$25,170.08 MXN). No se considera el pago opcional de registro en Google Play Store. De este monto, \$232,797.60 corresponden al valor de mercado del trabajo del equipo, el cual, al ser realizado directamente por los integrantes del trabajo terminal sin una relación de contratación formal, no representa un desembolso. De igual forma, los recursos materiales (energía eléctrica e internet) corresponden a servicios que los integrantes ya tienen contratados, por lo que se contabilizan para dimensionar el costo real del proyecto sin implicar un gasto adicional. En consecuencia, el egreso efectivo se limita a los recursos tecnológicos, por un monto de \$6,635.63 MXN, equivalente a aproximadamente \$2,211.88 MXN por integrante a lo largo de los diez meses de desarrollo (\$221.19 MXN mensuales).
 
 Con base en lo anterior, el proyecto se considera económicamente viable: el gasto efectivo es reducido y proviene principalmente de servicios de preprocesamiento de uso único y de suscripciones mensuales, mientras que el resto de los costos corresponde a trabajo y recursos que el equipo ya posee o tiene contratados.
 
@@ -155,12 +175,14 @@ Con base en lo anterior, el proyecto se considera económicamente viable: el gas
     \begin{tabular}{|l|c|}
         \hline
         \textbf{Recursos} & \textbf{Costo} \\ \hline
-        Recursos Humanos & \$ 100,878.96 \\ \hline
-        Recursos Tecnológicos & \$ 6,007.63 \\ \hline
-        Recursos Materiales & \$ 10,777.29 \\ \hline
-        Subtotal & \$ 117,663.88 \\ \hline
-        Imprevistos (10\%) & \$ 11,766.39 \\ \hline
-        \textbf{Total} & \textbf{\$ 129,430.27} \\ \hline
+        Recursos Humanos & \$ 232,797.60 \\ \hline
+        Recursos Tecnológicos & \$ 6,635.63 \\ \hline
+        Recursos Materiales & \$ 12,267.56 \\ \hline
+        Subtotal & \$ 251,700.79 \\ \hline
+        Imprevistos (10\%) & \$ 25,170.08 \\ \hline
+        \textbf{Total} & \textbf{\$ 276,870.87} \\ \hline
     \end{tabular}
     \label{tab:flujo_pago}
 \end{table}
+
+

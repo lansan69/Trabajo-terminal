@@ -1,4 +1,3 @@
-
 \subsubsection{Fiabilidad}
 
 \begin{longtable}{@{}KQ@{}}
@@ -31,7 +30,7 @@ ID & \textbf{Requisito} \\
 \bottomrule
 \endlastfoot
 RNF-04 & El tiempo transcurrido entre la solicitud de cálculo y la presentación de las rutas no debe exceder 5 segundos. \\
-RNF-05 & El sistema debe responder a los gestos de desplazamiento y acercamiento sobre el mapa en un tiempo no mayor a 100 ms en los dispositivos que cumplan con RNF-19. \\
+RNF-05 & El sistema debe responder a los gestos de desplazamiento y acercamiento sobre el mapa en un tiempo no mayor a 100 ms en los dispositivos que cumplan con RNF-20. \\
 \end{longtable}
 
 \subsubsection{Usabilidad y accesibilidad}
@@ -55,6 +54,7 @@ RNF-10 & Ante cualquier error o estado de excepción, el sistema debe mostrar un
 RNF-11 & La aplicación debe emplear un mismo sistema de diseño, entendido como una paleta de colores, una familia tipográfica, un conjunto de iconos y una ubicación de los controles principales comunes a todas las pantallas. \\
 RNF-12 & Los elementos interactivos deben tener un área táctil mínima de 48 dp por lado. \\
 RNF-13 & La totalidad de los textos de la interfaz debe presentarse en español de México. \\
+RNF-14 & El sistema debe permitir al usuario alternar manualmente entre un tema de apariencia claro y uno oscuro, o heredar la preferencia del sistema operativo, conservando el contraste y la jerarquía visual del sistema de diseño (RNF-11). \\
 \end{longtable}
 
 \subsubsection{Seguridad}
@@ -70,10 +70,10 @@ ID & \textbf{Requisito} \\
 \endhead
 \bottomrule
 \endlastfoot
-RNF-14 & Las contraseñas deben almacenarse mediante una función de hash con sal diseñada para contraseñas, como bcrypt o Argon2; no deben almacenarse en texto plano ni mediante ningún método reversible. \\
-RNF-15 & La comunicación entre la aplicación y los servicios del sistema debe realizarse exclusivamente mediante HTTPS con TLS 1.2 o superior, protegiendo la información durante su transmisión. \\
-RNF-16 & La ubicación del usuario debe recolectarse y transmitirse únicamente mientras se ejecuta alguna de las funciones que la requieren (cálculo de rutas, navegación, registro y confirmación de reportes, alertas de reportes cercanos y enlace de seguimiento), y debe dejar de recolectarse al terminar dichas funciones. \\
-RNF-17 & El identificador del enlace de seguimiento debe generarse de forma aleatoria con una entropía mínima de 128 bits, de modo que no sea deducible ni enumerable a partir de otros enlaces. \\
+RNF-15 & Las contraseñas deben almacenarse mediante una función de hash con sal diseñada para contraseñas, como bcrypt o Argon2; no deben almacenarse en texto plano ni mediante ningún método reversible. \\
+RNF-16 & La comunicación entre la aplicación y los servicios del sistema debe realizarse exclusivamente mediante HTTPS con TLS 1.2 o superior, protegiendo la información durante su transmisión. \\
+RNF-17 & La ubicación del usuario debe recolectarse y transmitirse únicamente mientras se ejecuta alguna de las funciones que la requieren (cálculo de rutas, navegación, registro y confirmación de reportes, alertas de reportes cercanos y enlace de seguimiento), y debe dejar de recolectarse al terminar dichas funciones. \\
+RNF-18 & El identificador del enlace de seguimiento debe generarse de forma aleatoria con una entropía mínima de 128 bits, de modo que no sea deducible ni enumerable a partir de otros enlaces. \\
 \end{longtable}
 
 \subsubsection{Mantenibilidad}
@@ -89,7 +89,7 @@ ID & \textbf{Requisito} \\
 \endhead
 \bottomrule
 \endlastfoot
-RNF-18 & La capa de dominio no debe depender de frameworks, motores de base de datos ni servicios externos; toda dependencia externa debe residir en la capa de infraestructura, de modo que el proveedor de mapas o de datos geoespaciales pueda sustituirse sin modificar el dominio ni la interfaz. El cumplimiento debe verificarse mediante reglas automatizadas de análisis de dependencias ejecutadas en cada integración de código. \\
+RNF-19 & La capa de dominio no debe depender de frameworks, motores de base de datos ni servicios externos; toda dependencia externa debe residir en la capa de infraestructura, de modo que el proveedor de mapas o de datos geoespaciales pueda sustituirse sin modificar el dominio ni la interfaz. El cumplimiento debe verificarse mediante reglas automatizadas de análisis de dependencias ejecutadas en cada integración de código. \\
 \end{longtable}
 
 \subsubsection{Compatibilidad}
@@ -105,7 +105,7 @@ ID & \textbf{Requisito} \\
 \endhead
 \bottomrule
 \endlastfoot
-RNF-19 & La aplicación debe ejecutarse en dispositivos con Android 10 o superior, con sensor GPS. \\
+RNF-20 & La aplicación debe ejecutarse en dispositivos con Android 10 o superior, con sensor GPS. \\
 \end{longtable}
 
 \subsubsection{Verificabilidad}
@@ -121,6 +121,6 @@ ID & \textbf{Requisito} \\
 \endhead
 \bottomrule
 \endlastfoot
-RNF-20 & Cada requerimiento funcional debe contar con al menos un criterio de aceptación verificable, registrado en una matriz de trazabilidad requisito $\rightarrow$ prueba. \\
-RNF-21 & La lógica de negocio (cálculo y calificación de rutas, ponderación temporal, validación de reportes y validación del área de servicio) debe alcanzar una cobertura mínima de 60\% mediante pruebas unitarias automatizadas, ejecutadas en cada integración de código. \\
+RNF-21 & Cada requerimiento funcional debe contar con al menos un criterio de aceptación verificable, registrado en una matriz de trazabilidad requisito $\rightarrow$ prueba. \\
+RNF-22 & La lógica de negocio (cálculo y calificación de rutas, ponderación temporal, validación de reportes y validación del área de servicio) debe alcanzar una cobertura mínima de 60\% mediante pruebas unitarias automatizadas, ejecutadas en cada integración de código. \\
 \end{longtable}
