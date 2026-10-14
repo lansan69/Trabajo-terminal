@@ -252,6 +252,9 @@
 %
 % \elementoCuatro{Nombre}{Tipo}
 % Contenido de una caja: nombre en negritas y, debajo, el tipo entre corchetes.
+%
+% \descripcionCuatro{Texto}
+% Descripción opcional; va justo después de \elementoCuatro, dentro del nodo.
 \definecolor{c4Persona}{HTML}{08427B}
 \definecolor{c4PersonaBorde}{HTML}{073B6F}
 \definecolor{c4Sistema}{HTML}{1168BD}
@@ -279,3 +282,4 @@
 }
 
 \newcommand{\elementoCuatro}[2]{\textbf{#1}\\[3pt]{\small [#2]}}
+\newcommand{\descripcionCuatro}[1]{\\[6pt]{\small #1}}

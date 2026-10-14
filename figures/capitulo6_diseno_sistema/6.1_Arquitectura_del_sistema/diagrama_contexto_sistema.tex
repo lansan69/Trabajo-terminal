@@ -8,21 +8,29 @@
 % oración: origen + texto + destino ("Usuario del sistema gestiona ...
 % usando Sistema de rutas seguras").
 %
-% Ancho total: unos 14.5 cm, cabe en \textwidth (15 cm) sin escalar, así
-% el texto conserva el tamaño del documento. No envolverlo en \resizebox
-% ni usar scale: eso vuelve a achicar la letra.
+% Tamaño: unos 14.5 cm de ancho, cabe en \textwidth (15 cm) sin escalar,
+% así el texto conserva el tamaño del documento; unos 19 cm de alto con
+% las descripciones. No envolverlo en \resizebox ni usar scale: eso
+% vuelve a achicar la letra.
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Elementos ----------------
   % Persona: caja + cabeza encima
-  \node[c4persona, text width=4.8cm] (usuario)
-    {\elementoCuatro{Usuario del sistema}{Persona}};
-  \filldraw[c4cabeza] ($(usuario.north)+(0,0.55)$) circle[radius=0.75cm];
+  \node[c4persona, text width=6.8cm] (usuario)
+    {\elementoCuatro{Usuario del sistema}{Persona}%
+     \descripcionCuatro{Usuario que se traslada a pie buscando rutas seguras
+       o que monitorea el trayecto de otros usuarios en tiempo real.}};
+  \filldraw[c4cabeza] ($(usuario.north)+(0,0.6)$) circle[radius=0.8cm];
 
-  % Sistema
-  \node[c4sistema, text width=5.2cm, below=3.4cm of usuario] (sistema)
-    {\elementoCuatro{Sistema de rutas seguras}{Sistema de software}};
+  % Sistema (la descripción sigue sus cuatro pantallas: perfil, mapas,
+  % favoritos y monitoreo)
+  \node[c4sistema, text width=8.6cm, below=3.4cm of usuario] (sistema)
+    {\elementoCuatro{Sistema de rutas seguras}{Sistema de software}%
+     \descripcionCuatro{Permite al usuario gestionar su perfil; consultar el
+       mapa, generar rutas según su nivel de riesgo, navegar y reportar
+       incidentes; guardar lugares favoritos, y compartir su trayecto o
+       monitorear el de otros usuarios en tiempo real.}};
 
   % Sistemas externos: alineados por su borde superior, 3.8 cm debajo del sistema
   \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (notificaciones)
