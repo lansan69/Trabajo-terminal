@@ -79,6 +79,9 @@
     positioning,                % below=... of ...
     calc,                       % Coordenadas calculadas ($(a)+(0,1)$)
     arrows.meta,                % Puntas de flecha Stealth
+    shapes.geometric,           % Cilindro de la base de datos
+    fit,                        % Límite punteado alrededor de los contenedores
+    backgrounds,                % Dibujar el límite y algunas flechas detrás de las cajas
     babel                       % Evita el choque de babel (spanish) con < y > en TikZ
 }
 
@@ -246,7 +249,10 @@
 % Colores: los mismos de los diagramas de contenedores y componentes.
 %
 % Cajas:    c4persona, c4sistema, c4externo   (agregar text width=...)
+%           c4contenedor, c4basedatos (cilindro)
 % Cabeza:   c4cabeza, círculo sobre el borde superior de una c4persona
+% Límite:   c4limite (fit=... alrededor de los contenedores de un sistema)
+%           y c4limiteEtiqueta para su nombre
 % Flechas:  c4relacion
 % Textos:   c4etiqueta                        (agregar text width=...)
 %
@@ -261,6 +267,8 @@
 \definecolor{c4SistemaBorde}{HTML}{0B4884}
 \definecolor{c4Externo}{HTML}{8C8496}
 \definecolor{c4ExternoBorde}{HTML}{736782}
+\definecolor{c4Contenedor}{HTML}{23A2D9}
+\definecolor{c4ContenedorBorde}{HTML}{0E7DAD}
 \definecolor{c4Relacion}{HTML}{707070}
 
 \tikzset{
@@ -272,6 +280,15 @@
   c4cabeza/.style={fill=c4Persona, draw=c4PersonaBorde, line width=0.8pt},
   c4sistema/.style={c4caja, fill=c4Sistema, draw=c4SistemaBorde},
   c4externo/.style={c4caja, fill=c4Externo, draw=c4ExternoBorde},
+  c4contenedor/.style={c4caja, fill=c4Contenedor, draw=c4ContenedorBorde},
+  c4basedatos/.style={
+    c4caja, cylinder, shape border rotate=90, aspect=0.15, sharp corners,
+    minimum height=0pt, fill=c4Contenedor, draw=c4ContenedorBorde
+  },
+  c4limite/.style={
+    draw=c4Relacion, dashed, line width=0.8pt, rounded corners=8pt, inner sep=0.4cm
+  },
+  c4limiteEtiqueta/.style={align=left, inner sep=0pt, font=\small},
   c4relacion/.style={
     draw=c4Relacion, line width=0.9pt, rounded corners=4pt,
     -{Stealth[length=9pt, width=7pt]}

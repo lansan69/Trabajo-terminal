@@ -9,8 +9,9 @@
 % usando Sistema de rutas seguras").
 %
 % Tamaño: unos 14.5 cm de ancho, cabe en \textwidth (15 cm) sin escalar,
-% así el texto conserva el tamaño del documento; unos 19 cm de alto con
-% las descripciones. No envolverlo en \resizebox ni usar scale: eso
+% así el texto conserva el tamaño del documento; unos 21 cm de alto con
+% las descripciones. Las descripciones de los sistemas externos son las
+% mismas que en diagrama_contenedor_sistema.tex. No envolverlo en \resizebox ni usar scale: eso
 % vuelve a achicar la letra.
 % =========================================================
 \begin{tikzpicture}
@@ -35,13 +36,19 @@
   % Sistemas externos: alineados por su borde superior, 3.8 cm debajo del sistema
   \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (notificaciones)
     at ($(sistema.south)+(0,-3.8)$)
-    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}};
+    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}%
+     \descripcionCuatro{Hace llegar las alertas al dispositivo móvil del
+       usuario, aun con la aplicación cerrada.}};
   \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (mapas)
     at ($(notificaciones.north)+(-5,0)$)
-    {\elementoCuatro{Servicio de geocodificación y mapas}{Sistema externo}};
+    {\elementoCuatro{Servicio de geocodificación y mapas}{Sistema externo}%
+     \descripcionCuatro{Provee los mosaicos del mapa base y la búsqueda de
+       lugares por nombre o dirección.}};
   \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (google)
     at ($(notificaciones.north)+(5,0)$)
-    {\elementoCuatro{Identidad de Google}{Sistema externo}};
+    {\elementoCuatro{Identidad de Google}{Sistema externo}%
+     \descripcionCuatro{Verifica la identidad de los usuarios que inician
+       sesión con su cuenta de Google.}};
 
   % ---------------- Relaciones ----------------
   \draw[c4relacion] (usuario) -- (sistema)
