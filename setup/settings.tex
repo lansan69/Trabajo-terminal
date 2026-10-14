@@ -71,14 +71,27 @@
 
 
 % ---------------------------------------------------------
-% 6. TEXTO EN COLUMNAS Y TEXTO DE RELLENO
+% 6. DIAGRAMAS                                   (6.1 Arquitectura del sistema)
+% ---------------------------------------------------------
+% TikZ carga xcolor, por eso va después de xcolor[table] (sección 5).
+\usepackage{tikz}               % Diagramas C4 dibujados en LaTeX: 6.1
+\usetikzlibrary{
+    positioning,                % below=... of ...
+    calc,                       % Coordenadas calculadas ($(a)+(0,1)$)
+    arrows.meta,                % Puntas de flecha Stealth
+    babel                       % Evita el choque de babel (spanish) con < y > en TikZ
+}
+
+
+% ---------------------------------------------------------
+% 7. TEXTO EN COLUMNAS Y TEXTO DE RELLENO
 % ---------------------------------------------------------
 \usepackage{multicol}           % Texto en varias columnas. Sin uso actual
 \usepackage{lipsum}             % Texto de relleno. Sin uso actual; quitar en la versión final
 
 
 % ---------------------------------------------------------
-% 7. TÍTULOS Y ESTRUCTURA                        (todo el documento)
+% 8. TÍTULOS Y ESTRUCTURA                        (todo el documento)
 % ---------------------------------------------------------
 \usepackage{titling}            % Personalización de \maketitle. La portada no lo usa:
                                 % \thetitle viene de setup/metadata.tex
@@ -96,7 +109,7 @@
 
 
 % ---------------------------------------------------------
-% 8. BIBLIOGRAFÍA Y ENLACES                      (todo el documento)
+% 9. BIBLIOGRAFÍA Y ENLACES                      (todo el documento)
 % ---------------------------------------------------------
 \usepackage{cite}               % Citas numéricas ordenadas y comprimidas: [1-3]
 \usepackage{hyperref}           % Hipervínculos; \texorpdfstring: 6.5; \phantomsection: main.tex
@@ -223,3 +236,46 @@
   {\setlength{\fboxsep}{0pt}\fcolorbox[HTML]{808080}{#1}{\rule[-0.5ex]{0pt}{2.3ex}\rule{4ex}{0pt}}}%
   \ \texttt{\##1}%
 }
+
+
+% ---------------------------------------------------------
+% G. DIAGRAMAS C4                                (6.1 Arquitectura del sistema)
+% ---------------------------------------------------------
+% Los diagramas C4 se dibujan con TikZ para que el texto use la fuente y
+% el tamaño del documento (una imagen exportada se encoge al escalarla).
+% Colores: los mismos de los diagramas de contenedores y componentes.
+%
+% Cajas:    c4persona, c4sistema, c4externo   (agregar text width=...)
+% Cabeza:   c4cabeza, círculo sobre el borde superior de una c4persona
+% Flechas:  c4relacion
+% Textos:   c4etiqueta                        (agregar text width=...)
+%
+% \elementoCuatro{Nombre}{Tipo}
+% Contenido de una caja: nombre en negritas y, debajo, el tipo entre corchetes.
+\definecolor{c4Persona}{HTML}{08427B}
+\definecolor{c4PersonaBorde}{HTML}{073B6F}
+\definecolor{c4Sistema}{HTML}{1168BD}
+\definecolor{c4SistemaBorde}{HTML}{0B4884}
+\definecolor{c4Externo}{HTML}{8C8496}
+\definecolor{c4ExternoBorde}{HTML}{736782}
+\definecolor{c4Relacion}{HTML}{707070}
+
+\tikzset{
+  c4caja/.style={
+    rectangle, rounded corners=6pt, line width=0.8pt,
+    align=center, text=white, inner sep=8pt, minimum height=2.2cm
+  },
+  c4persona/.style={c4caja, fill=c4Persona, draw=c4PersonaBorde, rounded corners=14pt},
+  c4cabeza/.style={fill=c4Persona, draw=c4PersonaBorde, line width=0.8pt},
+  c4sistema/.style={c4caja, fill=c4Sistema, draw=c4SistemaBorde},
+  c4externo/.style={c4caja, fill=c4Externo, draw=c4ExternoBorde},
+  c4relacion/.style={
+    draw=c4Relacion, line width=0.9pt, rounded corners=4pt,
+    -{Stealth[length=9pt, width=7pt]}
+  },
+  c4etiqueta/.style={
+    fill=white, align=center, inner sep=3pt, font=\small, text=black!80
+  }
+}
+
+\newcommand{\elementoCuatro}[2]{\textbf{#1}\\[3pt]{\small [#2]}}

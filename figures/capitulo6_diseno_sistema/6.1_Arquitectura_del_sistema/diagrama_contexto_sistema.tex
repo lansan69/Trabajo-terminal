@@ -1,0 +1,58 @@
+% =========================================================
+% Diagrama de contexto (C4, nivel 1)        6.1 Arquitectura del sistema
+% ---------------------------------------------------------
+% Se incluye con \input dentro del entorno figure de seccion6_1.tex.
+% Estilos y colores: setup/settings.tex, sección G (Diagramas C4).
+%
+% Contenido tomado del diagrama de IcePanel. Cada flecha se lee como una
+% oración: origen + texto + destino ("Usuario del sistema gestiona ...
+% usando Sistema de rutas seguras").
+%
+% Ancho total: unos 14.5 cm, cabe en \textwidth (15 cm) sin escalar, así
+% el texto conserva el tamaño del documento. No envolverlo en \resizebox
+% ni usar scale: eso vuelve a achicar la letra.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Elementos ----------------
+  % Persona: caja + cabeza encima
+  \node[c4persona, text width=4.8cm] (usuario)
+    {\elementoCuatro{Usuario del sistema}{Persona}};
+  \filldraw[c4cabeza] ($(usuario.north)+(0,0.55)$) circle[radius=0.75cm];
+
+  % Sistema
+  \node[c4sistema, text width=5.2cm, below=3.4cm of usuario] (sistema)
+    {\elementoCuatro{Sistema de rutas seguras}{Sistema de software}};
+
+  % Sistemas externos: alineados por su borde superior, 3.8 cm debajo del sistema
+  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (notificaciones)
+    at ($(sistema.south)+(0,-3.8)$)
+    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}};
+  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (mapas)
+    at ($(notificaciones.north)+(-5,0)$)
+    {\elementoCuatro{Servicio de geocodificación y mapas}{Sistema externo}};
+  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (google)
+    at ($(notificaciones.north)+(5,0)$)
+    {\elementoCuatro{Identidad de Google}{Sistema externo}};
+
+  % ---------------- Relaciones ----------------
+  \draw[c4relacion] (usuario) -- (sistema)
+    node[c4etiqueta, midway, text width=7.4cm]
+    {Gestiona su perfil y favoritos, consulta mapas y rutas seguras,
+     genera/valida reportes y comparte o monitorea ubicaciones usando};
+
+  % Las flechas laterales bajan 0.5 cm, giran y bajan hasta su caja
+  \draw[c4relacion] ($(sistema.south)+(-2,0)$) -- ++(0,-0.5) -| (mapas.north);
+  \draw[c4relacion] (sistema) -- (notificaciones);
+  \draw[c4relacion] ($(sistema.south)+(2,0)$) -- ++(0,-0.5) -| (google.north);
+
+  % Textos de las tres flechas inferiores, a la misma altura
+  \coordinate (filaEtiquetas) at ($(sistema.south)+(0,-2.15)$);
+  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| mapas)
+    {Obtiene los mapas base de};
+  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas)
+    {Entrega alertas al usuario usando};
+  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| google)
+    {Autentica usuarios con cuenta de Google usando};
+
+\end{tikzpicture}
