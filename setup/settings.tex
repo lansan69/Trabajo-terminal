@@ -223,3 +223,37 @@
   {\setlength{\fboxsep}{0pt}\fcolorbox[HTML]{808080}{#1}{\rule[-0.5ex]{0pt}{2.3ex}\rule{4ex}{0pt}}}%
   \ \texttt{\##1}%
 }
+
+% =========================================================
+% Especificación de casos de uso: definiciones
+% Incluir en el PREÁMBULO (antes de \begin{document}):
+%   \input{cu_especificacion_preambulo}
+% Se define en el preámbulo porque babel (spanish) activa los
+% caracteres < y > dentro del documento y rompe las columnas >{...}.
+% =========================================================
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+
+% \begin{especificacionCU}{CU-XX}{Nombre del caso de uso}
+%   \cuCampo{Etiqueta}{Contenido}
+%   \cuPasos{Etiqueta}{\item Paso 1 \item Paso 2}
+% \end{especificacionCU}
+\newenvironment{especificacionCU}[2]{%
+  \par\noindent
+  \begin{longtable}{|>{\raggedright\arraybackslash\bfseries}p{\dimexpr0.24\linewidth-2\tabcolsep-1.5\arrayrulewidth\relax}%
+                    |>{\raggedright\arraybackslash}p{\dimexpr0.76\linewidth-2\tabcolsep-1.5\arrayrulewidth\relax}|}
+    \hline
+    \multicolumn{2}{|l|}{\textbf{#1: #2}} \\ \hline
+    \endfirsthead
+    \hline
+    \multicolumn{2}{|l|}{\textbf{#1: #2} (continuación)} \\ \hline
+    \endhead
+}{%
+  \end{longtable}
+}
+
+\newcommand{\cuCampo}[2]{#1 & #2 \\ \hline}
+\newcommand{\cuPasos}[2]{#1 & \begin{minipage}[t]{\linewidth}%
+  \begin{enumerate}[nosep,leftmargin=*,label=\arabic*.]#2\end{enumerate}%
+  \end{minipage} \\ \hline}

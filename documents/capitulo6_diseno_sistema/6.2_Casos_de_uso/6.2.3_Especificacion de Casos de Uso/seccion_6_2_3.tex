@@ -1,0 +1,728 @@
+% =========================================================
+% 6.2.3 Especificación de casos de uso
+% Requiere \input{cu_especificacion_preambulo} en el preámbulo.
+% =========================================================
+En esta sección se especifica cada caso de uso de los diagramas anteriores. Cada especificación indica los actores que participan, los requerimientos y reglas de negocio que cubre, las condiciones para iniciarlo, el flujo principal, los flujos alternativos (FA), las condiciones al terminar y sus relaciones con otros casos de uso. Los casos incluidos que no tienen número propio, como la validación del área de servicio, se describen dentro del flujo del caso que los incluye.
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 1: Módulo de Acceso y Autenticación}\mbox{}
+
+\begin{especificacionCU}{CU-01}{Aceptar aviso de privacidad inicial}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-12.}
+  \cuCampo{Reglas de negocio}{RN-16.}
+  \cuCampo{Descripción}{En el primer uso, el sistema presenta el aviso de privacidad y registra el consentimiento del usuario antes de permitir el registro de una cuenta.}
+  \cuCampo{Precondiciones}{Es el primer uso de la aplicación y el consentimiento aún no está registrado.}
+  \cuPasos{Flujo principal}{
+    \item El usuario inicia el registro de una cuenta (CU-02 o CU-06).
+    \item El sistema presenta el aviso de privacidad, que describe el uso de la ubicación conforme a RN-16.
+    \item El usuario lee el aviso y lo acepta.
+    \item El sistema registra el consentimiento del usuario.
+    \item El sistema regresa al caso de uso que lo incluyó.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 El usuario no acepta el aviso.} En el paso 3, si el usuario rechaza o cierra el aviso, el sistema no registra el consentimiento, informa que es necesario aceptarlo para crear una cuenta y no permite continuar con el registro. El caso termina.}
+  \cuCampo{Postcondiciones}{El consentimiento queda registrado conforme a RN-16.}
+  \cuCampo{Relaciones}{Incluido por CU-02 y CU-06.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-02}{Registrar cuenta con correo electrónico}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-01, RF-02.}
+  \cuCampo{Reglas de negocio}{RN-14, RN-16, RN-17.}
+  \cuCampo{Descripción}{El usuario crea una cuenta con su correo electrónico y una contraseña; la cuenta queda pendiente de verificación.}
+  \cuCampo{Precondiciones}{El dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción de registrarse.
+    \item El sistema incluye CU-01 si el consentimiento del aviso de privacidad no está registrado.
+    \item El sistema muestra el formulario de registro.
+    \item El usuario captura su correo electrónico y su contraseña, y confirma el registro.
+    \item El sistema verifica que los datos sean válidos y que el correo no esté asociado a otra cuenta.
+    \item El sistema registra la cuenta en estado no verificado y almacena la contraseña conforme a RNF-14.
+    \item El sistema envía al correo un enlace de verificación de un solo uso, vigente durante 10 minutos (RF-02, RN-14).
+    \item El sistema muestra el aviso de verificación pendiente.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Correo ya registrado.} En el paso 5, si el correo pertenece a otra cuenta, el sistema lo informa conforme a RNF-10 y ofrece iniciar sesión o recuperar la contraseña. Regresa al paso 4.\par\smallskip
+    \textbf{FA-2 Datos incompletos o inválidos.} En el paso 5, si falta un dato o tiene un formato inválido, el sistema señala el campo con un mensaje conforme a RNF-10. Regresa al paso 4.\par\smallskip
+    \textbf{FA-3 Sin conexión a internet.} En el paso 4, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10 y no registra la cuenta. El caso termina.}
+  \cuCampo{Postcondiciones}{La cuenta queda registrada en estado no verificado y el enlace de verificación queda enviado al correo del usuario.}
+  \cuCampo{Relaciones}{Incluye CU-01.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-03}{Verificar correo electrónico}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-02.}
+  \cuCampo{Reglas de negocio}{RN-14, RN-17.}
+  \cuCampo{Descripción}{El usuario confirma que el correo registrado le pertenece al abrir el enlace de verificación.}
+  \cuCampo{Precondiciones}{La cuenta está registrada sin verificar y el usuario recibió el enlace de verificación (CU-02 o CU-04).}
+  \cuPasos{Flujo principal}{
+    \item El usuario abre el enlace de verificación recibido en su correo.
+    \item El sistema comprueba que el enlace no se haya usado y que no hayan transcurrido más de 10 minutos desde su emisión (RN-14).
+    \item El sistema marca la cuenta como verificada e invalida el enlace.
+    \item El sistema informa que la verificación fue exitosa y muestra la pantalla de inicio de sesión.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Enlace expirado o usado.} En el paso 2, si el enlace ya se usó o expiró, el sistema lo informa conforme a RNF-10 y ofrece solicitar un nuevo enlace (CU-04). El caso termina.}
+  \cuCampo{Postcondiciones}{La cuenta queda verificada y el usuario puede usar todas las funciones de la aplicación (RN-17).}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-04}{Solicitar reenvío de enlace de verificación}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-03, RF-04.}
+  \cuCampo{Reglas de negocio}{RN-14, RN-17.}
+  \cuCampo{Descripción}{Desde el aviso de verificación pendiente, el usuario solicita un nuevo enlace de verificación.}
+  \cuCampo{Precondiciones}{La cuenta está registrada sin verificar y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Cuenta no verificada} de CU-05, el sistema muestra el aviso de verificación pendiente.
+    \item El usuario selecciona la opción de reenviar el enlace.
+    \item El sistema genera un nuevo enlace de un solo uso, vigente durante 10 minutos (RN-14).
+    \item El sistema envía el nuevo enlace al correo registrado y confirma el envío.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin conexión a internet.} En el paso 2, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10 y no envía el enlace. El caso termina.}
+  \cuCampo{Postcondiciones}{Un nuevo enlace de verificación queda enviado al correo del usuario.}
+  \cuCampo{Relaciones}{Extiende CU-05 en el punto de extensión \enquote{Cuenta no verificada}, cuando la cuenta no está verificada (RF-04).}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-05}{Iniciar sesión con correo electrónico}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-05, RF-04.}
+  \cuCampo{Reglas de negocio}{RN-17.}
+  \cuCampo{Descripción}{El usuario accede a la aplicación con su correo electrónico y su contraseña.}
+  \cuCampo{Precondiciones}{El usuario tiene una cuenta registrada con correo y contraseña, y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario captura su correo electrónico y su contraseña y selecciona la opción de entrar.
+    \item El sistema valida las credenciales.
+    \item El sistema comprueba que la cuenta esté verificada (RN-17).
+    \item El sistema inicia la sesión y muestra la pantalla principal.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Credenciales incorrectas.} En el paso 2, si el correo o la contraseña son incorrectos, el sistema lo informa conforme a RNF-10. Regresa al paso 1.\par\smallskip
+    \textbf{FA-2 Cuenta no verificada.} En el paso 3, si la cuenta no está verificada, el sistema deniega el acceso y muestra el aviso de verificación pendiente con la opción de reenviar el enlace (RF-04). El caso termina.\par\smallskip
+    \textbf{FA-3 Sin conexión a internet.} En el paso 1, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10. El caso termina.}
+  \cuCampo{Postcondiciones}{La sesión del usuario queda activa y se muestra la pantalla principal.}
+  \cuCampo{Relaciones}{Extendido por CU-04 en el punto de extensión \enquote{Cuenta no verificada} (paso 3).}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-06}{Autenticar con cuenta de Google}
+  \cuCampo{Actores}{Peatón usuario (No autenticado) (principal); Proveedor de identidad de Google (secundario).}
+  \cuCampo{Requerimientos}{RF-06, RF-12.}
+  \cuCampo{Reglas de negocio}{RN-16, RN-17.}
+  \cuCampo{Descripción}{El usuario se registra o inicia sesión con su cuenta de Google, sin requerir la verificación del correo.}
+  \cuCampo{Precondiciones}{El usuario tiene una cuenta de Google y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción \enquote{Continuar con Google}.
+    \item El sistema incluye CU-01 si el consentimiento del aviso de privacidad no está registrado.
+    \item El sistema solicita la autorización al Proveedor de identidad de Google.
+    \item El usuario elige su cuenta de Google y autoriza el acceso.
+    \item El Proveedor de identidad de Google valida las credenciales y devuelve la identidad del usuario.
+    \item Si no existe una cuenta con ese correo, el sistema crea una cuenta vinculada a Google que no requiere verificación (RN-17).
+    \item El sistema inicia la sesión y muestra la pantalla principal.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Correo ya registrado con contraseña.} En el paso 6, si el correo de Google ya pertenece a una cuenta con contraseña, el sistema vincula ambas formas de acceso a la misma cuenta. Continúa en el paso 7.\par\smallskip
+    \textbf{FA-2 Autorización cancelada o rechazada.} En el paso 4 o 5, si el usuario cancela o Google rechaza la autorización, el sistema no inicia la sesión y regresa a la pantalla de inicio de sesión. El caso termina.\par\smallskip
+    \textbf{FA-3 Sin conexión a internet.} En el paso 1, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10. El caso termina.}
+  \cuCampo{Postcondiciones}{La sesión del usuario queda activa y vinculada a su cuenta de Google.}
+  \cuCampo{Relaciones}{Incluye CU-01.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-07}{Solicitar recuperación de contraseña}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-09.}
+  \cuCampo{Reglas de negocio}{RN-14.}
+  \cuCampo{Descripción}{El usuario solicita un enlace para restablecer su contraseña.}
+  \cuCampo{Precondiciones}{El dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción \enquote{¿Olvidaste tu contraseña?} en la pantalla de inicio de sesión.
+    \item El sistema solicita el correo electrónico de la cuenta.
+    \item El usuario captura su correo y confirma la solicitud.
+    \item El sistema genera un enlace de restablecimiento de un solo uso, vigente durante 10 minutos (RN-14), y lo envía al correo.
+    \item El sistema confirma que el enlace fue enviado.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Correo no registrado.} En el paso 4, si el correo no pertenece a una cuenta con contraseña, el sistema muestra la misma confirmación del paso 5 sin enviar ningún enlace, de modo que no se revele qué correos están registrados.\par\smallskip
+    \textbf{FA-2 Sin conexión a internet.} En el paso 3, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10. El caso termina.}
+  \cuCampo{Postcondiciones}{El enlace de restablecimiento queda enviado al correo del usuario.}
+  \cuCampo{Relaciones}{Ninguna. El restablecimiento continúa en CU-08.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-08}{Restablecer contraseña}
+  \cuCampo{Actores}{Peatón usuario (No autenticado).}
+  \cuCampo{Requerimientos}{RF-10.}
+  \cuCampo{Reglas de negocio}{RN-14.}
+  \cuCampo{Descripción}{El usuario establece una nueva contraseña mediante el enlace de restablecimiento.}
+  \cuCampo{Precondiciones}{El usuario recibió un enlace de restablecimiento (CU-07) y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario abre el enlace de restablecimiento.
+    \item El sistema comprueba que el enlace no se haya usado y que no haya expirado (RN-14).
+    \item El sistema solicita la nueva contraseña y su confirmación.
+    \item El usuario captura la nueva contraseña y la confirma.
+    \item El sistema registra la nueva contraseña conforme a RNF-14 e invalida el enlace.
+    \item El sistema confirma el cambio y muestra la pantalla de inicio de sesión.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Enlace expirado o usado.} En el paso 2, si el enlace ya se usó o expiró, el sistema lo informa conforme a RNF-10 y ofrece solicitar uno nuevo (CU-07). El caso termina.\par\smallskip
+    \textbf{FA-2 Las contraseñas no coinciden.} En el paso 4, si la confirmación no coincide con la nueva contraseña, el sistema lo informa. Regresa al paso 3.}
+  \cuCampo{Postcondiciones}{La nueva contraseña queda registrada, el enlace queda invalidado y se muestra la pantalla de inicio de sesión.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 2: Módulo de Perfil y Ayuda}\mbox{}
+
+\begin{especificacionCU}{CU-09}{Cambiar contraseña}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-08.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario reemplaza su contraseña indicando la contraseña vigente.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada con una cuenta de correo y contraseña, y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción \enquote{Cambiar contraseña} en el perfil.
+    \item El sistema solicita la contraseña vigente, la nueva contraseña y su confirmación.
+    \item El usuario captura los datos y confirma el cambio.
+    \item El sistema verifica que la contraseña vigente sea correcta.
+    \item El sistema registra la nueva contraseña conforme a RNF-14; la anterior deja de ser válida.
+    \item El sistema confirma el cambio.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Contraseña vigente incorrecta.} En el paso 4, si la contraseña vigente no es correcta, el sistema lo informa conforme a RNF-10. Regresa al paso 2.\par\smallskip
+    \textbf{FA-2 Las contraseñas no coinciden.} En el paso 3, si la confirmación no coincide con la nueva contraseña, el sistema lo informa. Regresa al paso 2.\par\smallskip
+    \textbf{FA-3 Sin conexión a internet.} En el paso 3, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10 y no cambia la contraseña. El caso termina.}
+  \cuCampo{Postcondiciones}{La nueva contraseña queda registrada y la anterior deja de ser válida.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-10}{Cerrar sesión}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-07.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario finaliza su sesión en el dispositivo.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción \enquote{Cerrar sesión} en el menú principal.
+    \item El sistema cierra la sesión.
+    \item El sistema muestra la pantalla de inicio de sesión.
+  }
+  \cuCampo{Flujos alternativos}{Ninguno.}
+  \cuCampo{Postcondiciones}{La sesión queda cerrada y se muestra la pantalla de inicio de sesión.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-11}{Eliminar cuenta}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-11.}
+  \cuCampo{Reglas de negocio}{RN-15.}
+  \cuCampo{Descripción}{El usuario elimina su cuenta y sus datos personales.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción \enquote{Eliminar cuenta} en el perfil.
+    \item El sistema solicita una confirmación explícita e informa el tratamiento que recibirán sus datos (RN-15).
+    \item El usuario confirma la eliminación.
+    \item El sistema elimina la cuenta; los datos personales se eliminan en un plazo máximo de 7 días y los reportes se conservan de forma anonimizada (RN-15).
+    \item El sistema cierra la sesión y muestra la pantalla de inicio de sesión.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 El usuario cancela.} En el paso 3, si el usuario no confirma, el sistema no elimina la cuenta y regresa al perfil. El caso termina.\par\smallskip
+    \textbf{FA-2 Sin conexión a internet.} En el paso 3, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10 y no elimina la cuenta. El caso termina.}
+  \cuCampo{Postcondiciones}{La cuenta queda eliminada y sus datos reciben el tratamiento de RN-15.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-12}{Consultar aviso de privacidad}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-12.}
+  \cuCampo{Reglas de negocio}{RN-16.}
+  \cuCampo{Descripción}{El usuario consulta en cualquier momento el aviso de privacidad que aceptó.}
+  \cuCampo{Precondiciones}{El usuario tiene acceso al menú principal.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona el aviso de privacidad en el menú principal.
+    \item El sistema muestra el aviso de privacidad vigente.
+    \item El usuario consulta el aviso y regresa al menú principal.
+  }
+  \cuCampo{Flujos alternativos}{Ninguno.}
+  \cuCampo{Postcondiciones}{El aviso de privacidad queda visible hasta que el usuario sale de la sección.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-13}{Consultar sección de ayuda y simbología}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-46.}
+  \cuCampo{Reglas de negocio}{RN-04, RN-06.}
+  \cuCampo{Descripción}{El usuario consulta cómo usar la aplicación y el significado de los símbolos del mapa.}
+  \cuCampo{Precondiciones}{El usuario tiene acceso al menú principal.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la sección de ayuda en el menú principal.
+    \item El sistema muestra los temas de ayuda: búsqueda y cálculo de rutas, registro de reportes, enlaces y códigos de seguimiento, consulta de seguimientos y botón de emergencia.
+    \item El usuario elige un tema o la leyenda de simbología.
+    \item El sistema muestra el contenido elegido; la leyenda asocia cada símbolo con los puntos de ayuda, las categorías de RN-06 (RNF-08) y los niveles de riesgo de RN-04 (RNF-09).
+    \item El usuario sale de la sección.
+  }
+  \cuCampo{Flujos alternativos}{Ninguno.}
+  \cuCampo{Postcondiciones}{El contenido de ayuda y la leyenda quedan visibles hasta que el usuario sale de la sección.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 3: Módulo de Lugares Favoritos}\mbox{}
+
+\begin{especificacionCU}{CU-14}{Consultar lugares favoritos}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-16.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario consulta la lista de sus lugares favoritos, desde la cual puede crearlos, editarlos o eliminarlos.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada.}
+  \cuPasos{Flujo principal}{
+    \item El usuario abre la sección \enquote{Tus lugares}.
+    \item El sistema muestra la lista de lugares favoritos con su etiqueta y la opción de añadir uno nuevo.
+    \item El usuario consulta la lista.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin lugares favoritos.} En el paso 2, si el usuario no tiene lugares guardados, el sistema lo indica y muestra la opción de añadir uno (CU-15).}
+  \cuCampo{Postcondiciones}{La lista de lugares favoritos queda visible.}
+  \cuCampo{Relaciones}{Extendido por CU-15 (crear), CU-16 (editar) y CU-17 (eliminar) a partir del paso 3.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-15}{Crear lugar favorito}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-16.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario guarda una ubicación con una etiqueta propia para usarla como acceso rápido.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción de añadir un lugar.
+    \item El sistema solicita la ubicación del lugar.
+    \item El usuario indica la ubicación mediante la búsqueda o seleccionándola en el mapa.
+    \item El sistema solicita la etiqueta del lugar.
+    \item El usuario captura la etiqueta y confirma.
+    \item El sistema guarda el lugar y lo agrega a la lista y a los accesos rápidos.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Etiqueta vacía.} En el paso 5, si la etiqueta está vacía, el sistema solicita capturarla. Regresa al paso 4.}
+  \cuCampo{Postcondiciones}{El lugar favorito queda guardado y disponible como acceso rápido al indicar origen o destino.}
+  \cuCampo{Relaciones}{Extiende CU-14.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-16}{Editar lugar favorito}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-16.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario modifica la etiqueta o la ubicación de un lugar favorito.}
+  \cuCampo{Precondiciones}{Existe al menos un lugar favorito.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción de editar en un lugar de la lista.
+    \item El sistema muestra la etiqueta y la ubicación actuales.
+    \item El usuario modifica los datos y confirma.
+    \item El sistema guarda los cambios y actualiza la lista y los accesos rápidos.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Etiqueta vacía.} En el paso 3, si la etiqueta queda vacía, el sistema solicita capturarla. Regresa al paso 3.}
+  \cuCampo{Postcondiciones}{El lugar favorito queda actualizado.}
+  \cuCampo{Relaciones}{Extiende CU-14.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-17}{Eliminar lugar favorito}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-16.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario elimina un lugar favorito.}
+  \cuCampo{Precondiciones}{Existe al menos un lugar favorito.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción de eliminar en un lugar de la lista.
+    \item El sistema solicita confirmar la eliminación.
+    \item El usuario confirma.
+    \item El sistema elimina el lugar de la lista y de los accesos rápidos.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 El usuario cancela.} En el paso 3, si el usuario no confirma, el sistema conserva el lugar. El caso termina.}
+  \cuCampo{Postcondiciones}{El lugar favorito queda eliminado y deja de ofrecerse como acceso rápido.}
+  \cuCampo{Relaciones}{Extiende CU-14.}
+\end{especificacionCU}
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 4: Módulo de Mapa y Selección de Ubicaciones}\mbox{}
+
+\begin{especificacionCU}{CU-21}{Explorar mapa base interactivo}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Proveedor de mapas (secundario).}
+  \cuCampo{Requerimientos}{RF-13, RF-17, RF-18.}
+  \cuCampo{Reglas de negocio}{RN-07, RN-08, RN-11.}
+  \cuCampo{Descripción}{El usuario explora el mapa mediante gestos táctiles y ve los puntos de ayuda y los reportes validados del área visible.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada.}
+  \cuPasos{Flujo principal}{
+    \item El usuario abre la pantalla del mapa.
+    \item El sistema obtiene los mosaicos del mapa base del Proveedor de mapas y los muestra.
+    \item El usuario desplaza, acerca o aleja el mapa mediante gestos táctiles.
+    \item El sistema actualiza el mapa conforme al gesto en no más de 100 ms (RNF-05).
+    \item El sistema incluye \enquote{Visualizar puntos de ayuda y reportes validados}: muestra como marcadores los puntos de ayuda oficiales del área visible (RN-11) y los reportes validados y vigentes (RN-07, RN-08), cada uno con el icono de su categoría (RNF-08).
+    \item Los pasos 3 a 5 se repiten mientras el usuario explora el mapa.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Falla del Proveedor de mapas.} En el paso 2, si no se pueden obtener los mosaicos, el sistema informa la condición conforme a RNF-10 y mantiene disponibles las funciones que no dependen del mapa (RNF-02).\par\smallskip
+    \textbf{FA-2 Sin reportes validados en el área.} En el paso 5, si no hay reportes validados y vigentes en el área visible, el sistema muestra solo los puntos de ayuda.}
+  \cuCampo{Postcondiciones}{El mapa queda visible con el acercamiento y la posición elegidos, y con los marcadores del área visible.}
+  \cuCampo{Relaciones}{Incluye \enquote{Visualizar puntos de ayuda y reportes validados} (RF-17, RF-18).}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-22}{Buscar origen y destino por dirección}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Proveedor de mapas (secundario).}
+  \cuCampo{Requerimientos}{RF-14, RF-16.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario indica su origen y su destino escribiendo una dirección y eligiendo una sugerencia de autocompletado.}
+  \cuCampo{Precondiciones}{El usuario se encuentra en la pantalla del mapa y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la barra de búsqueda.
+    \item El sistema muestra el campo de búsqueda y, si existen, los lugares favoritos como accesos rápidos.
+    \item El usuario escribe la dirección.
+    \item El sistema muestra sugerencias de autocompletado.
+    \item El usuario selecciona una sugerencia.
+    \item El sistema establece la dirección elegida como destino u origen y la marca en el mapa.
+    \item El usuario repite los pasos 3 a 6 para indicar el otro punto.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin coincidencias.} En el paso 4, si no hay direcciones que coincidan, el sistema lo indica. Regresa al paso 3.\par\smallskip
+    \textbf{FA-2 Sin conexión a internet.} En el paso 3, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10. El caso termina.}
+  \cuCampo{Postcondiciones}{El origen o el destino quedan establecidos en la dirección seleccionada.}
+  \cuCampo{Relaciones}{Extendido por \enquote{Usar lugar favorito como acceso rápido} (RF-16) en el punto de extensión \enquote{Acceso rápido a favorito} (paso 3), cuando el usuario tiene lugares favoritos; el sistema usa la ubicación del lugar elegido.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-23}{Seleccionar origen y destino en el mapa}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-15.}
+  \cuCampo{Reglas de negocio}{Ninguna.}
+  \cuCampo{Descripción}{El usuario indica su origen o su destino seleccionando un punto sobre el mapa.}
+  \cuCampo{Precondiciones}{El usuario se encuentra en la pantalla del mapa.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona un punto sobre el mapa.
+    \item El sistema marca el punto y muestra la información disponible del lugar.
+    \item El usuario elige usar el punto como origen o como destino.
+    \item El sistema establece el punto como origen o destino.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 El usuario descarta el punto.} En el paso 3, si el usuario cierra la información del lugar, el sistema quita la marca sin modificar el origen ni el destino. El caso termina.}
+  \cuCampo{Postcondiciones}{El origen o el destino quedan establecidos en el punto seleccionado.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-24}{Gestionar permiso de ubicación}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Servicios del dispositivo móvil (secundario).}
+  \cuCampo{Requerimientos}{RF-28.}
+  \cuCampo{Reglas de negocio}{RN-16.}
+  \cuCampo{Descripción}{El sistema solicita el permiso de ubicación explicando su uso, y sigue operando si el usuario lo deniega.}
+  \cuCampo{Precondiciones}{La aplicación no cuenta con el permiso de ubicación.}
+  \cuPasos{Flujo principal}{
+    \item El usuario inicia una función que requiere su ubicación, como iniciar la navegación o registrar un reporte en su ubicación actual.
+    \item El sistema explica el uso que se dará a la ubicación conforme a RN-16.
+    \item El sistema solicita el permiso a los Servicios del dispositivo móvil, que muestran el diálogo del sistema operativo.
+    \item El usuario concede el permiso.
+    \item El sistema habilita las funciones que dependen de la ubicación en vivo.
+    \item Si la función requiere la ubicación en segundo plano, como las alertas de reportes cercanos (RF-40) o el seguimiento (RF-41), el sistema solicita además ese permiso.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Permiso denegado.} En el paso 4, si el usuario deniega el permiso, el sistema deshabilita únicamente las funciones que dependen de la ubicación en vivo y mantiene disponible la consulta de rutas. El caso termina.\par\smallskip
+    \textbf{FA-2 Permiso en segundo plano denegado.} En el paso 6, si el usuario lo deniega, el sistema deshabilita las alertas de reportes cercanos y el seguimiento, y mantiene el resto de las funciones.}
+  \cuCampo{Postcondiciones}{Las funciones que dependen de la ubicación quedan habilitadas o deshabilitadas según la respuesta del usuario.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 5: Módulo de Cálculo y Selección de Rutas}\mbox{}
+
+\begin{especificacionCU}{CU-25}{Calcular rutas por criterio}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-20, RF-21, RF-22; además RF-19, RF-24, RF-25 y RF-26.}
+  \cuCampo{Reglas de negocio}{RN-01, RN-02, RN-03, RN-04, RN-05, RN-18.}
+  \cuCampo{Descripción}{El sistema calcula, en una misma consulta, una ruta segura, una rápida y una balanceada entre el origen y el destino, y muestra el riesgo de cada una.}
+  \cuCampo{Precondiciones}{El usuario indicó un origen y un destino (CU-22 o CU-23).}
+  \cuPasos{Flujo principal}{
+    \item El usuario solicita calcular las rutas.
+    \item El sistema verifica que el dispositivo tenga conexión a internet.
+    \item El sistema incluye \enquote{Validar área de servicio}: verifica que el origen y el destino estén dentro del área de servicio de RN-01.
+    \item El sistema determina la franja horaria vigente (RN-05).
+    \item El sistema calcula una ruta por cada criterio de RN-02 (segura, rápida y balanceada), respetando el límite de desvío de RN-03 y usando la versión identificada del grafo de riesgo (RNF-01).
+    \item El sistema presenta las rutas en no más de 5 segundos (RNF-04) e indica cuando dos o más criterios producen la misma ruta.
+    \item Para cada ruta, el sistema muestra su distancia, su tiempo estimado a pie a 4.5 km/h (RN-18) y su nivel de riesgo (RN-04) con un indicador visual y una etiqueta textual (RNF-09).
+    \item El sistema representa sobre el trazo de cada ruta el nivel de riesgo de sus tramos.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Fuera del área de servicio.} En el paso 3, si el origen o el destino están fuera del área de servicio, el sistema muestra un mensaje de restricción de cobertura conforme a RNF-10 (RF-19). El caso termina.\par\smallskip
+    \textbf{FA-2 Ruta inexistente.} En el paso 5, si no existe una ruta peatonal que conecte el origen y el destino dentro del área de servicio, el sistema lo informa conforme a RNF-10 (RF-24). El caso termina.\par\smallskip
+    \textbf{FA-3 Sin conexión a internet.} En el paso 2, si el dispositivo no tiene conexión, el sistema impide el cálculo e informa la condición conforme a RNF-10 (RF-25). El caso termina.}
+  \cuCampo{Postcondiciones}{Las rutas quedan presentadas con su distancia, su tiempo estimado y su nivel de riesgo, señalando las que coinciden entre criterios.}
+  \cuCampo{Relaciones}{Incluye \enquote{Validar área de servicio} (RF-19). Extendido por CU-26 en el punto de extensión \enquote{Otra franja horaria} y por CU-27 en el punto de extensión \enquote{Detalle de la ruta}, ambos después del paso 8.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-26}{Consultar ruta en otra franja horaria}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-26.}
+  \cuCampo{Reglas de negocio}{RN-05.}
+  \cuCampo{Descripción}{El usuario consulta las rutas calculadas para una franja horaria distinta de la actual.}
+  \cuCampo{Precondiciones}{Las rutas están calculadas (CU-25) y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Otra franja horaria} de CU-25, el usuario elige la franja diurna o nocturna (RN-05).
+    \item El sistema recalcula las rutas con la ponderación de la franja elegida.
+    \item El sistema presenta las rutas con su resumen y su riesgo por tramo, indicando la franja empleada.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin conexión a internet.} En el paso 2, si el dispositivo no tiene conexión, el sistema impide el cálculo e informa la condición conforme a RNF-10 (RF-25). El caso termina.}
+  \cuCampo{Postcondiciones}{Las rutas quedan calculadas con la ponderación de la franja horaria indicada.}
+  \cuCampo{Relaciones}{Extiende CU-25 en el punto de extensión \enquote{Otra franja horaria}, cuando el usuario elige otra franja horaria.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-27}{Consultar detalle de la ruta}
+  \cuCampo{Actores}{Peatón usuario (Autenticado).}
+  \cuCampo{Requerimientos}{RF-23.}
+  \cuCampo{Reglas de negocio}{RN-07, RN-08.}
+  \cuCampo{Descripción}{El usuario consulta el detalle de una ruta, incluidos los reportes validados presentes en su trayecto.}
+  \cuCampo{Precondiciones}{Las rutas están calculadas (CU-25).}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Detalle de la ruta} de CU-25, el usuario selecciona una de las rutas.
+    \item El sistema muestra el resumen de la ruta: distancia, tiempo estimado y nivel de riesgo.
+    \item El sistema lista los reportes validados y vigentes ubicados sobre el trayecto (RN-07, RN-08), cada uno con el icono de su categoría (RNF-08).
+    \item El usuario regresa a la lista de rutas o inicia la navegación (CU-28).
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin reportes en el trayecto.} En el paso 3, si no hay reportes validados sobre el trayecto, el sistema lo indica.}
+  \cuCampo{Postcondiciones}{El detalle de la ruta seleccionada queda visible.}
+  \cuCampo{Relaciones}{Extiende CU-25 en el punto de extensión \enquote{Detalle de la ruta}, cuando el usuario selecciona una ruta.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-28}{Seleccionar ruta e iniciar navegación}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Seguidor (secundario).}
+  \cuCampo{Requerimientos}{RF-27.}
+  \cuCampo{Reglas de negocio}{RN-04, RN-13.}
+  \cuCampo{Descripción}{El usuario elige una de las rutas calculadas e inicia la navegación guiada; los seguidores reciben el aviso de inicio.}
+  \cuCampo{Precondiciones}{Las rutas están calculadas (CU-25).}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona una ruta y la opción de comenzar.
+    \item El sistema verifica que el permiso de ubicación esté concedido.
+    \item El sistema inicia la navegación guiada sobre la ruta seleccionada.
+    \item Si el usuario tiene enlaces o códigos de seguimiento activos (RN-13), el sistema notifica al Seguidor el inicio del trayecto.
+    \item El sistema habilita en la vista del Seguidor (CU-40) el trazo de la ruta, el destino, la distancia, el tiempo estimado y el nivel de riesgo (RN-04).
+    \item La navegación continúa en CU-29.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin permiso de ubicación.} En el paso 2, si el permiso no está concedido, el sistema lo solicita (CU-24); si el usuario lo deniega, la navegación no se inicia. El caso termina.\par\smallskip
+    \textbf{FA-2 Sin seguimientos activos.} En el paso 4, si el usuario no tiene enlaces ni códigos activos, el sistema omite los pasos 4 y 5.}
+  \cuCampo{Postcondiciones}{La navegación queda en curso sobre la ruta seleccionada y los seguidores con enlace o código activo quedan notificados.}
+  \cuCampo{Relaciones}{Ninguna. Continúa en CU-29.}
+\end{especificacionCU}
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 6: Módulo de Navegación Activa y Reportes Ciudadanos}\mbox{}
+
+\begin{especificacionCU}{CU-29}{Seguir navegación en curso}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Servicios del dispositivo móvil y Seguidor (secundarios).}
+  \cuCampo{Requerimientos}{RF-29.}
+  \cuCampo{Reglas de negocio}{RN-16.}
+  \cuCampo{Descripción}{El sistema guía al usuario por la ruta seleccionada actualizando su posición en el mapa.}
+  \cuCampo{Precondiciones}{La navegación está en curso (CU-28) y el permiso de ubicación está concedido.}
+  \cuPasos{Flujo principal}{
+    \item El sistema obtiene la ubicación del usuario de los Servicios del dispositivo móvil.
+    \item El sistema actualiza el marcador de posición del usuario sobre la ruta.
+    \item El sistema muestra la distancia y el tiempo restantes, con los controles de navegación en el tercio inferior de la pantalla (RNF-07).
+    \item Los pasos 1 a 3 se repiten mientras el usuario avanza.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Aplicación en segundo plano.} En cualquier paso, si la aplicación pasa a segundo plano, por ejemplo por una llamada telefónica, el sistema conserva el estado de la navegación y lo restaura al volver a primer plano (RNF-03).\par\smallskip
+    \textbf{FA-2 Pérdida de la señal GPS.} En el paso 1, si no se obtiene la ubicación, el sistema informa la condición conforme a RNF-10, conserva la ruta y reanuda el guiado al recuperar la señal (RNF-02).}
+  \cuCampo{Postcondiciones}{El marcador refleja la posición más reciente del usuario.}
+  \cuCampo{Relaciones}{Extendido por CU-30 (\enquote{Desvío de la ruta}, paso 2), CU-31 (\enquote{Pausa}, cualquier paso), CU-32 (\enquote{Cambio de riesgo}, paso 4), CU-33 (\enquote{Llegada al destino}, paso 2) y CU-34 (\enquote{Cancelación}, cualquier paso).}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-30}{Recalcular ruta por desvío}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Seguidor (secundario).}
+  \cuCampo{Requerimientos}{RF-30.}
+  \cuCampo{Reglas de negocio}{RN-13, RN-18.}
+  \cuCampo{Descripción}{El sistema recalcula automáticamente la ruta cuando el usuario se aparta de ella.}
+  \cuCampo{Precondiciones}{La navegación está en curso.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Desvío de la ruta} de CU-29, el sistema detecta que la posición del usuario se aparta más de 50 m de la trayectoria (RN-18).
+    \item El sistema recalcula la ruta desde la posición actual hasta el destino con el mismo criterio.
+    \item El sistema traza la nueva ruta y actualiza la distancia, el tiempo y el nivel de riesgo.
+    \item Si hay enlaces o códigos de seguimiento activos, el sistema notifica al Seguidor el desvío y el recálculo, y actualiza su vista (CU-40).
+    \item La navegación continúa en CU-29.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin conexión a internet.} En el paso 2, si el dispositivo no tiene conexión, el sistema mantiene la ruta anterior e informa la condición conforme a RNF-10 (RF-25). Regresa a CU-29.}
+  \cuCampo{Postcondiciones}{La nueva ruta queda trazada desde la posición actual hasta el destino y los seguidores activos quedan notificados.}
+  \cuCampo{Relaciones}{Extiende CU-29 en el punto de extensión \enquote{Desvío de la ruta}, cuando el usuario se desvía más de 50 m.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-31}{Pausar y reanudar navegación}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Seguidor (secundario).}
+  \cuCampo{Requerimientos}{RF-31.}
+  \cuCampo{Reglas de negocio}{RN-13.}
+  \cuCampo{Descripción}{El usuario pausa la navegación y la reanuda después sin perder la ruta trazada.}
+  \cuCampo{Precondiciones}{La navegación está en curso.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Pausa} de CU-29, el usuario selecciona pausar la navegación.
+    \item El sistema detiene el guiado y conserva la ruta trazada.
+    \item Si hay enlaces o códigos de seguimiento activos, el sistema notifica la pausa al Seguidor.
+    \item El usuario selecciona reanudar la navegación.
+    \item El sistema reanuda el guiado sobre la misma ruta y notifica la reanudación al Seguidor.
+    \item La navegación continúa en CU-29.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Cancelación durante la pausa.} En el paso 4, si el usuario cancela la navegación en lugar de reanudarla, el caso continúa en CU-34.}
+  \cuCampo{Postcondiciones}{La ruta se conserva durante la pausa, el guiado continúa al reanudar y los seguidores activos quedan notificados.}
+  \cuCampo{Relaciones}{Extiende CU-29 en el punto de extensión \enquote{Pausa}, cuando el usuario pausa la navegación.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-32}{Recalcular ruta por cambio de riesgo}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Seguidor (secundario).}
+  \cuCampo{Requerimientos}{RF-34.}
+  \cuCampo{Reglas de negocio}{RN-04, RN-13.}
+  \cuCampo{Descripción}{El sistema avisa al usuario cuando cambia el riesgo de un tramo pendiente y recalcula la ruta solo si el usuario lo confirma.}
+  \cuCampo{Precondiciones}{La navegación está en curso.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Cambio de riesgo} de CU-29, el sistema detecta que un tramo no recorrido de la ruta cambió de nivel de riesgo (RN-04).
+    \item El sistema notifica el cambio al usuario y le ofrece recalcular la ruta.
+    \item El usuario confirma el recálculo.
+    \item El sistema recalcula la ruta desde la posición actual y la traza.
+    \item Si hay enlaces o códigos de seguimiento activos, el sistema notifica al Seguidor y actualiza su vista (CU-40).
+    \item La navegación continúa en CU-29.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 El usuario rechaza el recálculo.} En el paso 3, si el usuario no confirma, el sistema conserva la ruta sin modificarla. Regresa a CU-29.}
+  \cuCampo{Postcondiciones}{La ruta en curso solo se modifica si el usuario confirma el recálculo; en ese caso, los seguidores activos quedan notificados.}
+  \cuCampo{Relaciones}{Extiende CU-29 en el punto de extensión \enquote{Cambio de riesgo}, cuando cambia el riesgo de un tramo pendiente y el usuario confirma.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-33}{Finalizar navegación por llegada al destino}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Seguidor (secundario).}
+  \cuCampo{Requerimientos}{RF-32.}
+  \cuCampo{Reglas de negocio}{RN-04, RN-13.}
+  \cuCampo{Descripción}{El sistema finaliza la navegación al detectar la llegada al destino y presenta una evaluación del trayecto.}
+  \cuCampo{Precondiciones}{La navegación está en curso.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Llegada al destino} de CU-29, el sistema detecta que el usuario llegó al destino.
+    \item El sistema finaliza la navegación.
+    \item El sistema presenta la evaluación del trayecto: distancia, duración y nivel de riesgo (RN-04).
+    \item Si hay enlaces o códigos de seguimiento activos, el sistema notifica la llegada al Seguidor; su vista deja de mostrar el trazo, el destino y el tiempo restante, y el enlace o código conserva su vigencia (RN-13).
+  }
+  \cuCampo{Flujos alternativos}{Ninguno.}
+  \cuCampo{Postcondiciones}{La navegación queda finalizada, la evaluación del trayecto queda visible y los seguidores activos quedan notificados de la llegada.}
+  \cuCampo{Relaciones}{Extiende CU-29 en el punto de extensión \enquote{Llegada al destino}, cuando el usuario llega al destino.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-34}{Cancelar navegación}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Seguidor (secundario).}
+  \cuCampo{Requerimientos}{RF-33.}
+  \cuCampo{Reglas de negocio}{RN-13.}
+  \cuCampo{Descripción}{El usuario termina la navegación antes de llegar al destino.}
+  \cuCampo{Precondiciones}{La navegación está en curso.}
+  \cuPasos{Flujo principal}{
+    \item En el punto de extensión \enquote{Cancelación} de CU-29, el usuario selecciona cancelar la navegación.
+    \item El sistema finaliza la navegación y muestra el mapa.
+    \item Si hay enlaces o códigos de seguimiento activos, el sistema notifica la cancelación al Seguidor; su vista deja de mostrar el trazo, el destino y el tiempo restante, y el enlace o código conserva su vigencia (RN-13).
+  }
+  \cuCampo{Flujos alternativos}{Ninguno.}
+  \cuCampo{Postcondiciones}{La navegación queda finalizada y los seguidores activos quedan notificados de la cancelación.}
+  \cuCampo{Relaciones}{Extiende CU-29 en el punto de extensión \enquote{Cancelación}, cuando el usuario cancela.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-35}{Registrar reporte de condición de riesgo}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Servicios del dispositivo móvil (secundario).}
+  \cuCampo{Requerimientos}{RF-35, RF-36.}
+  \cuCampo{Reglas de negocio}{RN-01, RN-06, RN-07, RN-12.}
+  \cuCampo{Descripción}{El usuario reporta una condición de riesgo en su ubicación actual o en un punto del mapa; el reporte queda pendiente de validación.}
+  \cuCampo{Precondiciones}{El usuario tiene una sesión iniciada con una cuenta verificada (RN-12) y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El usuario selecciona la opción de reportar, desde el mapa o durante la navegación.
+    \item El sistema verifica que el usuario no haya registrado 10 reportes en las últimas 24 horas (RN-12).
+    \item El sistema propone como ubicación del reporte la posición actual, obtenida de los Servicios del dispositivo móvil.
+    \item El usuario confirma la ubicación o selecciona otra sobre el mapa.
+    \item El usuario elige una categoría del catálogo de RN-06, cada una con su icono (RNF-08), y opcionalmente escribe una descripción.
+    \item El usuario envía el reporte.
+    \item El sistema verifica que la ubicación esté dentro del área de servicio (RN-01).
+    \item El sistema registra el reporte en estado pendiente (RN-07) y confirma el envío.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Límite de reportes alcanzado.} En el paso 2, si el usuario ya registró 10 reportes en las últimas 24 horas, el sistema informa que alcanzó el límite (RF-36) y no permite enviar el reporte. El caso termina.\par\smallskip
+    \textbf{FA-2 Sin permiso de ubicación.} En el paso 3, si el permiso no está concedido, el usuario debe seleccionar la ubicación sobre el mapa. Continúa en el paso 5.\par\smallskip
+    \textbf{FA-3 Ubicación fuera del área de servicio.} En el paso 7, si la ubicación está fuera del área de servicio, el sistema lo informa conforme a RNF-10. Regresa al paso 4.\par\smallskip
+    \textbf{FA-4 Sin categoría.} En el paso 6, si no se eligió una categoría, el sistema la solicita. Regresa al paso 5.\par\smallskip
+    \textbf{FA-5 Sin conexión a internet.} En el paso 6, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10 y no registra el reporte. El caso termina.}
+  \cuCampo{Postcondiciones}{El reporte queda registrado en estado pendiente y no afecta el grafo de riesgo hasta ser validado (RN-07).}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-36}{Visualizar y confirmar o desmentir reportes cercanos}
+  \cuCampo{Actores}{Peatón usuario (Autenticado) (principal); Servicios del dispositivo móvil (secundario).}
+  \cuCampo{Requerimientos}{RF-38, RF-39, RF-37.}
+  \cuCampo{Reglas de negocio}{RN-07, RN-08, RN-09, RN-12, RN-18.}
+  \cuCampo{Descripción}{El usuario confirma o desmiente los reportes pendientes de otros usuarios cercanos a él; con esas respuestas el sistema valida o descarta los reportes y ajusta la reputación de sus autores.}
+  \cuCampo{Precondiciones}{El usuario tiene una cuenta verificada (RN-12), el permiso de ubicación está concedido y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El sistema obtiene la ubicación actual del usuario de los Servicios del dispositivo móvil.
+    \item El sistema muestra los reportes pendientes de otros usuarios ubicados a no más de 500 m (RN-18) que el usuario aún no ha confirmado ni desmentido, con el icono de su categoría y distinguibles de los reportes validados (RNF-08).
+    \item El usuario selecciona un reporte pendiente.
+    \item El usuario confirma o desmiente el reporte.
+    \item El sistema registra la respuesta; cada usuario responde una sola vez por reporte (RN-07).
+    \item El sistema incluye \enquote{Validar reporte y ajustar reputación}: si el reporte alcanza las confirmaciones que exige la reputación de su autor (3, 2 o 1), lo marca como validado; si acumula 3 desmentidos, lo marca como descartado. En ambos casos ajusta la reputación del autor en 0.5 estrellas (RN-07).
+    \item Si el reporte quedó validado, el sistema lo considera en los pesos del grafo de riesgo con la contribución limitada por RN-09 y durante la vigencia de RN-08.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin reportes pendientes cercanos.} En el paso 2, si no hay reportes pendientes en el radio de 500 m, el sistema lo indica. El caso termina.\par\smallskip
+    \textbf{FA-2 Umbral no alcanzado.} En el paso 6, si el reporte no alcanza ningún umbral, permanece pendiente y no cambia la reputación del autor. El caso termina.}
+  \cuCampo{Postcondiciones}{La respuesta queda registrada y, cuando se alcanza un umbral, el estado del reporte y la reputación de su autor quedan actualizados.}
+  \cuCampo{Relaciones}{Incluye \enquote{Validar reporte y ajustar reputación} (RF-37).}
+\end{especificacionCU}
+
+% ---------------------------------------------------------
+\paragraph{Diagrama 7: Módulo de Seguimiento}\mbox{}
+
+\begin{especificacionCU}{CU-37}{Generar y compartir enlace o código de seguimiento}
+  \cuCampo{Actores}{Seguido (principal); Servicios del dispositivo móvil y Aplicaciones de mensajería (secundarios).}
+  \cuCampo{Requerimientos}{RF-41.}
+  \cuCampo{Reglas de negocio}{RN-13, RN-16.}
+  \cuCampo{Descripción}{El Seguido genera un enlace o código para que otras personas vean su ubicación y lo comparte por una aplicación de mensajería.}
+  \cuCampo{Precondiciones}{El Seguido tiene una sesión iniciada, el permiso de ubicación en segundo plano concedido y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El Seguido abre la sección de seguimiento y selecciona crear un enlace o código.
+    \item El sistema solicita la vigencia del enlace o código (RN-13).
+    \item El Seguido indica la vigencia y confirma.
+    \item El sistema genera el enlace o código con un identificador aleatorio de al menos 128 bits (RNF-17).
+    \item El sistema muestra las aplicaciones de mensajería instaladas en el dispositivo.
+    \item El Seguido elige una aplicación y envía el enlace o código.
+    \item El sistema comparte la ubicación del Seguido, obtenida de los Servicios del dispositivo móvil, mientras el enlace o código esté activo (RNF-16).
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Sin permiso de ubicación en segundo plano.} En el paso 1, si el permiso no está concedido, el sistema lo solicita (CU-24); si el Seguido lo deniega, no se genera el enlace o código. El caso termina.\par\smallskip
+    \textbf{FA-2 El Seguido no lo comparte.} En el paso 6, si el Seguido cierra la selección de aplicaciones, el enlace o código queda generado y disponible en \enquote{Mis enlaces} (CU-38).\par\smallskip
+    \textbf{FA-3 Sin conexión a internet.} En el paso 3, si el dispositivo no tiene conexión, el sistema informa la condición conforme a RNF-10 y no genera el enlace o código. El caso termina.}
+  \cuCampo{Postcondiciones}{El enlace o código queda activo con la vigencia indicada y permite a sus destinatarios consultar la ubicación del Seguido.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-38}{Gestionar enlaces y códigos de seguimiento}
+  \cuCampo{Actores}{Seguido.}
+  \cuCampo{Requerimientos}{RF-42.}
+  \cuCampo{Reglas de negocio}{RN-13.}
+  \cuCampo{Descripción}{El Seguido consulta sus enlaces y códigos, y edita su vigencia, los pausa, los reanuda o los elimina.}
+  \cuCampo{Precondiciones}{Existe al menos un enlace o código generado por el Seguido (CU-37).}
+  \cuPasos{Flujo principal}{
+    \item El Seguido abre la sección \enquote{Mis enlaces}.
+    \item El sistema lista los enlaces y códigos generados con su estado conforme a RN-13.
+    \item El Seguido selecciona un enlace o código.
+    \item El sistema muestra su detalle y las acciones disponibles.
+    \item El Seguido elige editar la vigencia e indica la nueva.
+    \item El sistema actualiza la vigencia conforme a RN-13.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Pausar.} En el paso 5, si el Seguido pausa el enlace o código, el sistema deja de mostrar su ubicación por ese medio sin perder el identificador.\par\smallskip
+    \textbf{FA-2 Reanudar.} En el paso 5, si el enlace o código está pausado y el Seguido lo reanuda, el sistema vuelve a mostrar su ubicación.\par\smallskip
+    \textbf{FA-3 Eliminar.} En el paso 5, si el Seguido elige eliminar, el sistema solicita una confirmación explícita; al confirmar, invalida el enlace o código y deja de mostrar la ubicación. Si no confirma, regresa al paso 4.}
+  \cuCampo{Postcondiciones}{El cambio queda aplicado conforme a RN-13: un enlace pausado no muestra la ubicación hasta reanudarse y un enlace eliminado queda invalidado.}
+  \cuCampo{Relaciones}{Ninguna.}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-39}{Gestionar seguimientos}
+  \cuCampo{Actores}{Seguidor.}
+  \cuCampo{Requerimientos}{RF-43.}
+  \cuCampo{Reglas de negocio}{RN-13.}
+  \cuCampo{Descripción}{El Seguidor agrega a una persona a \enquote{Mis seguimientos} mediante un enlace o código, consulta la lista y elimina seguimientos.}
+  \cuCampo{Precondiciones}{El Seguidor tiene una sesión iniciada y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El Seguidor abre un enlace de seguimiento recibido o introduce un código en la sección \enquote{Mis seguimientos}.
+    \item El sistema incluye \enquote{Validar vigencia del enlace o código}: verifica que esté vigente y activo (RN-13).
+    \item El sistema agrega a la persona seguida a \enquote{Mis seguimientos}.
+    \item El sistema muestra la lista de seguimientos agregados.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Enlace o código no vigente.} En el paso 2, si el enlace o código expiró, está pausado o fue eliminado, el sistema lo informa conforme a RNF-10 y no agrega el seguimiento. El caso termina.\par\smallskip
+    \textbf{FA-2 Eliminar un seguimiento.} En el paso 4, si el Seguidor elimina un seguimiento de la lista, el sistema lo quita sin afectar el enlace o código de quien lo generó.\par\smallskip
+    \textbf{FA-3 Solo consultar.} En el paso 1, si el Seguidor abre \enquote{Mis seguimientos} sin agregar uno nuevo, continúa en el paso 4.}
+  \cuCampo{Postcondiciones}{El seguimiento queda agregado o eliminado; si se agregó, queda disponible para su visualización (CU-40).}
+  \cuCampo{Relaciones}{Incluye \enquote{Validar vigencia del enlace o código} (RN-13).}
+\end{especificacionCU}
+
+\begin{especificacionCU}{CU-40}{Visualizar ubicación de la persona seguida}
+  \cuCampo{Actores}{Seguidor (principal); Proveedor de mapas (secundario).}
+  \cuCampo{Requerimientos}{RF-44.}
+  \cuCampo{Reglas de negocio}{RN-04, RN-13.}
+  \cuCampo{Descripción}{El Seguidor ve en el mapa, en tiempo real, la ubicación de la persona seguida y, si está navegando, su trayecto.}
+  \cuCampo{Precondiciones}{El Seguidor tiene una sesión iniciada, existe un enlace o código activo y el dispositivo tiene conexión a internet.}
+  \cuPasos{Flujo principal}{
+    \item El Seguidor selecciona un seguimiento en \enquote{Mis seguimientos} o abre el enlace de seguimiento.
+    \item El sistema incluye \enquote{Validar vigencia del enlace o código} (RN-13).
+    \item El sistema muestra sobre el mapa, con los mosaicos del Proveedor de mapas, la posición actual de la persona seguida, actualizada en tiempo real.
+    \item Si la persona seguida tiene una navegación en curso, el sistema muestra además el trazo de la ruta, el destino, la distancia y el tiempo restantes, y el nivel de riesgo de la ruta (RN-04, RNF-09).
+    \item El sistema actualiza la información mientras el enlace o código siga vigente y activo.
+  }
+  \cuCampo{Flujos alternativos}{\textbf{FA-1 Enlace o código no vigente.} En el paso 2 o 5, si el enlace o código expiró, está pausado o fue eliminado, el sistema lo informa conforme a RNF-10 y deja de mostrar la ubicación. El caso termina.\par\smallskip
+    \textbf{FA-2 Fin de la navegación de la persona seguida.} En el paso 4, si la persona seguida llega a su destino o cancela la navegación (CU-33, CU-34), el sistema deja de mostrar el trazo, el destino y el tiempo restante, y conserva su posición.}
+  \cuCampo{Postcondiciones}{El Seguidor visualiza la información actualizada de la persona seguida mientras el enlace o código siga vigente y activo.}
+  \cuCampo{Relaciones}{Incluye \enquote{Validar vigencia del enlace o código} (RN-13).}
+\end{especificacionCU}
