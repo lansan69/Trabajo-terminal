@@ -9,9 +9,10 @@
 % y sistemas externos: iguales al diagrama de contexto
 % (diagrama_contexto_sistema.tex). Si cambias uno, cambia el otro.
 %
-% Supuesto: la base de datos (Supabase) es la que usa la identidad de
-% Google y el servicio de notificaciones, porque gestiona la autenticación
-% y los reportes; la aplicación móvil es la que obtiene los mapas.
+% Origen de las flechas a sistemas externos: la base de datos (Supabase)
+% usa la identidad de Google porque gestiona la autenticación; la
+% aplicación móvil (Flutter) envía las notificaciones push y obtiene los
+% mapas.
 %
 % Tamaño: unos 14.7 cm de ancho (cabe en \textwidth = 15 cm sin escalar)
 % y unos 22 cm de alto. No usar \resizebox ni scale: achican la letra.
@@ -81,11 +82,8 @@
   % bajan hasta su caja
   \coordinate (codo) at ($(limite.south)+(0,-0.5)$);
   \draw[c4relacion] (db.south) |- (google.north |- codo) -- (google.north);
-  \begin{scope}[on background layer]
-    % Sale de debajo del cilindro para no dejar hueco bajo su borde curvo
-    \draw[c4relacion] ($(db.south)+(1.6,0.5)$) |- (notificaciones.north |- codo)
-      -- (notificaciones.north);
-  \end{scope}
+  \draw[c4relacion] ($(app.south)+(-1.6,0)$) |- (notificaciones.north |- codo)
+    -- (notificaciones.north);
   \draw[c4relacion] (app.south) |- (mapas.north |- codo) -- (mapas.north);
 
   % Textos de las tres flechas inferiores, a la misma altura
