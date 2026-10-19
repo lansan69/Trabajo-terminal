@@ -8,10 +8,10 @@ En esta sección se definen los requerimientos que requiere el software para cum
 \tablaRF{RF-01}% Identificador
   {Registro de cuenta con correo electrónico}% Nombre
   {Alta}% Prioridad
-  {El sistema permite que el usuario registre una cuenta con su nombre completo, correo electrónico y una contraseña.}% Requerimiento
-  {Nombre completo, correo electrónico y contraseña}% Entrada
+  {El sistema permite que el usuario registre una cuenta con su nombre y apellidos, correo electrónico y una contraseña.}% Requerimiento
+  {Nombre y apellidos, correo electrónico y contraseña}% Entrada
   {Cuenta registrada pendiente de verificación}% Salida
-  {El sistema debe permitir que el usuario registre una cuenta proporcionando su nombre completo, correo electrónico y contraseña.}% Descripción
+  {El sistema debe permitir que el usuario registre una cuenta proporcionando su nombre y apellidos, correo electrónico y contraseña.}% Descripción
   {El usuario debe haber aceptado el aviso de privacidad (RF-12), el correo electrónico no debe estar asociado a otra cuenta registrada y el dispositivo debe tener conexión a internet.}% Precondición
   {La cuenta queda registrada en estado no verificado.}% Postcondición
   
@@ -128,10 +128,10 @@ En esta sección se definen los requerimientos que requiere el software para cum
 \tablaRF{RF-13}% Identificador
   {Edición de datos del perfil}% Nombre
   {Media}% Prioridad
-  {El sistema permite que el usuario edite su foto de perfil, nombre completo y correo electrónico.}% Requerimiento
-  {Nueva foto de perfil, nombre completo o correo electrónico}% Entrada
+  {El sistema permite que el usuario edite su foto de perfil, nombre y apellidos, y correo electrónico.}% Requerimiento
+  {Nueva foto de perfil, nombre y apellidos o correo electrónico}% Entrada
   {Datos actualizados}% Salida
-  {El sistema debe permitir que el usuario autenticado modifique su foto de perfil, nombre completo y correo electrónico. Si el usuario actualiza su correo electrónico, el sistema debe cambiar el estado de la cuenta a no verificada (RF-04) y enviar un nuevo enlace de verificación (RF-02).}% Descripción
+  {El sistema debe permitir que el usuario autenticado modifique su foto de perfil, nombre y apellidos, y correo electrónico. Si el usuario actualiza su correo electrónico, el sistema debe cambiar el estado de la cuenta a no verificada (RF-04) y enviar un nuevo enlace de verificación (RF-02).}% Descripción
   {El usuario debe tener una sesión iniciada y el dispositivo debe tener conexión a internet.}% Precondición
   {Los datos y la imagen de perfil quedan actualizados en el sistema y visibles en la interfaz.}% Postcondición
 
@@ -411,7 +411,7 @@ En esta sección se definen los requerimientos que requiere el software para cum
   {Debe existir un reporte pendiente de otro usuario dentro del radio de confirmación de RN-18 y el dispositivo debe tener conexión a internet.}% Precondición
   {La respuesta queda registrada para el proceso de validación de RN-07.}% Postcondición
 
-\subsubsection{Seguridad personal}
+\subsubsection{Seguridad personal y Seguimiento}
 
 \tablaRF{RF-41}% Identificador
   {Alertas de reportes cercanos}% Nombre

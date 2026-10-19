@@ -1,18 +1,17 @@
 % =========================================================
 % 6.2.1 ACTORES
 % =====
-En concordancia con la arquitectura definida en el diagrama de contexto y de contenedores, el límite del sistema comprende tanto la aplicación móvil en Flutter como el servicio de base de datos y autenticación en Supabase, el cual ejecuta de forma automatizada las reglas de negocio, el envío de correos transaccionales, la validación comunitaria de reportes y la administración de catálogos sin requerir la intervención de un actor administrador humano. 
+En concordancia con la arquitectura del sistema definida en \ref{sec:arquitectura}, el límite del sistema comprende tanto la aplicación móvil en Flutter como el servicio de base de datos y autenticación en Supabase.
 
 Bajo esta arquitectura, se identifican los siguientes actores primarios (personas) y secundarios (sistemas externos fuera de la frontera del sistema):
 
 \subsubsection{Actores primarios}
 
 \begin{description}
-    \item[Peatón usuario (No autenticado):] Estado inicial del peatón usuario al interactuar con la aplicación sin una sesión activa o con una cuenta pendiente de verificación. Sus interacciones comprenden la consulta y aceptación del aviso de privacidad (RF-12), el registro de cuenta (RF-01), la verificación de correo y solicitud de reenvío de enlace (RF-02, RF-03), el inicio de sesión (RF-05, RF-06), la recuperación y restablecimiento de contraseña (RF-09, RF-10) y el uso del botón de emergencia (RF-44).
+    \item[Usuario (No autenticado):] Estado inicial del peatón usuario al interactuar con la aplicación sin una sesión activa o con una cuenta pendiente de verificación. Sus interacciones comprenden la consulta y aceptación del aviso de privacidad, el registro de cuenta, la verificación de correo y solicitud de reenvío de enlace, el inicio de sesión, la recuperación y restablecimiento de contraseña y el uso del botón de emergencia.
 
-    \item[Peatón usuario (Autenticado):] Usuario con cuenta verificada y sesión activa que se traslada a pie y busca una ruta segura. Interactúa con todos los componentes de la aplicación móvil para gestionar su perfil y cuenta (RF-07, RF-08, RF-11), explorar el mapa y sus marcadores (RF-13, RF-17, RF-18), buscar y seleccionar origen y destino (RF-14, RF-15), administrar lugares favoritos (RF-16), solicitar el cálculo de rutas seguras (RF-19 a RF-26), navegar en tiempo real (RF-27 a RF-34), registrar y confirmar reportes ciudadanos (RF-35 a RF-39), configurar alertas (RF-40), compartir o revocar enlaces de seguimiento (RF-41, RF-43), activar el botón de emergencia (RF-44) y consultar la sección de ayuda y simbología (RF-45).
+    \item[Usuario (Autenticado):] Usuario con cuenta verificada y sesión activa que se traslada a pie buscando rutas seguras o que monitorea el trayecto de otros usuarios en tiempo real. Interactúa con todos los componentes de la aplicación móvil para gestionar su perfil y cuenta, explorar el mapa y sus marcadores (RF-13, buscar y seleccionar origen y destino, administrar lugares favoritos, solicitar el cálculo de rutas seguras, navegar en tiempo real, registrar, confirmar reportes ciudadanos, configurar alertas, compartir o revocar enlaces de seguimiento, monitorear a otros usuarios, activar el botón de emergencia y consultar la sección de ayuda y simbología.
 
-    \item[Destinatario (Contacto de confianza):] Persona externa que recibe y abre un enlace de seguimiento activo compartido por un peatón usuario (RF-41). Interactúa con el sistema únicamente para consultar en tiempo real la ubicación actual del peatón, el trazo de la ruta, el destino, la distancia y el tiempo estimado restantes (RF-42), sin requerir registro previo.
 \end{description}
 
 \subsubsection{Actores secundarios (Sistemas externos)}

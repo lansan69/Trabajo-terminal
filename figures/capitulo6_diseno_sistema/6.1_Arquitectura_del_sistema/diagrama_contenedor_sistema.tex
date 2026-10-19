@@ -1,98 +1,85 @@
 % =========================================================
-% Diagrama de contenedores (C4, nivel 2)    6.1 Arquitectura del sistema
-% ---------------------------------------------------------
-% Se incluye con \input dentro del entorno figure de seccion6_1.tex.
-% Estilos y colores: setup/settings.tex, sección G (Diagramas C4).
-%
-% Contenedores, descripciones y la flecha "Lee y escribe": iguales al
-% diagrama anterior (diagrama_contenedor_sistema.png). Usuario, su flecha
-% y sistemas externos: iguales al diagrama de contexto
-% (diagrama_contexto_sistema.tex). Si cambias uno, cambia el otro.
-%
-% Origen de las flechas a sistemas externos: la base de datos (Supabase)
-% usa la identidad de Google porque gestiona la autenticación; la
-% aplicación móvil (Flutter) envía las notificaciones push y obtiene los
-% mapas.
-%
-% Tamaño: unos 14.7 cm de ancho (cabe en \textwidth = 15 cm sin escalar)
-% y unos 22 cm de alto. No usar \resizebox ni scale: achican la letra.
+% Diagrama de contenedores (C4, nivel 2)
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Contenedores ----------------
-  \node[c4contenedor, text width=5.0cm] (app) at (4,0)
-    {\elementoCuatro{Prototipo de aplicación móvil}{Contenedor: Flutter}%
-     \descripcionCuatro{Provee toda la funcionalidad del sistema a los
-       usuarios mediante su dispositivo móvil.}};
+  \node[c4contenedor, text width=4.5cm] (auth) at (1.5, -5)
+    {\elementoCuatro{Autenticación}{Contenedor: Supabase}};
 
-  % Nombre del límite, arriba a la izquierda, a la altura de la app
-  % (-10.78 = -4 del centro de la app - 6.78 de la orilla izquierda de la base de datos)
+  \node[c4contenedor, text width=4.5cm] (app) at (4.5, 0)
+    {\elementoCuatro{Aplicación móvil}{Contenedor: Flutter}};
+
+  \node[c4basedatos, text width=4.5cm] (db) at (4.5, -10)
+    {\elementoCuatro{Base de datos}{Contenedor: PostgreSQL}};
+
+  \node[c4contenedor, text width=4.5cm] (api) at (7.5, -5)
+    {\elementoCuatro{API REST}{Contenedor: Supabase}};
+
+  % ---------------- Límite del sistema ----------------
   \node[c4limiteEtiqueta, anchor=north west] (etiquetaLimite)
-    at ($(app.north)+(-10.78,0)$)
+    at (-2, 1.5)
     {\textbf{Sistema de rutas seguras}\\{[Sistema de software]}};
 
-  % Base de datos, debajo del nombre del límite
-  \node[c4basedatos, text width=5.0cm, anchor=north] (db)
-    at ($(app.north)+(-8,-1.25)$)
-    {\elementoCuatro{Base de datos}{Contenedor: Supabase}%
-     \descripcionCuatro{Guarda los datos de usuarios, reportes y el grafo
-       del mapa, calcula rutas y gestiona la autenticación.}};
-
-  % Límite punteado del sistema (detrás de todo)
   \begin{scope}[on background layer]
-    \node[c4limite, fit=(etiquetaLimite)(db)(app)] (limite) {};
+    \node[c4limite, fit=(etiquetaLimite)(api)(app)(db)(auth)] (limite) {};
   \end{scope}
 
   % ---------------- Persona ----------------
-  \node[c4persona, text width=6.4cm, anchor=south] (usuario)
-    at ($(app.north)+(0,3.4)$)
-    {\elementoCuatro{Usuario del sistema}{Persona}%
-     \descripcionCuatro{Usuario que se traslada a pie buscando rutas seguras
-       o que monitorea el trayecto de otros usuarios en tiempo real.}};
+  \node[c4persona, text width=6cm] (usuario) at (4.5, 3.5)
+    {\elementoCuatro{Usuario del sistema}{Persona}};
   \filldraw[c4cabeza] ($(usuario.north)+(0,0.6)$) circle[radius=0.8cm];
 
   % ---------------- Sistemas externos ----------------
-  % Alineados por su borde superior, 3.4 cm debajo del límite
-  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (google)
-    at ($(limite.south)+(-4.9,-3.4)$)
-    {\elementoCuatro{Identidad de Google}{Sistema externo}%
-     \descripcionCuatro{Verifica la identidad de los usuarios que inician
-       sesión con su cuenta de Google.}};
-  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (notificaciones)
-    at ($(limite.south)+(0,-3.4)$)
-    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}%
-     \descripcionCuatro{Hace llegar las alertas al dispositivo móvil del
-       usuario, aun con la aplicación cerrada.}};
-  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (mapas)
-    at ($(limite.south)+(4.9,-3.4)$)
-    {\elementoCuatro{Servicio de geocodificación y mapas}{Sistema externo}%
-     \descripcionCuatro{Provee los mosaicos del mapa base y la búsqueda de
-       lugares por nombre o dirección.}};
+  \node[c4externo, text width=2.8cm, minimum height=2.7cm, anchor=north] (notificaciones)
+    at ($(api.north)+(6,-4)$)
+    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}};
 
-  % ---------------- Relaciones ----------------
-  \draw[c4relacion] (usuario) -- (app)
-    node[c4etiqueta, midway, text width=6.4cm]
-    {Gestiona su perfil y favoritos, consulta mapas y rutas seguras,
-     genera/valida reportes y comparte o monitorea ubicaciones usando};
+  \node[c4externo, text width=2.8cm, minimum height=2.7cm, anchor=north] (email)
+    at ($(auth.north)+(-6,-4)$)
+    {\elementoCuatro{Servicio de email}{Sistema externo}};
 
-  \draw[c4relacion] (app.west) -- (app.west -| db.east)
-    node[c4etiqueta, midway, above=2pt] {Lee y\\escribe};
+  \node[c4externo, text width=2.8cm, minimum height=2.7cm, anchor=north] (google)
+    at ($(auth.north)+(-6,0)$)
+    {\elementoCuatro{Identidad de Google}{Sistema externo}};
 
-  % Las flechas inferiores bajan hasta 0.5 cm debajo del límite, giran y
-  % bajan hasta su caja
-  \coordinate (codo) at ($(limite.south)+(0,-0.5)$);
-  \draw[c4relacion] (db.south) |- (google.north |- codo) -- (google.north);
-  \draw[c4relacion] ($(app.south)+(-1.6,0)$) |- (notificaciones.north |- codo)
-    -- (notificaciones.north);
-  \draw[c4relacion] (app.south) |- (mapas.north |- codo) -- (mapas.north);
+  \node[c4externo, text width=2.8cm, minimum height=2.7cm, anchor=north] (geocodi)
+    at ($(api.north)+(6,1.5)$)
+    {\elementoCuatro{Servicio de geocodificación}{Sistema externo}};
 
-  % Textos de las tres flechas inferiores, a la misma altura
-  \coordinate (filaEtiquetas) at ($(limite.south)+(0,-1.95)$);
-  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| google)
-    {Autentica usuarios con cuenta de Google usando};
-  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| notificaciones)
-    {Entrega alertas al usuario usando};
-  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| mapas)
-    {Obtiene los mapas base de};
+  \node[c4externo, text width=2.8cm, minimum height=2.7cm, anchor=north] (mapas)
+    at ($(api.north)+(6,5)$)
+    {\elementoCuatro{Servicio de mapas}{Sistema externo}};
+
+  % ---------------- Relaciones Internas ----------------
+  \draw[c4relacion] (app.south) -- (auth.north);
+  \draw[c4relacion] (app.south) -- (api.north);
+  \draw[c4relacion] (auth.south) -- (db.north);
+  \draw[c4relacion] (api.south) -- (db.north);
+
+  % ---------------- Relaciones Externas y Usuario ----------------
+  \draw[c4relacion] (usuario) |- (app)
+    node[c4etiqueta, midway, right] {Interactúa con};
+
+  \draw[c4relacion] (email.west) |- ++(-0.5,0) |- (usuario.west)
+    node[c4etiqueta, pos=0.25, right, text width=2.5cm] {Envía email de verificación};
+
+  \draw[c4relacion] (auth.south) |- (email.east)
+    node[c4etiqueta, near end, above] {Envía verificación};
+
+  \draw[c4relacion] (auth.north) |- (google.east)
+    node[c4etiqueta, near end, below] {Verifica/agrega token};
+
+  \draw[c4relacion] (app.west) -- (google.north)
+    node[c4etiqueta, pos=0.25, above] {Obtiene token de Google};
+
+  \draw[c4relacion] (app.east) |- (mapas.west)
+    node[c4etiqueta, midway, above] {Obtiene mapas de};
+
+  \draw[c4relacion] (app.east) |- (geocodi.west)
+    node[c4etiqueta, near end, above] {Busca lugares usando};
+
+  \draw[c4relacion] (api.south) |- (notificaciones.west)
+    node[c4etiqueta, near end, above] {Envía alertas vía};
 
 \end{tikzpicture}

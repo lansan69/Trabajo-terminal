@@ -3,52 +3,40 @@
 % ---------------------------------------------------------
 % Se incluye con \input dentro del entorno figure de seccion6_1.tex.
 % Estilos y colores: setup/settings.tex, sección G (Diagramas C4).
-%
-% Contenido tomado del diagrama de IcePanel. Cada flecha se lee como una
-% oración: origen + texto + destino ("Usuario del sistema gestiona ...
-% usando Sistema de rutas seguras").
-%
-% Tamaño: unos 14.5 cm de ancho, cabe en \textwidth (15 cm) sin escalar,
-% así el texto conserva el tamaño del documento; unos 21 cm de alto con
-% las descripciones. Las descripciones de los sistemas externos son las
-% mismas que en diagrama_contenedor_sistema.tex. No envolverlo en \resizebox ni usar scale: eso
-% vuelve a achicar la letra.
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Elementos ----------------
   % Persona: caja + cabeza encima
-  \node[c4persona, text width=6.8cm] (usuario)
-    {\elementoCuatro{Usuario del sistema}{Persona}%
-     \descripcionCuatro{Usuario que se traslada a pie buscando rutas seguras
-       o que monitorea el trayecto de otros usuarios en tiempo real.}};
+  \node[c4persona, text width=7cm] (usuario)
+    {\elementoCuatro{Usuario del sistema}{Persona}};
   \filldraw[c4cabeza] ($(usuario.north)+(0,0.6)$) circle[radius=0.8cm];
 
-  % Sistema (la descripción sigue sus cuatro pantallas: perfil, mapas,
-  % favoritos y monitoreo)
-  \node[c4sistema, text width=8.6cm, below=3.4cm of usuario] (sistema)
-    {\elementoCuatro{Sistema de rutas seguras}{Sistema de software}%
-     \descripcionCuatro{Permite al usuario gestionar su perfil; consultar el
-       mapa, generar rutas según su nivel de riesgo, navegar y reportar
-       incidentes; guardar lugares favoritos, y compartir su trayecto o
-       monitorear el de otros usuarios en tiempo real.}};
+  % Sistema
+  \node[c4sistema, text width=6cm, below=3cm of usuario] (sistema)
+    {\elementoCuatro{Sistema de rutas seguras}{Sistema de software}};
 
   % Sistemas externos: alineados por su borde superior, 3.8 cm debajo del sistema
-  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (notificaciones)
-    at ($(sistema.south)+(0,-3.8)$)
-    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}%
-     \descripcionCuatro{Hace llegar las alertas al dispositivo móvil del
-       usuario, aun con la aplicación cerrada.}};
-  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (mapas)
-    at ($(notificaciones.north)+(-5,0)$)
-    {\elementoCuatro{Servicio de geocodificación y mapas}{Sistema externo}%
-     \descripcionCuatro{Provee los mosaicos del mapa base y la búsqueda de
-       lugares por nombre o dirección.}};
-  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (google)
-    at ($(notificaciones.north)+(5,0)$)
-    {\elementoCuatro{Identidad de Google}{Sistema externo}%
-     \descripcionCuatro{Verifica la identidad de los usuarios que inician
-       sesión con su cuenta de Google.}};
+  % =================================================
+  \node[c4externo, text width=3cm, minimum height=2.7cm, anchor=north] (notificaciones)
+    at ($(sistema.south)+(0,-3)$)
+    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}};
+  % =================================================
+  \node[c4externo, text width=3cm, minimum height=2.7cm, anchor=north] (geocodi)
+    at ($(notificaciones.north)+(-4,0)$)
+    {\elementoCuatro{Servicio de geocodificación}{Sistema externo}};
+  % =================================================
+    \node[c4externo, text width=3cm, minimum height=2.7cm, anchor=north] (mapas)
+    at ($(notificaciones.north)+(-8,0)$)
+    {\elementoCuatro{Servicio de mapas}{Sistema externo}};
+ % =================================================    
+  \node[c4externo, text width=3cm, minimum height=2.7cm, anchor=north] (google)
+    at ($(notificaciones.north)+(4,0)$)
+    {\elementoCuatro{Identidad de Google}{Sistema externo}};
+ % =================================================
+  \node[c4externo, text width=3cm, minimum height=2.7cm, anchor=north] (email)
+    at ($(notificaciones.north)+(8,0)$)
+    {\elementoCuatro{Servicio de email}{Sistema externo}};
 
   % ---------------- Relaciones ----------------
   \draw[c4relacion] (usuario) -- (sistema)
@@ -56,18 +44,27 @@
     {Gestiona su perfil y favoritos, consulta mapas y rutas seguras,
      genera/valida reportes y comparte o monitorea ubicaciones usando};
 
-  % Las flechas laterales bajan 0.5 cm, giran y bajan hasta su caja
-  \draw[c4relacion] ($(sistema.south)+(-2,0)$) -- ++(0,-0.5) -| (mapas.north);
-  \draw[c4relacion] (sistema) -- (notificaciones);
-  \draw[c4relacion] ($(sistema.south)+(2,0)$) -- ++(0,-0.5) -| (google.north);
+  % --- Fila inferior: tres flechas verticales rectas (x = -3, 0, +3) ---
+  % Cada x cae dentro del ancho de su caja destino (cajas de 3 cm).
+  \draw[c4relacion] ($(sistema.south)+(-3,0)$) -- ($(geocodi.north)+(1,0)$)
+    node[c4etiqueta, midway, text width=2.5cm]
+    {Busca lugares por nombre o dirección usando};
 
-  % Textos de las tres flechas inferiores, a la misma altura
-  \coordinate (filaEtiquetas) at ($(sistema.south)+(0,-2.15)$);
-  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| mapas)
+  \draw[c4relacion] (sistema.south) -- (notificaciones.north)
+    node[c4etiqueta, midway, text width=2.5cm]
+    {Envía alertas al usuario usando};
+
+  \draw[c4relacion] ($(sistema.south)+(3,0)$) -- ($(google.north)+(-1,0)$)
+    node[c4etiqueta, midway, text width=2.5cm]
+    {Autentica a los usuarios usando};
+
+  % --- Cajas laterales (mapas y email): líneas rectas desde las esquinas inferiores del sistema ---
+  \draw[c4relacion] (sistema.south west) -- (mapas.north)
+    node[c4etiqueta, midway, text width=2.3cm]
     {Obtiene los mapas base de};
-  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas)
-    {Entrega alertas al usuario usando};
-  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| google)
-    {Autentica usuarios con cuenta de Google usando};
+
+  \draw[c4relacion] (sistema.south east) -- (email.north)
+    node[c4etiqueta, midway, text width=2.3cm]
+    {Envía correos electrónicos usando};
 
 \end{tikzpicture}

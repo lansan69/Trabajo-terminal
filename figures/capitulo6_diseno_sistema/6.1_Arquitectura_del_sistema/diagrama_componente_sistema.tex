@@ -1,0 +1,173 @@
+% =========================================================
+% Diagrama de componentes (C4, nivel 3)    6.1 Arquitectura del sistema
+% ---------------------------------------------------------
+% Se incluye con \input dentro del entorno figure, igual que
+% diagrama_contenedor_sistema.tex. Usa los mismos estilos de
+% setup/settings.tex, sección G (Diagramas C4).
+%
+% Expande el contenedor "Prototipo de aplicación móvil (Flutter)".
+% Fuera del límite quedan Usuario, Base de datos (Supabase) y los
+% sistemas externos, iguales a los del diagrama de contenedores.
+%
+% Cuadrícula (centros en cm):
+%   Fila 1 (y=-3.6):  Auth -5.8 | Perfil -2.9 | Mapa 0 | Favoritos 2.9 | Monitoreo 5.8
+%   Fila 2 (y=-8.0):  Búsqueda -4.35 | Ruteo -1.45 | Navegación 1.45 | Reportes 4.35
+%   Fila 3 (y=-12.4): Notificaciones -2.9 | Ubicación 0   (servicios compartidos, punteados)
+%
+% Todas las cajas de componentes usan el estilo c4contenedor. Si en
+% settings.tex defines un estilo c4componente, cámbialo en los nodos.
+%
+% Tamaño: unos 14.7 cm de ancho. No usar \resizebox ni scale.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- App Shell ----------------
+  \node[c4contenedor, text width=13.0cm] (shell) at (0,0)
+    {\elementoCuatro{App Shell}{Componente: Dart, go\_router}%
+     \descripcionCuatro{Barra inferior y rutas de navegación. Muestra las
+       pantallas de cada componente y abre la pantalla de una alerta.}};
+
+  % ---------------- Fila 1: componentes de entrada ----------------
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (auth) at (-5.8,-3.6)
+    {\elementoCuatro{Auth}{Componente: Dart}%
+     \descripcionCuatro{Registro, inicio de sesión y sesión del usuario.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (perfil) at (-2.9,-3.6)
+    {\elementoCuatro{Perfil}{Componente: Dart}%
+     \descripcionCuatro{Datos personales, preferencias y ayuda.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (mapa) at (0,-3.6)
+    {\elementoCuatro{Mapa}{Componente: Dart}%
+     \descripcionCuatro{Dibuja el mapa base, los reportes y los trayectos.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (favoritos) at (2.9,-3.6)
+    {\elementoCuatro{Favoritos}{Componente: Dart}%
+     \descripcionCuatro{Guarda y consulta los lugares favoritos.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (monitoreo) at (5.8,-3.6)
+    {\elementoCuatro{Monitoreo}{Componente: Dart}%
+     \descripcionCuatro{Comparte la ubicación y sigue a otros usuarios.}};
+
+  % ---------------- Fila 2: componentes de dominio ----------------
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (busqueda) at (-4.35,-8.0)
+    {\elementoCuatro{Búsqueda}{Componente: Dart}%
+     \descripcionCuatro{Busca lugares por nombre o dirección.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (ruteo) at (-1.45,-8.0)
+    {\elementoCuatro{Ruteo}{Componente: Dart}%
+     \descripcionCuatro{Pide rutas óptima, segura y rápida.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (navegacion) at (1.45,-8.0)
+    {\elementoCuatro{Navegación}{Componente: Dart}%
+     \descripcionCuatro{Recorrido activo, desvíos y calificación.}};
+  \node[c4contenedor, text width=2.1cm, minimum height=2.8cm] (reportes) at (4.35,-8.0)
+    {\elementoCuatro{Reportes}{Componente: Dart}%
+     \descripcionCuatro{Crea, lista y valida incidentes.}};
+
+  % ---------------- Fila 3: servicios compartidos (punteados) ----------------
+  \node[c4contenedor, dashed, text width=2.1cm, minimum height=2.8cm] (notif) at (-2.9,-12.4)
+    {\elementoCuatro{Notificaciones}{Componente compartido: Dart}%
+     \descripcionCuatro{Alertas push y notificaciones locales.}};
+  \node[c4contenedor, dashed, text width=2.1cm, minimum height=2.8cm] (ubicacion) at (0,-12.4)
+    {\elementoCuatro{Ubicación}{Componente compartido: Dart}%
+     \descripcionCuatro{GPS y permiso de ubicación.}};
+
+  % ---------------- Límite del contenedor ----------------
+  \node[c4limiteEtiqueta, anchor=south west] (etiquetaLimite)
+    at ($(shell.north west)+(0,0.25)$)
+    {\textbf{Prototipo de aplicación móvil}\\{[Contenedor: Flutter]}};
+
+  \begin{scope}[on background layer]
+    \node[c4limite, fit=(etiquetaLimite)(shell)(auth)(monitoreo)(notif)(ubicacion)] (limite) {};
+  \end{scope}
+
+  % ---------------- Persona ----------------
+  \node[c4persona, text width=6.4cm, anchor=south] (usuario)
+    at ($(shell.north)+(0,4.2)$)
+    {\elementoCuatro{Usuario del sistema}{Persona}%
+     \descripcionCuatro{Usuario que se traslada a pie buscando rutas seguras
+       o que monitorea el trayecto de otros usuarios en tiempo real.}};
+  \filldraw[c4cabeza] ($(usuario.north)+(0,0.6)$) circle[radius=0.8cm];
+
+  % ---------------- Sistemas externos y base de datos ----------------
+  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (push)
+    at ($(limite.south)+(-4.9,-3.4)$)
+    {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}%
+     \descripcionCuatro{Hace llegar las alertas al dispositivo móvil del
+       usuario, aun con la aplicación cerrada.}};
+  \node[c4basedatos, text width=3.9cm, minimum height=2.7cm, anchor=north] (db)
+    at ($(limite.south)+(0,-3.4)$)
+    {\elementoCuatro{Base de datos}{Contenedor: Supabase}%
+     \descripcionCuatro{Guarda los datos de usuarios, reportes y el grafo
+       del mapa, calcula rutas y gestiona la autenticación.}};
+  \node[c4externo, text width=3.9cm, minimum height=2.7cm, anchor=north] (mapas)
+    at ($(limite.south)+(4.9,-3.4)$)
+    {\elementoCuatro{Servicio de geocodificación y mapas}{Sistema externo}%
+     \descripcionCuatro{Provee los mosaicos del mapa base y la búsqueda de
+       lugares por nombre o dirección.}};
+
+  % ---------------- Relaciones: usuario y App Shell ----------------
+  \draw[c4relacion] (usuario) -- (shell)
+    node[c4etiqueta, midway, text width=4.0cm] {Usa la aplicación mediante};
+
+  \foreach \c in {auth,perfil,mapa,favoritos,monitoreo} {
+    \draw[c4relacion] (shell.south -| \c) -- (\c.north)
+      node[c4etiqueta, midway, text width=1.6cm] {Muestra};
+  }
+
+  % ---------------- Relaciones entre componentes ----------------
+  % Perfil -> Auth (conector bajo la fila 1)
+  \draw[c4relacion] ($(perfil.south west)+(0,-0.2)$) -- ($(auth.south east)+(0,-0.2)$)
+    node[c4etiqueta, midway, below=2pt, text width=2.0cm, xshift=-0.5cm]
+    {Gestiona la cuenta usando};
+
+  % Monitoreo -> Mapa (conector bajo la fila 1, pasa debajo de Favoritos)
+  \draw[c4relacion] ($(monitoreo.south west)+(0,-0.2)$) -- ($(mapa.south east)+(0,-0.2)$)
+    node[c4etiqueta, pos=0.2, below=2pt, text width=2.4cm]
+    {Muestra a la persona monitoreada usando};
+
+  % Perfil -> Notificaciones (baja por el hueco entre Búsqueda y Ruteo)
+  \draw[c4relacion] (perfil.south) -- (notif.north)
+    node[c4etiqueta, pos=0.14, text width=1.7cm] {Activa las alertas usando};
+
+  % Mapa -> Búsqueda
+  \draw[c4relacion] (mapa) -- (busqueda)
+    node[c4etiqueta, pos=0.38, text width=1.9cm] {Busca lugares usando};
+
+  % Ruteo -> Mapa y Navegación -> Mapa
+  \draw[c4relacion] (ruteo) -- (mapa)
+    node[c4etiqueta, pos=0.4, text width=1.8cm] {Dibuja las rutas usando};
+  \draw[c4relacion] (navegacion) -- (mapa)
+    node[c4etiqueta, pos=0.4, text width=1.8cm] {Dibuja el recorrido usando};
+
+  % Mapa -> Reportes
+  \draw[c4relacion] (mapa) -- (reportes)
+    node[c4etiqueta, pos=0.6, text width=1.9cm] {Muestra los reportes usando};
+
+  % Navegación -> Ruteo y Navegación -> Reportes (conectores bajo la fila 2)
+  \draw[c4relacion] ($(navegacion.south west)+(0,-0.2)$) -- ($(ruteo.south east)+(0,-0.2)$)
+    node[c4etiqueta, midway, below=2pt, text width=2.2cm, xshift=-1.0cm]
+    {Recalcula la ruta usando};
+  \draw[c4relacion] ($(navegacion.south east)+(0,-0.2)$) -- ($(reportes.south west)+(0,-0.2)$)
+    node[c4etiqueta, midway, below=2pt, text width=2.2cm, xshift=0.8cm]
+    {Reporta incidentes usando};
+
+  % Navegación -> Ubicación
+  \draw[c4relacion] (navegacion.south) -- (ubicacion.north)
+    node[c4etiqueta, pos=0.7, text width=1.9cm, xshift=0.6cm] {Sigue la posición usando};
+
+  % Monitoreo -> Ubicación (baja por el margen derecho)
+  \draw[c4relacion] (monitoreo.south) |- (ubicacion.east)
+    node[c4etiqueta, pos=0.8, text width=2.4cm] {Comparte la posición usando};
+
+  % ---------------- Relaciones a base de datos y sistemas externos ----------------
+  % Las flechas bajan desde el límite del contenedor y giran hacia su caja
+  \coordinate (codo) at ($(limite.south)+(0,-0.5)$);
+  \draw[c4relacion] (notif.south) |- (push.north |- codo) -- (push.north);
+  \draw[c4relacion] (limite.south -| db) -- (db.north);
+  \draw[c4relacion] (limite.south -| mapas) -- (mapas.north);
+
+  % Textos de las tres flechas inferiores, a la misma altura
+  \coordinate (filaEtiquetas) at ($(limite.south)+(0,-1.95)$);
+  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| push)
+    {Notificaciones recibe las alertas push de};
+  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| db)
+    {Auth, Perfil, Favoritos, Monitoreo, Ruteo, Reportes y Navegación leen y escriben en};
+  \node[c4etiqueta, text width=3.6cm] at (filaEtiquetas -| mapas)
+    {Mapa y Búsqueda obtienen mapas y lugares de};
+
+\end{tikzpicture}

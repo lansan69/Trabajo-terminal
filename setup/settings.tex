@@ -300,3 +300,20 @@
 
 \newcommand{\elementoCuatro}[2]{\textbf{#1}\\[3pt]{\small [#2]}}
 \newcommand{\descripcionCuatro}[1]{\\[6pt]{\small #1}}
+
+
+% ---------------------------------------------------------
+% G. colores para tabla de riesgos
+% ---------------------------------------------------------
+
+
+% Agrega esto en setup/settings.tex
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{multirow} % Asegúrate de tener este también para las celdas combinadas
+
+% Definición de los colores de la matriz de riesgos
+\definecolor{riskGreen}{HTML}{92D050}
+\definecolor{riskYellow}{HTML}{FFFF00}
+\definecolor{riskOrange}{HTML}{FFC000}
+\definecolor{riskRed}{HTML}{FF0000}

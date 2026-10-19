@@ -10,31 +10,31 @@ Para documentar la arquitectura del sistema se utiliza el modelo C4, propuesto p
 El diagrama de contexto presenta el sistema como una sola caja, junto con los usuarios y los sistemas externos con los que interactúa \cite{brown_software_architecture}. La figura \ref{fig:diagrama_contexto} muestra el diagrama correspondiente al presente proyecto.
 
 % Dibujado con TikZ (no es imagen) para que el texto tenga el tamaño del documento
-\begin{figure}[htbp]
+\begin{sidewaysfigure}
     \centering
     \input{figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_contexto_sistema}
     \caption{Diagrama de contexto del sistema}
     \label{fig:diagrama_contexto}
-\end{figure}
+\end{sidewaysfigure}
 
 \subsection{Diagrama de contenedores}
 El diagrama de contenedores descompone el sistema en las aplicaciones y los almacenes de datos que lo conforman, e indica la tecnología utilizada y la comunicación entre ellos \cite{brown_software_architecture}. La figura \ref{fig:diagrama_contenedor} muestra el diagrama correspondiente al presente proyecto.
 % Dibujado con TikZ (no es imagen) para que el texto tenga el tamaño del documento
-\begin{figure}[htbp]
+\begin{sidewaysfigure}
     \centering
     \input{figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_contenedor_sistema}
     \caption{Diagrama de contenedor del sistema}
     \label{fig:diagrama_contenedor}
-\end{figure}
+\end{sidewaysfigure}
 
 \subsection{Diagrama de componentes}
 El diagrama de componentes detalla la estructura interna de un contenedor \cite{brown_software_architecture}. La figura \ref{fig:diagrama_componente} muestra el diagrama correspondiente al presente proyecto.
 
 \clearpage
-\newgeometry{landscape, margin=2.5cm}
-\begin{figure}[p]
+
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth, height=1\textheight, keepaspectratio]{figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_componente_sistema.png}
+    \input{figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_componente_sistema}
     \caption{Diagrama de contenedor del sistema}
     \label{fig:diagrama_componente}
 \end{figure}
