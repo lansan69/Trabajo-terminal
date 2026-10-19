@@ -1,0 +1,18 @@
+# Vista previa local de figuras
+/preview.*
+
+# Carpeta de compilación de LaTeX Workshop (aux, log, pdf...)
+/debug_files/
+
+# Archivos auxiliares de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg

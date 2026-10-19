@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/render.sh nuevo *)",
+      "Bash(../tools/venv/Scripts/python.exe -c ' *)",
+      "Bash(cp \"/c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/build/nuevo.tex\" \"/c/Users/sango/Desktop/TT/Trabajo-terminal/figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_contenedor_sistema.tex\" && cd /c/Users/sango/Desktop/TT/Trabajo-terminal && git diff --stat)",
+      "PowerShell(Get-ChildItem \"$env:APPDATA\\\\Code\\\\User\\\\settings.json\", \"$env:APPDATA\\\\Code - Insiders\\\\User\\\\settings.json\", \"$env:APPDATA\\\\Cursor\\\\User\\\\settings.json\" -ErrorAction SilentlyContinue | Select-Object FullName, Length, LastWriteTime)",
+      "Bash(python -c ' *)",
+      "PowerShell($c = Get-Command pdflatex, bibtex, initexmf -ErrorAction SilentlyContinue | Select-Object Name, Source; if \\($c\\) { $c } else { \"pdflatex not on PATH\" }; $p = @\\(\"$env:LOCALAPPDATA\\\\Programs\\\\MiKTeX\\\\miktex\\\\bin\\\\x64\", \"C:\\\\Program Files\\\\MiKTeX\\\\miktex\\\\bin\\\\x64\"\\); foreach \\($d in $p\\) { if \\(Test-Path \"$d\\\\pdflatex.exe\"\\) { \"Found: $d\" } })",
+      "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); Get-Command pdflatex, bibtex -ErrorAction SilentlyContinue | Select-Object Name, Source; pdflatex --version | Select-Object -First 2)",
+      "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); miktex packages check-update; miktex packages update)",
+      "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); initexmf --set-config-value=[MPM]AutoInstall=1; New-Item -ItemType Directory -Force debug_files | Out-Null; pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex | Select-Object -Last 8; \"EXIT: $LASTEXITCODE\")",
+      "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); miktex packages install cm-super 2>&1 | Select-Object -Last 3; pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex | Out-Null; \"EXIT: $LASTEXITCODE\"; Select-String -Path debug_files\\\\preview.log -Pattern 'Overfull|Error|\\\\.pfb' | Select-Object -First 8 | ForEach-Object { $_.Line.Trim\\(\\) })",
+      "Bash(/c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/tools/venv/Scripts/python.exe -c ' *)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\sango\\AppData\\Local\\Temp\\claude\\c--Users-sango-Desktop-TT-Trabajo-terminal\\8a3e6336-80ab-4ca4-a815-b53ba57792b4\\scratchpad\\build",
+      "C:\\Users\\sango\\AppData\\Roaming\\Code\\User"
+    ]
+  }
+}
