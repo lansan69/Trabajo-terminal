@@ -1,0 +1,44 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Mapas y Selección de Ubicaciones  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% Los casos que usan el mapa (CU-20, CU-24) y los que usan la
+% geocodificación (CU-21, CU-22) quedan juntos y más separados entre sí,
+% para que sus líneas no se crucen y sus textos no se encimen.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu23) at (5.4, 0) {CU-23: Visualizar puntos de ayuda (RF-18)};
+  \node[cuCaso, below=of cu23] (cu20) {CU-20: Interactuar con el mapa base (RF-14)};
+  \node[cuCaso, below=1.0cm of cu20] (cu24) {CU-24: Visualizar reportes validados (RF-19)};
+  \node[cuCaso, below=0.6cm of cu24] (cu21) {CU-21: Buscar dirección de origen y destino (RF-15)};
+  \node[cuCaso, below=1.3cm of cu21] (cu22) {CU-22: Seleccionar origen y destino en el mapa (RF-16)};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu23.north)+(0,0.3)$)
+    {Módulo de Mapas y Selección de Ubicaciones};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu23)(cu22)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
+  % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
+  \pic (user)  at (cu24.north -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
+  \pic (mapas) at ($(limite.east |- cu24.east)+(3.4,-0.2)$) {cuActorExterno={Servicio\\de mapas}};
+  \pic (geo)   at ($(limite.east |- cu22.east)+(3.4,-0.2)$) {cuActorExterno={Servicio de\\geocodificación}};
+
+  \begin{pgfonlayer}{flechas}
+    % ---------------- Asociaciones del usuario ----------------
+    \foreach \cu in {cu23, cu20, cu24, cu21, cu22}
+      \draw[cuAsociacion] (user-der) -- (\cu.west);
+
+    % ---------------- Sistemas externos ----------------
+    \cuExterna{cu20.east}{mapas}{solicita renderizado\\del mapa}
+    \cuExterna{cu24.east}{mapas}{dibuja marcadores}
+    \cuExterna{cu21.east}{geo}{autocompletado y\\geocodificación}
+    \cuExterna{cu22.east}{geo}{geocodificación\\inversa (coordenadas\\a texto)}
+  \end{pgfonlayer}
+
+\end{tikzpicture}

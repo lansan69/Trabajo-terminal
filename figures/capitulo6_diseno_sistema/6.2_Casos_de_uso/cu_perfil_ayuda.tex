@@ -1,0 +1,34 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Perfil y Ayuda  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% CU-15 es nuevo; desde aquí la numeración de los módulos siguientes
+% aumenta en uno respecto a los diagramas anteriores en PlantUML.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu09) at (5.4, 0) {CU-09: Cambiar contraseña (RF-08)};
+  \node[cuCaso, below=of cu09] (cu10) {CU-10: Cerrar sesión (RF-07)};
+  \node[cuCaso, below=of cu10] (cu11) {CU-11: Eliminar cuenta (RF-11)};
+  \node[cuCaso, below=of cu11] (cu12) {CU-12: Consultar aviso de privacidad (RF-12)};
+  \node[cuCaso, below=of cu12] (cu13) {CU-13: Consultar sección de ayuda y simbología (RF-47)};
+  \node[cuCaso, below=of cu13] (cu14) {CU-14: Editar datos del perfil (RF-13)};
+  \node[cuCaso, below=of cu14] (cu15) {CU-15: Activar las notificaciones};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu09.north)+(0,0.3)$)
+    {Módulo de Perfil y Ayuda};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu09)(cu15)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  \pic (user) at (cu12.north -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
+
+  \begin{pgfonlayer}{flechas}
+    \foreach \cu in {cu09, cu10, cu11, cu12, cu13, cu14, cu15}
+      \draw[cuAsociacion] (user-der) -- (\cu.west);
+  \end{pgfonlayer}
+
+\end{tikzpicture}

@@ -1,0 +1,47 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Navegación y Reportes  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% CU-31 va junto a CU-29 porque ambos usan los servicios del dispositivo;
+% CU-33 extiende a CU-32 y queda justo debajo de él.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu29) at (5.4, 0) {CU-29: Visualizar posición y avance en el mapa (RF-29, RF-30)};
+  \node[cuCaso, below=1.6cm of cu29] (cu31) {CU-31: Registrar reporte de riesgo (RF-36, RF-37)};
+  \node[cuCaso, below=of cu31] (cu30) {CU-30: Pausar, reanudar o cancelar navegación (RF-32, RF-34)};
+  \node[cuCaso, below=of cu30] (cu32) {CU-32: Consultar reportes pendientes cercanos (RF-39)};
+  \node[cuCaso, below=0.9cm of cu32] (cu33) {CU-33: Confirmar o desmentir reporte de otro usuario (RF-40)};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu29.north)+(0,0.3)$)
+    {Módulo de Navegación y Reportes};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu29)(cu33)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
+  % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
+  \pic (user)  at (cu30.north -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
+  % Mapas más arriba: la línea CU-29 -> dispositivo pasa por debajo de su nombre
+  \pic (mapas) at ($(limite.east |- cu29.east)+(3.4,0.9)$) {cuActorExterno={Servicio\\de mapas}};
+  \pic (os)    at ($(limite.east |- cu31.east)+(3.4,-0.2)$) {cuActorExterno={Servicios del\\dispositivo móvil}};
+
+  \begin{pgfonlayer}{flechas}
+    % ---------------- Asociaciones del usuario ----------------
+    \foreach \cu in {cu29, cu31, cu30, cu32}
+      \draw[cuAsociacion] (user-der) -- (\cu.west);
+
+    % ---------------- Extensión ----------------
+    \draw[cuDependencia] (cu33.north) -- (cu32.south)
+      node[cuEstereotipo, midway, right] {\guillemotleft extend\guillemotright};
+
+    % ---------------- Sistemas externos ----------------
+    \cuExterna{cu29.north east}{mapas}{renderiza la ruta\\y el mapa}
+    \cuExterna{cu29.east}{os}{solicita permisos y\\lee GPS en primer\\plano}
+    \cuExterna{cu31.east}{os}{obtiene coordenadas\\actuales}
+  \end{pgfonlayer}
+
+\end{tikzpicture}

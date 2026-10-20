@@ -1,0 +1,57 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Acceso y Autenticación  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% Orden de los casos: cada «include»/«extend» queda entre casos vecinos
+% (CU-06 y CU-02 incluyen a CU-01; CU-04 extiende a CU-05) y los casos
+% que usan el servicio de email quedan juntos para que sus líneas no se
+% crucen con la de Google.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu06) at (5.4, 0) {CU-06: Autenticar con cuenta de Google (RF-06)};
+  \node[cuCaso, below=0.9cm of cu06] (cu01) {CU-01: Aceptar aviso de privacidad inicial (RF-12)};
+  \node[cuCaso, below=0.9cm of cu01] (cu02) {CU-02: Registrar cuenta con correo electrónico (RF-01)};
+  \node[cuCaso, below=of cu02] (cu04) {CU-04: Solicitar reenvío de enlace de verificación (RF-03)};
+  \node[cuCaso, below=1.3cm of cu04] (cu05) {CU-05: Iniciar sesión con correo electrónico (RF-05, RF-04)};
+  \node[cuCaso, below=of cu05] (cu03) {CU-03: Verificar correo electrónico (RF-02)};
+  \node[cuCaso, below=of cu03] (cu07) {CU-07: Solicitar recuperación de contraseña (RF-09)};
+  \node[cuCaso, below=of cu07] (cu08) {CU-08: Restablecer contraseña (RF-10)};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu06.north)+(0,0.3)$)
+    {Módulo de Acceso y Autenticación};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu06)(cu08)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
+  % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
+  \pic (guest)  at (cu05.north -| 0,0) {cuActor={Peatón usuario\\(No autenticado)}};
+  \pic (google) at ($(limite.east |- cu06.east)+(3.3,-0.2)$) {cuActorExterno={Proveedor de\\identidad\\de Google}};
+  \pic (email)  at ($(limite.east |- cu07.east)+(3.3,-0.2)$) {cuActorExterno={Servicio de email}};
+
+  \begin{pgfonlayer}{flechas}
+    % ---------------- Asociaciones del usuario ----------------
+    \foreach \cu in {cu06, cu02, cu05, cu03, cu07, cu08}
+      \draw[cuAsociacion] (guest-der) -- (\cu.west);
+
+    % ---------------- Inclusiones y extensiones ----------------
+    \draw[cuDependencia] (cu06.south) -- (cu01.north)
+      node[cuEstereotipo, midway, right] {\guillemotleft include\guillemotright};
+    \draw[cuDependencia] (cu02.north) -- (cu01.south)
+      node[cuEstereotipo, midway, right] {\guillemotleft include\guillemotright};
+    \draw[cuDependencia] (cu04.south) -- (cu05.north)
+      node[cuEstereotipo, midway, right]
+      {\guillemotleft extend\guillemotright\\{[}cuenta no\\verificada (RF-04){]}};
+
+    % ---------------- Sistemas externos ----------------
+    \cuExterna{cu06.east}{google}{autoriza y valida}
+    \cuExterna{cu02.east}{email}{envía enlace de\\verificación}
+    \cuExterna{cu04.east}{email}{reenvía enlace}
+    \cuExterna{cu07.east}{email}{envía enlace de\\recuperación}
+  \end{pgfonlayer}
+
+\end{tikzpicture}

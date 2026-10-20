@@ -325,6 +325,75 @@
 
 
 % ---------------------------------------------------------
+% G2. DIAGRAMAS DE CASOS DE USO (UML)            (6.2.2 Diagramas de casos de uso)
+% ---------------------------------------------------------
+% Dibujados con TikZ por la misma razón que los C4: el texto usa la fuente
+% del documento. Colores tomados de los diagramas originales en PlantUML.
+%
+% Casos de uso:  cuCaso                 (elipse; text width por defecto 4.2 cm)
+% Límite:        cuLimite (fit=...) y cuLimiteTitulo para el nombre del módulo
+% Actores:       \pic (nombre) at (x,y) {cuActor={Texto}};
+%                \pic (nombre) at (x,y) {cuActorExterno={Texto}};  («Sistema externo»)
+%                Anclas para las flechas: (nombre-izq), (nombre-der)
+% Flechas:       cuAsociacion (actor - caso), cuDependencia («include»/«extend»)
+% Textos:        cuEtiqueta (texto sobre una flecha), cuEstereotipo («include»...)
+% Capa "flechas" entre el fondo y los nodos: las líneas pasan por debajo
+% de los nombres de los actores (que tienen fondo blanco) en lugar de taparlos.
+% Uso: \begin{pgfonlayer}{flechas} ... \draw ... \end{pgfonlayer}
+\pgfdeclarelayer{flechas}
+\pgfsetlayers{background,flechas,main}
+
+\definecolor{cuBorde}{HTML}{C85A17}
+\definecolor{cuFondo}{HTML}{FDFDFD}
+\definecolor{cuActor}{HTML}{1B365D}
+\definecolor{cuLinea}{HTML}{333333}
+
+\tikzset{
+  cuCaso/.style={
+    ellipse, draw=cuBorde, fill=cuFondo, line width=0.8pt,
+    align=flush center, font=\small, text width=#1, inner xsep=0pt, inner ysep=1pt
+  },
+  cuCaso/.default=4.2cm,
+  cuLimite/.style={draw=cuLinea, line width=0.8pt, rounded corners=6pt, inner sep=0.35cm},
+  % El título se parte en dos renglones si no cabe: todos los límites miden lo mismo
+  cuLimiteTitulo/.style={font=\small\bfseries, inner sep=0pt, align=flush center, text width=6cm},
+  cuAsociacion/.style={draw=cuLinea, line width=0.7pt, -{Stealth[length=6pt, width=5pt]}},
+  cuDependencia/.style={draw=cuLinea, line width=0.7pt, dashed, -{Straight Barb[length=5pt, width=6pt]}},
+  cuEtiqueta/.style={font=\footnotesize, align=center, fill=white, inner sep=1.5pt, text=black!85},
+  cuEstereotipo/.style={font=\footnotesize, align=left, inner sep=1.5pt, text=black!85},
+  % Monito UML: cabeza, tronco, brazos y piernas; el nombre va debajo
+  pics/cuActor/.style={code={
+    \draw[cuActor, line width=0.8pt, fill=white] (0,0.62) circle[radius=0.17];
+    \draw[cuActor, line width=0.8pt, line cap=round]
+      (0,0.45) -- (0,0.05)  (-0.26,0.32) -- (0.26,0.32)
+      (0,0.05) -- (-0.21,-0.32)  (0,0.05) -- (0.21,-0.32);
+    \node[font=\small, align=center, anchor=north, inner sep=1pt, fill=white] (-nombre) at (0,-0.38) {#1};
+    \coordinate (-izq) at (-0.32,0.2);
+    \coordinate (-der) at (0.32,0.2);
+  }},
+  pics/cuActorExterno/.style={code={
+    \pic {cuActor={{\footnotesize\guillemotleft Sistema externo\guillemotright}\\#1}};
+  }}
+}
+
+% \cuExterna[opciones]{ancla del caso}{actor}{texto}
+% Línea de un caso de uso a un actor externo. El texto se centra en el hueco
+% entre el límite del módulo (nodo "limite") y el actor, sobre la línea.
+% Ejemplo: \cuExterna{cu06.east}{google}{autoriza\\y valida}
+\newcommand{\cuExterna}[4][]{%
+  \draw[cuAsociacion] (#2) -- (#3-izq);
+  % \cuT: fracción de la línea donde cae el centro del hueco (se calcula
+  % aparte porque calc no evalúa bien la expresión dentro de !...!)
+  \path let \p1=(#2), \p2=(#3-izq), \p3=(limite.east) in
+    \pgfextra{\pgfmathsetmacro{\cuT}{(0.5*\x3+0.5*\x2-\x1)/(\x2-\x1)}\global\let\cuT\cuT}
+    node[cuEtiqueta, #1] at ($(#2)!\cuT!(#3-izq)$) {#4};%
+}
+% Los actores externos van 3.4 cm a la derecha del límite y a la altura de su
+% caso conectado más bajo (sus líneas llegan de lado o desde arriba):
+%   \pic (x) at ($(limite.east |- caso.east)+(3.4,-0.2)$) {cuActorExterno={...}};
+
+
+% ---------------------------------------------------------
 % G. colores para tabla de riesgos
 % ---------------------------------------------------------
 

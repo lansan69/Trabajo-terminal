@@ -1,0 +1,42 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Cálculo y Selección de Rutas  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% CU-27 extiende a CU-26 y queda justo debajo de él.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu25) at (5.4, 0) {CU-25: Solicitar cálculo de rutas (RF-20, RF-21, RF-25 a RF-27)};
+  \node[cuCaso, below=of cu25] (cu26) {CU-26: Consultar resumen y riesgo de las rutas (RF-22, RF-23)};
+  \node[cuCaso, below=0.9cm of cu26] (cu27) {CU-27: Consultar detalle de una ruta específica (RF-24)};
+  \node[cuCaso, below=of cu27] (cu28) {CU-28: Seleccionar ruta e iniciar navegación (RF-28)};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu25.north)+(0,0.3)$)
+    {Módulo de Cálculo y Selección de Rutas};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu25)(cu28)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
+  % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
+  \pic (user)  at (cu26.south -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
+  \pic (mapas) at ($(limite.east |- cu28.east)+(3.4,-0.2)$) {cuActorExterno={Servicio\\de mapas}};
+
+  \begin{pgfonlayer}{flechas}
+    % ---------------- Asociaciones del usuario ----------------
+    \foreach \cu in {cu25, cu26, cu28}
+      \draw[cuAsociacion] (user-der) -- (\cu.west);
+
+    % ---------------- Extensión ----------------
+    \draw[cuDependencia] (cu27.north) -- (cu26.south)
+      node[cuEstereotipo, midway, right] {\guillemotleft extend\guillemotright};
+
+    % ---------------- Sistema externo ----------------
+    \cuExterna{cu25.east}{mapas}{obtiene trazados\\y distancias}
+    \cuExterna{cu28.east}{mapas}{renderiza la\\navegación en\\tiempo real}
+  \end{pgfonlayer}
+
+\end{tikzpicture}

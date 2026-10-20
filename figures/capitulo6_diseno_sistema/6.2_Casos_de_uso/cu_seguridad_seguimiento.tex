@@ -1,0 +1,51 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Seguridad Personal y Seguimiento  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% Los casos que usan los servicios del dispositivo (CU-34, CU-35, CU-39)
+% quedan juntos y más separados, con el actor a la altura de CU-35;
+% CU-38 extiende a CU-37 y queda justo debajo de él.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu34) at (5.4, 0) {CU-34: Configurar alertas de reportes cercanos (RF-41)};
+  \node[cuCaso, below=1.1cm of cu34] (cu35) {CU-35: Generar y compartir enlace o código (RF-42)};
+  \node[cuCaso, below=1.1cm of cu35] (cu39) {CU-39: Iniciar llamada de emergencia (RF-46)};
+  \node[cuCaso, below=of cu39] (cu36) {CU-36: Administrar mis enlaces de seguimiento (RF-43)};
+  \node[cuCaso, below=of cu36] (cu37) {CU-37: Gestionar mis seguimientos (RF-44)};
+  \node[cuCaso, below=1.1cm of cu37] (cu38) {CU-38: Visualizar en el mapa a la persona seguida (RF-45)};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu34.north)+(0,0.3)$)
+    {Módulo de Seguridad Personal y Seguimiento};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu34)(cu38)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
+  % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
+  \pic (user)  at (cu36.north -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
+  \pic (push)  at ($(limite.east |- cu34.east)+(3.4,-0.2)$) {cuActorExterno={Servicio push\\(notificaciones)}};
+  \pic (os)    at ($(limite.east |- cu39.east)+(3.4,-0.2)$) {cuActorExterno={Servicios del\\dispositivo móvil}};
+  \pic (mapas) at ($(limite.east |- cu38.east)+(3.4,-0.2)$) {cuActorExterno={Servicio\\de mapas}};
+
+  \begin{pgfonlayer}{flechas}
+    % ---------------- Asociaciones del usuario ----------------
+    \foreach \cu in {cu34, cu35, cu39, cu36, cu37}
+      \draw[cuAsociacion] (user-der) -- (\cu.west);
+
+    % ---------------- Extensión ----------------
+    \draw[cuDependencia] (cu38.north) -- (cu37.south)
+      node[cuEstereotipo, midway, right] {\guillemotleft extend\guillemotright\\{[}desde Mis seguimientos{]}};
+
+    % ---------------- Sistemas externos ----------------
+    \cuExterna{cu34.north east}{push}{recibe alertas\\remotas (Firebase)}
+    \cuExterna{cu34.east}{os}{permisos y\\notificaciones locales}
+    \cuExterna{cu35.east}{os}{GPS en segundo plano\\y app de mensajería}
+    \cuExterna{cu39.east}{os}{ejecuta llamada al\\número de emergencia}
+    \cuExterna{cu38.east}{mapas}{renderiza ubicación\\en tiempo real}
+  \end{pgfonlayer}
+
+\end{tikzpicture}
