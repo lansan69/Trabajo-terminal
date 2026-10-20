@@ -15,30 +15,30 @@
   \sdContenedor{bd}{11.4}{Base de datos}{PostGIS, pgRouting}
   \sdIniciar
 
-  \sdMensaje[2]{usr}{app}{solicita las rutas\\(origen y destino)}
+  \sdMensaje{usr}{app}{solicita las rutas}
 
   \sdAbrir{red}{alt}{[sin conexión a internet]}{usr}{bd}
-    \sdMensaje[2]{app}{usr}{avisa que no hay\\conexión (RF-26)}
+    \sdMensaje[2]{app}{usr}{avisa que no\\hay conexión}
   \sdSino{red}{[con conexión]}
-    \sdMensaje[2]{app}{api}{rpc calcular\_rutas(origen,\\destino, hora de consulta)}
-    \sdMensaje{api}{bd}{ejecuta calcular\_rutas()}
-    \sdPropioIzq[2]{bd}{valida el origen y el destino\\en el área de servicio (RN-01)}
-    \sdPropioIzq[2]{bd}{toma los pesos de la\\franja horaria (RN-05)}
-    \sdPropioIzq[3]{bd}{calcula las rutas segura,\\rápida y balanceada\\(RN-02, RN-03)}
+    \sdMensaje[3]{app}{api}{solicita las rutas entre\\el origen y el destino\\a la hora actual}
+    \sdMensaje{api}{bd}{ejecuta el cálculo de rutas}
+    \sdPropioIzq[2]{bd}{valida el origen y el destino\\en el área de servicio}
+    \sdPropioIzq[2]{bd}{toma los pesos de la\\franja horaria}
+    \sdPropioIzq[2]{bd}{calcula las rutas segura,\\rápida y balanceada}
 
     \sdAbrir[0.55]{resultado}{alt}{[origen o destino fuera del área]}{app}{bd}
       \sdRespuesta{bd}{api}{error de cobertura}
       \sdRespuesta{api}{app}{error de cobertura}
-      \sdMensaje[2]{app}{usr}{indica la restricción\\de cobertura (RF-20)}
+      \sdMensaje[2]{app}{usr}{indica la restricción\\de cobertura}
     \sdSino{resultado}{[no existe ruta peatonal]}
       \sdRespuesta{bd}{api}{sin resultados}
       \sdRespuesta{api}{app}{sin resultados}
-      \sdMensaje[2]{app}{usr}{avisa que no existe\\ruta (RF-25)}
+      \sdMensaje[2]{app}{usr}{avisa que no\\existe ruta}
     \sdSino{resultado}{[rutas encontradas]}
       \sdRespuesta[2]{bd}{api}{rutas con distancia y\\riesgo por tramo}
-      \sdRespuesta[2]{api}{app}{rutas (GeoJSON)\\y resumen}
-      \sdPropio[2]{app}{calcula el tiempo a 4.5 km/h (RN-18)\\y marca las rutas iguales (RF-21)}
-      \sdMensaje[3]{app}{usr}{muestra las rutas con\\distancia, tiempo y\\riesgo (RF-22)}
+      \sdRespuesta[2]{api}{app}{rutas en GeoJSON\\y resumen}
+      \sdPropio[2]{app}{calcula el tiempo a 4.5 km/h\\y marca las rutas iguales}
+      \sdMensaje[3]{app}{usr}{muestra las rutas con\\distancia, tiempo\\y riesgo}
     \sdCerrar{resultado}
   \sdCerrar{red}
 

@@ -28,23 +28,23 @@
   % ---------------- Seguimiento de la posición ----------------
   \sdAbrir{nav}{loop}{[mientras la navegación esté en curso]}{usr}{bd}
     \sdMensaje{dev}{app}{nueva posición}
-    \sdPropio[2]{app}{actualiza el marcador\\y el avance (RF-30)}
+    \sdPropio[2]{app}{actualiza el marcador\\y el avance}
     \sdAbrir[0.55]{segA}{opt}{[hay seguimientos activos]}{app}{api}
-      \sdMensaje[2]{app}{api}{publica la posición (Realtime)}
+      \sdMensaje[2]{app}{api}{publica la posición\\en Realtime}
     \sdCerrar{segA}
-    \sdAbrir[0.55]{desvio}{opt}{[desvío mayor a 50 m (RN-18)]}{app}{bd}
-      \sdMensaje[2]{app}{api}{rpc calcular\_ruta(posición\\actual, destino, criterio)}
+    \sdAbrir[0.55]{desvio}{opt}{[desvío mayor a 50 m]}{app}{bd}
+      \sdMensaje[3]{app}{api}{solicita una nueva ruta desde\\la posición actual al destino\\con el mismo criterio}
       \sdMensaje[2]{api}{bd}{recalcula con\\pgRouting}
       \sdRespuesta{bd}{api}{nueva ruta}
       \sdRespuesta{api}{app}{nueva ruta}
-      \sdMensaje[2]{app}{usr}{traza la nueva ruta y\\avisa el recálculo (RF-31)}
+      \sdMensaje[2]{app}{usr}{traza la nueva ruta y\\avisa el recálculo}
       \sdAbrir[0.4]{segB}{opt}{[hay seguimientos activos]}{app}{api}
-        \sdMensaje[2]{app}{api}{notifica el desvío a los\\seguidores (Realtime)}
+        \sdMensaje[2]{app}{api}{notifica el desvío\\a los seguidores}
       \sdCerrar{segB}
     \sdCerrar{desvio}
   \sdCerrar{nav}
 
-  \sdMensaje[2]{app}{usr}{indica la llegada\\al destino (RF-33)}
+  \sdMensaje[2]{app}{usr}{indica la llegada\\al destino}
 
   \sdTerminar
 \end{tikzpicture}

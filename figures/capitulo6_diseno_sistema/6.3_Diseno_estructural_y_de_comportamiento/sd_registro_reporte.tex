@@ -25,17 +25,17 @@
     \sdMensaje[2]{usr}{app}{selecciona el punto\\en el mapa}
   \sdCerrar{lugar}
 
-  \sdMensaje[3]{usr}{app}{elige la categoría\\(RN-06) y escribe una\\descripción opcional}
-  \sdMensaje[2]{app}{api}{inserta el reporte (categoría,\\ubicación y descripción)}
-  \sdMensaje[2]{api}{bd}{INSERT con políticas\\de seguridad (RLS)}
-  \sdPropioIzq[3]{bd}{verifica la cuenta verificada,\\el área de servicio (RN-01)\\y el límite de 10 en 24 h (RN-12)}
+  \sdMensaje[3]{usr}{app}{elige la categoría\\y escribe una\\descripción opcional}
+  \sdMensaje[2]{app}{api}{inserta el reporte con categoría,\\ubicación y descripción}
+  \sdMensaje[2]{api}{bd}{solicita guardar\\el reporte}
+  \sdPropioIzq[3]{bd}{comprueba la cuenta verificada,\\el área de servicio\\y el límite de 10 en 24 h}
 
   \sdAbrir{valido}{alt}{[límite alcanzado o fuera del área]}{usr}{bd}
     \sdRespuesta{bd}{api}{rechazo}
     \sdRespuesta{api}{app}{error}
-    \sdMensaje[2]{app}{usr}{avisa que alcanzó el\\límite (RF-37)}
+    \sdMensaje[2]{app}{usr}{avisa que alcanzó\\el límite}
   \sdSino{valido}{[reporte válido]}
-    \sdPropioIzq[2]{bd}{guarda el reporte en\\estado pendiente (RN-07)}
+    \sdPropioIzq[2]{bd}{guarda el reporte en\\estado pendiente}
     \sdRespuesta{bd}{api}{reporte registrado}
     \sdRespuesta{api}{app}{confirmación}
     \sdMensaje{app}{usr}{«Reporte enviado»}

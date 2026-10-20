@@ -56,7 +56,8 @@
       "Bash(grep -rlE \"\\\\\\\\\\\\\\\\begin\\\\{\\(figure|table\\)\\\\}\\\\[H\\\\]\" --include=*.tex documents figures)",
       "Bash(grep -rcE \"\\\\\\\\\\\\\\\\begin\\\\{\\(figure|table\\)\\\\}\\\\[H\\\\]\" --include=*.tex documents figures)",
       "Bash(awk -F: '{s+=$2} END {print \"entornos [H]:\", s}')",
-      "Bash(grep -rnE \"\\\\\\\\\\\\\\\\begin\\\\{\\(figure|table\\)\\\\}\\(\\\\[[^H][^]]*\\\\]\\)?\" --include=*.tex documents figures)"
+      "Bash(grep -rnE \"\\\\\\\\\\\\\\\\begin\\\\{\\(figure|table\\)\\\\}\\(\\\\[[^H][^]]*\\\\]\\)?\" --include=*.tex documents figures)",
+      "Bash(\"/c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/tools/venv/Scripts/python.exe\" \"C:/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/quitar_parentesis.py\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\sango\\AppData\\Local\\Temp\\claude\\c--Users-sango-Desktop-TT-Trabajo-terminal\\8a3e6336-80ab-4ca4-a815-b53ba57792b4\\scratchpad\\build",

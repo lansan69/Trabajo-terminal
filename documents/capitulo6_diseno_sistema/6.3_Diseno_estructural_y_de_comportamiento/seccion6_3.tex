@@ -16,29 +16,38 @@ Los participantes corresponden a los contenedores del diagrama de la figura \ref
 
 \subsubsection{Registro y verificación de la cuenta}
 
-La figura \ref{fig:sd_registro} muestra el registro con correo electrónico (CU-01 a CU-03). Antes de capturar sus datos, el usuario acepta el aviso de privacidad (RF-12), cuyo consentimiento se guarda junto con la cuenta. El servicio de autenticación rechaza los correos ya registrados; en caso contrario, crea la cuenta sin verificar y envía, mediante Resend, un enlace de un solo uso con vigencia de 10 minutos (RN-14). Mientras la cuenta no se verifica, la aplicación muestra el aviso de verificación pendiente (RF-04) y, si el enlace expira, ofrece reenviarlo (RF-03).
+La figura \ref{fig:sd_registro} muestra el registro con correo electrónico (CU-01 y CU-02). Después de capturar sus datos, el usuario acepta los términos y el aviso de privacidad en el mismo formulario (RF-12): puede abrirlos y aceptarlos desde la ventana que los muestra, o solo marcar la casilla de aceptación. Al presionar «Registrarse», el consentimiento se envía junto con los datos de la cuenta. El servicio de autenticación rechaza los correos ya registrados; en caso contrario, crea la cuenta sin verificar y envía, mediante Resend, un enlace de un solo uso con vigencia de 10 minutos (RN-14), mientras la aplicación muestra el aviso de verificación pendiente (RF-04).
+
+La figura \ref{fig:sd_verificacion} continúa este flujo con la verificación del correo (CU-03). Si el usuario abre el enlace dentro de su vigencia, la cuenta queda verificada y la aplicación habilita sus funciones (RN-17); si el enlace expiró o ya se usó, la aplicación ofrece reenviarlo (RF-03).
 
 \begin{figure}[htbp]
     \centering
     \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_registro_verificacion}
-    \caption{Diagrama de secuencia del registro y la verificación de la cuenta}
+    \caption{Diagrama de secuencia del registro de una cuenta con correo electrónico}
     \label{fig:sd_registro}
 \end{figure}
 
-\subsubsection{Inicio de sesión con Google}
+\begin{figure}[htbp]
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_verificacion_correo}
+    \caption{Diagrama de secuencia de la verificación del correo electrónico}
+    \label{fig:sd_verificacion}
+\end{figure}
 
-En la figura \ref{fig:sd_google} se presenta el inicio de sesión con una cuenta de Google (CU-06). La aplicación obtiene de Google un token de identidad y lo entrega al servicio de autenticación, que verifica su firma, su emisor y su audiencia antes de confiar en él. Si el correo ya pertenece a una cuenta con contraseña, ambas formas de acceso se vinculan a la misma cuenta (RF-06); si es un usuario nuevo, su cuenta se crea sin requerir la verificación del correo (RN-17).
+\subsubsection{Registro e inicio de sesión con Google}
+
+En la figura \ref{fig:sd_google} se presenta el acceso con una cuenta de Google (CU-06), disponible tanto en la pantalla de registro como en la de inicio de sesión. El usuario solo confirma su cuenta de Google: no se le pide verificar el correo (RN-17) ni se le muestra el aviso de privacidad. La aplicación obtiene de Google un token de identidad y lo entrega al servicio de autenticación, que verifica su firma, su emisor y su audiencia antes de confiar en él. Si el correo ya pertenece a una cuenta con contraseña, ambas formas de acceso se vinculan a la misma cuenta (RF-06); si es un usuario nuevo, su cuenta se crea en ese momento.
 
 \begin{figure}[htbp]
     \centering
     \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_inicio_google}
-    \caption{Diagrama de secuencia del inicio de sesión con Google}
+    \caption{Diagrama de secuencia del registro e inicio de sesión con Google}
     \label{fig:sd_google}
 \end{figure}
 
 \subsubsection{Búsqueda de una dirección}
 
-La figura \ref{fig:sd_busqueda} describe la búsqueda de una dirección de origen o destino (CU-21). Para no saturar los servicios, la aplicación espera 300 ms sin cambios en el texto antes de consultar una Edge Function. Esta busca primero en el índice propio de lugares del área de servicio y solo consulta al servicio de geocodificación cuando no hay coincidencias suficientes, con Photon como respaldo si Geoapify falla. La consulta se orienta con el área de servicio y no con la posición del usuario (RN-16), y las sugerencias que caen fuera del polígono se descartan (RN-01).
+La figura \ref{fig:sd_busqueda} describe la búsqueda de una dirección de origen o destino (CU-21). Para no saturar los servicios, la aplicación espera 300 ms sin cambios en el texto antes de consultar una Edge Function. Esta busca primero en el índice propio, que solo contiene los lugares del área de servicio, y únicamente consulta al servicio de geocodificación cuando no hay coincidencias suficientes, con Photon como respaldo si Geoapify falla. El área se delimita desde la consulta: a ambos proveedores se les envía el rectángulo que envuelve el área de servicio y nunca la posición del usuario (RN-16). Como estos servicios solo admiten rectángulos y el área es un polígono irregular, la Edge Function descarta al final las sugerencias que caen en las esquinas del rectángulo fuera del polígono (RN-01).
 
 \begin{figure}[htbp]
     \centering

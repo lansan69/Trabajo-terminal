@@ -474,25 +474,28 @@
         \pgfmathparse{min(\sdY, \y1/28.45274 - 0.5)}\xdef\sdY{\pgfmathresult}}; \fi}}
 
 % Altura de un mensaje: 0.33 cm por renglón de texto más 0.25 cm de aire
+% Cada renglón reserva 0.43 cm: \footnotesize en la clase de 12 pt usa un
+% interlineado de 12 pt; con menos, el texto (fondo blanco) tapa la flecha
+% anterior.
 \newcommand{\sdMensaje}[4][1]{%
-  \sdAvanzar{0.33*#1+0.25}\stepcounter{sdNumero}%
+  \sdAvanzar{0.43*#1+0.15}\stepcounter{sdNumero}%
   \draw[sdLlamada] (#2 |- 0,\sdY) -- (#3 |- 0,\sdY)
     node[sdTexto, midway, above] {\arabic{sdNumero}. #4};}
 \newcommand{\sdRespuesta}[4][1]{%
-  \sdAvanzar{0.33*#1+0.25}\stepcounter{sdNumero}%
+  \sdAvanzar{0.43*#1+0.15}\stepcounter{sdNumero}%
   \draw[sdVuelta] (#2 |- 0,\sdY) -- (#3 |- 0,\sdY)
     node[sdTexto, midway, above] {\arabic{sdNumero}. #4};}
 \newcommand{\sdPropio}[3][1]{%
   \sdAvanzar{0.3}\stepcounter{sdNumero}%
-  \draw[sdLlamada] (#2 |- 0,\sdY) -- ++(0.45,0) -- ++(0,-0.33*#1-0.05) -- ++(-0.45,0);
+  \draw[sdLlamada] (#2 |- 0,\sdY) -- ++(0.45,0) -- ++(0,-0.43*#1+0.05) -- ++(-0.45,0);
   \node[sdTexto, anchor=north west, align=left] at ($(#2 |- 0,\sdY)+(0.5,0.17)$) {\arabic{sdNumero}. #3};
-  \sdAvanzar{0.33*#1+0.1}}
+  \sdAvanzar{0.43*#1}}
 % Igual, pero el lazo y el texto van a la izquierda (para la última línea de vida)
 \newcommand{\sdPropioIzq}[3][1]{%
   \sdAvanzar{0.3}\stepcounter{sdNumero}%
-  \draw[sdLlamada] (#2 |- 0,\sdY) -- ++(-0.45,0) -- ++(0,-0.33*#1-0.05) -- ++(0.45,0);
+  \draw[sdLlamada] (#2 |- 0,\sdY) -- ++(-0.45,0) -- ++(0,-0.43*#1+0.05) -- ++(0.45,0);
   \node[sdTexto, anchor=north east, align=right] at ($(#2 |- 0,\sdY)+(-0.5,0.17)$) {\arabic{sdNumero}. #3};
-  \sdAvanzar{0.33*#1+0.1}}
+  \sdAvanzar{0.43*#1}}
 
 % Fragmentos: se guarda la altura de inicio, los extremos y el margen; el marco
 % se dibuja al cerrar. [margen]: distancia del marco a las líneas de vida

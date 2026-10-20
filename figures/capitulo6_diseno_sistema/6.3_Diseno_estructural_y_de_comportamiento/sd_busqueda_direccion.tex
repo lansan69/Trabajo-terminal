@@ -5,7 +5,9 @@
 % Estilos y macros: setup/settings.tex, sección G3.
 % Búsqueda en dos niveles (factibilidad técnica, 5.5.1): primero el índice
 % propio en PostGIS y, solo si no basta, Geoapify, con Photon de respaldo.
-% El sesgo usa el área de servicio, no la posición del usuario (RN-16).
+% El área se acota desde la consulta: el índice propio solo contiene lugares
+% del área, y a Geoapify (filter=rect) y Photon (bbox) se les envía el
+% rectángulo que envuelve el polígono, nunca la posición del usuario (RN-16).
 % =========================================================
 \begin{tikzpicture}
 
@@ -20,24 +22,25 @@
   \sdAbrir{teclas}{loop}{[por cada cambio de texto de 3 o más caracteres]}{usr}{geo}
     \sdMensaje{usr}{app}{escribe la dirección}
     \sdPropio[2]{app}{espera 300 ms\\sin teclear}
-    \sdMensaje[2]{app}{api}{buscar\_lugares\\(texto)}
-    \sdMensaje[2]{api}{bd}{busca en el índice\\propio (pg\_trgm)}
+    \sdMensaje[3]{app}{api}{solicita lugares\\que coincidan\\con el texto}
+    \sdMensaje[2]{api}{bd}{busca en el índice\\propio del área}
     \sdRespuesta{bd}{api}{coincidencias}
 
+    % La consulta externa ya va acotada al rectángulo que envuelve el área;
+    % solo quedan por descartar las esquinas fuera del polígono irregular.
     \sdAbrir[0.55]{externo}{opt}{[coincidencias insuficientes]}{api}{geo}
-      \sdMensaje[2]{api}{geo}{autocompletado con filter=rect y\\bias=rect del área de servicio}
+      \sdMensaje[2]{api}{geo}{autocompletado limitado al\\rectángulo del área de servicio}
       \sdAbrir[0.4]{proveedor}{alt}{[Geoapify responde]}{api}{geo}
         \sdRespuesta{geo}{api}{sugerencias}
       \sdSino{proveedor}{[Geoapify falla]}
         \sdMensaje{api}{geo}{misma consulta a Photon}
         \sdRespuesta{geo}{api}{sugerencias}
       \sdCerrar{proveedor}
-      \sdMensaje[2]{api}{bd}{descarta las que están\\fuera del área (RN-01)}
-      \sdRespuesta{bd}{api}{sugerencias válidas}
+      \sdPropio[2]{api}{descarta las esquinas del\\rectángulo fuera del polígono}
     \sdCerrar{externo}
 
     \sdRespuesta{api}{app}{sugerencias}
-    \sdMensaje[2]{app}{usr}{muestra favoritos y\\sugerencias (RF-17)}
+    \sdMensaje[2]{app}{usr}{muestra favoritos\\y sugerencias}
   \sdCerrar{teclas}
 
   \sdMensaje{usr}{app}{elige una sugerencia}

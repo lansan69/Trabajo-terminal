@@ -1,0 +1,29 @@
+% =========================================================
+% Diagrama de secuencia: Verificación del correo electrónico  (6.3.1)
+% CU-03 · RF-02, RF-03 · RN-14, RN-17
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% Continúa el registro de sd_registro_verificacion.tex: el usuario ya
+% recibió el correo con el enlace.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Usuario}
+  \sdContenedor{app}{3.2}{Aplicación móvil}{Flutter}
+  \sdContenedor{auth}{6.8}{Autenticación}{Supabase Auth}
+  \sdContenedor{bd}{10.4}{Base de datos}{PostgreSQL}
+  \sdIniciar
+
+  \sdMensaje[2]{usr}{auth}{abre el enlace de verificación\\desde su correo}
+  \sdAbrir{enlace}{alt}{[enlace vigente y sin usar]}{usr}{bd}
+    \sdMensaje[2]{auth}{bd}{marca el correo\\como verificado}
+    \sdRespuesta[2]{auth}{app}{redirige a la\\aplicación}
+    \sdMensaje[2]{app}{usr}{habilita las\\funciones}
+  \sdSino{enlace}{[enlace expirado o ya usado]}
+    \sdRespuesta{auth}{app}{enlace inválido}
+    \sdMensaje[2]{app}{usr}{ofrece reenviar\\el enlace}
+  \sdCerrar{enlace}
+
+  \sdTerminar
+\end{tikzpicture}

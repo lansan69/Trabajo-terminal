@@ -1,28 +1,37 @@
 % =========================================================
-% Diagrama de secuencia: Registro y verificación de cuenta  (6.3.1)
-% CU-01, CU-02, CU-03 · RF-12, RF-01, RF-02, RF-04 · RN-14, RN-17
+% Diagrama de secuencia: Registro de cuenta con correo  (6.3.1)
+% CU-01, CU-02 · RF-12, RF-01, RF-02, RF-04 · RN-14
 % ---------------------------------------------------------
 % Estilos y macros: setup/settings.tex, sección G3.
+% La verificación del correo (CU-03) está en sd_verificacion_correo.tex.
 % Los textos se parten con \\ para que no rebasen el espacio entre dos
 % líneas de vida; [n] reserva la altura de n renglones.
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Participantes ----------------
-  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdActor{usr}{0}{Usuario}
   \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
   \sdContenedor{auth}{6.0}{Autenticación}{Supabase Auth}
   \sdContenedor{bd}{9.1}{Base de datos}{PostgreSQL}
   \sdExterno{mail}{12.2}{Servicio de email}{Resend}
   \sdIniciar
 
-  % ---------------- Aviso de privacidad (CU-01) ----------------
-  \sdMensaje[2]{app}{usr}{muestra el aviso\\de privacidad}
-  \sdMensaje{usr}{app}{acepta el aviso}
-
   % ---------------- Registro (CU-02) ----------------
-  \sdMensaje[2]{usr}{app}{captura nombre,\\correo y contraseña}
-  \sdMensaje[3]{app}{auth}{signUp(nombre,\\correo, contraseña,\\consentimiento)}
+  \sdMensaje[3]{usr}{app}{captura nombre,\\apellidos, correo\\y contraseña}
+
+  % ---------------- Aviso de privacidad (CU-01) ----------------
+  % Se acepta desde el mismo formulario: leyéndolo o solo marcando la casilla
+  \sdAbrir{aviso}{alt}{[desea leer los términos y el aviso]}{usr}{auth}
+    \sdMensaje[2]{usr}{app}{abre «los términos y\\el aviso de privacidad»}
+    \sdMensaje[2]{app}{usr}{muestra los términos\\y el aviso}
+    \sdMensaje[2]{usr}{app}{presiona «Aceptar\\y continuar»}
+  \sdSino{aviso}{[no los lee]}
+    \sdMensaje[2]{usr}{app}{marca la casilla\\de aceptación}
+  \sdCerrar{aviso}
+
+  \sdMensaje{usr}{app}{presiona «Registrarse»}
+  \sdMensaje[3]{app}{auth}{solicita crear la\\cuenta con los datos\\y el consentimiento}
   \sdMensaje{auth}{bd}{busca el correo}
   \sdRespuesta{bd}{auth}{resultado}
 
@@ -31,22 +40,11 @@
     \sdMensaje[2]{app}{usr}{informa que el\\correo ya existe}
   \sdSino{correo}{[correo disponible]}
     \sdMensaje[3]{auth}{bd}{crea la cuenta no\\verificada y guarda\\el consentimiento}
-    \sdMensaje[2]{auth}{mail}{envía el enlace de verificación\\(vigencia de 10 min, RN-14)}
+    \sdMensaje[2]{auth}{mail}{envía el enlace de verificación\\con vigencia de 10 min}
     \sdMensaje{mail}{usr}{entrega el correo con el enlace}
-    \sdRespuesta[2]{auth}{app}{cuenta creada\\(no verificada)}
-    \sdMensaje[2]{app}{usr}{aviso de verificación\\pendiente (RF-04)}
+    \sdRespuesta[2]{auth}{app}{cuenta creada\\sin verificar}
+    \sdMensaje[2]{app}{usr}{aviso de verificación\\pendiente}
   \sdCerrar{correo}
-
-  % ---------------- Verificación (CU-03) ----------------
-  \sdMensaje{usr}{auth}{abre el enlace de verificación}
-  \sdAbrir{enlace}{alt}{[enlace vigente y sin usar]}{usr}{mail}
-    \sdMensaje[2]{auth}{bd}{marca el correo\\como verificado}
-    \sdRespuesta[2]{auth}{app}{redirige a la\\aplicación}
-    \sdMensaje[2]{app}{usr}{habilita las\\funciones (RN-17)}
-  \sdSino{enlace}{[enlace expirado o ya usado]}
-    \sdRespuesta{auth}{app}{enlace inválido}
-    \sdMensaje[2]{app}{usr}{ofrece reenviar el\\enlace (RF-03)}
-  \sdCerrar{enlace}
 
   \sdTerminar
 \end{tikzpicture}

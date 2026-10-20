@@ -19,32 +19,32 @@
   \sdIniciar
 
   % ---------------- Generar y compartir (CU-35) ----------------
-  \sdMensaje[3]{usr}{app}{genera un enlace\\con la vigencia\\elegida (RN-13)}
+  \sdMensaje[3]{usr}{app}{genera un enlace\\con la vigencia\\elegida}
   \sdMensaje[2]{app}{api}{crea el\\seguimiento}
-  \sdMensaje[3]{api}{bd}{guarda el enlace\\y el código\\(RNF-18)}
+  \sdMensaje[2]{api}{bd}{guarda el enlace\\y el código}
   \sdRespuesta{bd}{api}{identificador}
   \sdRespuesta[2]{api}{app}{enlace y\\código}
-  \sdPropio[2]{app}{abre el menú de compartir\\(aplicaciones de mensajería)}
+  \sdPropio[2]{app}{abre el menú de compartir\\con las apps de mensajería}
   \sdMensaje{app}{seg}{envía el enlace por mensajería}
 
   % ---------------- Abrir el seguimiento (CU-38) ----------------
   \sdMensaje{seg}{apps}{abre el enlace}
-  \sdMensaje[2]{apps}{api}{consulta el seguimiento}
-  \sdMensaje[2]{api}{bd}{valida la\\vigencia (RN-13)}
+  \sdMensaje{apps}{api}{consulta el seguimiento}
+  \sdMensaje[2]{api}{bd}{valida la\\vigencia}
   \sdRespuesta{bd}{api}{estado}
 
   \sdAbrir{vigente}{alt}{[enlace vigente y activo]}{app}{seg}
-    \sdRespuesta[2]{api}{apps}{datos del trayecto}
+    \sdRespuesta{api}{apps}{datos del trayecto}
     \sdMensaje[2]{apps}{api}{se suscribe al canal\\de ubicación}
     \sdAbrir[0.55]{vivo}{loop}{[mientras el enlace siga vigente]}{app}{seg}
       \sdPropio[2]{app}{obtiene la posición\\en segundo plano}
       \sdMensaje{app}{api}{publica la posición}
-      \sdMensaje[2]{api}{apps}{reenvía la posición (Realtime)}
+      \sdMensaje{api}{apps}{reenvía la posición}
       \sdMensaje[3]{apps}{seg}{muestra posición,\\ruta, distancia,\\tiempo y riesgo}
     \sdCerrar{vivo}
   \sdSino{vigente}{[expirado, pausado o eliminado]}
-    \sdRespuesta[2]{api}{apps}{enlace no válido}
-    \sdMensaje[3]{apps}{seg}{informa el estado\\del enlace\\(RNF-10)}
+    \sdRespuesta{api}{apps}{enlace no válido}
+    \sdMensaje[2]{apps}{seg}{informa el estado\\del enlace}
   \sdCerrar{vigente}
 
   \sdTerminar

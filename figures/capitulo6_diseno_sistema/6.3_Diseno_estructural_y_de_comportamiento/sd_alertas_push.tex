@@ -24,7 +24,7 @@
   \sdMensaje{dev}{usr}{muestra los diálogos}
   \sdMensaje{usr}{dev}{concede los permisos}
   \sdRespuesta[2]{dev}{app}{permisos\\concedidos}
-  \sdMensaje[2]{app}{push}{solicita el token del dispositivo}
+  \sdMensaje{app}{push}{solicita el token del dispositivo}
   \sdRespuesta{push}{app}{token de FCM}
   \sdMensaje[2]{app}{api}{registra el token\\y la preferencia}
   \sdMensaje{api}{bd}{guarda el token}
@@ -36,11 +36,11 @@
   \sdCerrar{fondo}
 
   % ---------------- Notificación de un reporte validado ----------------
-  \sdMensaje[3]{bd}{api}{webhook: un\\reporte pasa a\\validado (RN-07)}
-  \sdMensaje[3]{api}{bd}{busca usuarios\\a 1.5 km o\\menos (RN-18)}
+  \sdMensaje[2]{bd}{api}{webhook: reporte\\validado}
+  \sdMensaje[2]{api}{bd}{busca usuarios\\a 1.5 km o menos}
   \sdRespuesta[2]{bd}{api}{tokens de los\\dispositivos}
   \sdAbrir{envio}{loop}{[por cada dispositivo cercano]}{usr}{push}
-    \sdMensaje[2]{api}{push}{envía la notificación\\(prioridad alta)}
+    \sdMensaje[2]{api}{push}{envía la notificación\\con prioridad alta}
     \sdMensaje{push}{dev}{entrega la notificación}
     \sdMensaje[2]{dev}{usr}{muestra la alerta del\\reporte cercano}
   \sdCerrar{envio}
