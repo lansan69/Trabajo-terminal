@@ -52,7 +52,8 @@
 % ---------------------------------------------------------
 \usepackage{graphicx}           % \includegraphics: portada, 3.1, 3.2, 3.3, 5.5.2
 \graphicspath{{./figures/}}     % Raíz de imágenes: figures/<capitulo>/<seccion>/
-\usepackage{float}              % Opción [H] para fijar flotantes en su lugar
+\usepackage{float}              % Opción [H]; ya no se usa en el cuerpo, se conserva por compatibilidad
+\usepackage[section]{placeins}  % Las figuras y tablas [htbp] no pasan a la sección siguiente
 \usepackage{caption}            % Personalización de leyendas (captions)
 \usepackage{lscape}             % landscape: gira el contenido, no la página (el número de
                                 % página queda abajo, como en sidewaysfigure). Solo la tabla
@@ -60,11 +61,17 @@
 \usepackage{rotating}           % sidewaysfigure / sidewaystable: contenido girado (3.1, 6.1, 6.4)
 
 % ----- Estándar de tablas y figuras -----
-% Tablas:  [H], \centering, caption ARRIBA, cuadrícula completa (| y \hline),
+% Posición: [htbp] en figuras y tablas. LaTeX las coloca aquí, arriba o abajo
+%          de la página, o en una página propia, y rellena con texto en vez
+%          de dejar huecos; placeins evita que crucen a la sección siguiente.
+%          En el texto se citan por número ("la tabla \ref{...}"), nunca
+%          como "la siguiente tabla". Una tabla de más de una página va en
+%          longtable (se parte con encabezado de continuación).
+% Tablas:  \centering, caption ARRIBA, cuadrícula completa (| y \hline),
 %          letra \small y filas con \arraystretch 1.3 (se aplican aquí,
 %          no en cada tabla). Las comparativas de 4 o más columnas
 %          agregan \footnotesize dentro de la tabla. No usar \resizebox.
-% Figuras: [H], \centering, caption ABAJO, ancho relativo a \textwidth.
+% Figuras: \centering, caption ABAJO, ancho relativo a \textwidth.
 % Girado:  sidewaysfigure / sidewaystable. La única excepción es una tabla
 %          que ocupa varias páginas (longtable dentro de landscape), porque
 %          sidewaystable no puede partirse entre páginas.

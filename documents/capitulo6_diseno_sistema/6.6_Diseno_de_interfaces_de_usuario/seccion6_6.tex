@@ -12,7 +12,7 @@ Las interfaces de usuario del prototipo se diseñaron en Figma como maquetas de 
 \subsection{Logo}
 El logo de la aplicación es un perro (figura \ref{fig:logo}). Se eligió esta figura porque el perro es un símbolo ampliamente asociado con la lealtad, la compañía y la protección, cualidades que la aplicación busca transmitir al acompañar al peatón en sus trayectos. Con ello se pretende generar confianza en los usuarios, aspecto fundamental en una herramienta cuyo propósito es sugerir rutas seguras, así como lograr una imagen de impacto que sea fácil de reconocer y recordar.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/logo.png}
     \caption{Logo de la aplicación}
@@ -32,7 +32,7 @@ Los colores se definieron en Figma como variables agrupadas en colecciones segú
     \item \textbf{Texto.} Distinguen el texto principal del texto que se coloca sobre fondos de color, como el de los botones de acción.
 \end{itemize}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Paleta de colores de la aplicación en los modos claro y oscuro}
     \label{tab:paleta_colores}
@@ -71,7 +71,7 @@ La aplicación ofrece dos modos de apariencia, claro y oscuro, que el usuario el
 
 Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recuperación de contraseña (figuras \ref{fig:claro_login_iniciar_sesion} a \ref{fig:claro_login_restablecer_contrasena_exito}); exploración del mapa, búsqueda de lugares, selección de rutas, navegación y reporte de incidentes (figuras \ref{fig:claro_mapas_principal} a \ref{fig:claro_mapas_reporte_limite}); gestión de los lugares guardados (figuras \ref{fig:claro_lugares_vacio} a \ref{fig:claro_lugares_guardar}), y perfil del usuario (figuras \ref{fig:claro_perfil_principal} a \ref{fig:claro_perfil_eliminar_cuenta}).
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_claro/login_iniciar_sesion.png}{Inicio de sesión }{fig:claro_login_iniciar_sesion}\hfill
     \pantallaUI{modo_claro/login_registro.png}{Registro }{fig:claro_login_registro}\hfill
@@ -83,7 +83,7 @@ Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recup
     \pantallaUI{modo_claro/login_restablecer_contrasena.png}{Restablecimiento de contraseña }{fig:claro_login_restablecer_contrasena}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_claro/login_restablecer_contrasena_exito.png}{Contraseña actualizada }{fig:claro_login_restablecer_contrasena_exito}\hfill
     \pantallaUI{modo_claro/mapas_principal.png}{Pantalla principal }{fig:claro_mapas_principal}\hfill
@@ -95,7 +95,7 @@ Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recup
     \pantallaUI{modo_claro/mapas_busqueda_sin_resultados.png}{Búsqueda sin coincidencias }{fig:claro_mapas_busqueda_sin_resultados}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_claro/mapas_seleccion_lugar.png}{Selección de lugar }{fig:claro_mapas_seleccion_lugar}\hfill
     \pantallaUI{modo_claro/mapas_busqueda_lugar.png}{Detalle del lugar buscado }{fig:claro_mapas_busqueda_lugar}\hfill
@@ -107,7 +107,7 @@ Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recup
     \pantallaUI{modo_claro/mapas_reporte_enviado.png}{Reporte enviado }{fig:claro_mapas_reporte_enviado}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_claro/mapas_reporte_limite.png}{Límite de reportes alcanzado }{fig:claro_mapas_reporte_limite}\hfill
     \pantallaUI{modo_claro/lugares_vacio.png}{Lista de lugares vacía }{fig:claro_lugares_vacio}\hfill
@@ -119,7 +119,7 @@ Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recup
     \pantallaUI{modo_claro/lugares_busqueda_resultados.png}{Añadir lugar: resultados de búsqueda }{fig:claro_lugares_busqueda_resultados}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_claro/lugares_detalle.png}{Añadir lugar: detalle del lugar }{fig:claro_lugares_detalle}\hfill
     \pantallaUI{modo_claro/lugares_guardar.png}{Guardar lugar }{fig:claro_lugares_guardar}\hfill
@@ -134,7 +134,7 @@ Las pantallas se organizan en cuatro flujos: inicio de sesión, registro y recup
 \subsection{Modo oscuro}
 El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituye los fondos blancos por grises oscuros, los encabezados por un tono café y el mapa por una versión en colores oscuros, mientras que los botones de acción mantienen el naranja terracota. Esto reduce el brillo de la pantalla y favorece el uso de la aplicación en condiciones de poca luz, como durante la noche. Las figuras \ref{fig:oscuro_login_iniciar_sesion} a \ref{fig:oscuro_perfil_eliminar_cuenta} muestran las pantallas correspondientes, en el mismo orden que en el modo claro.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_oscuro/login_iniciar_sesion.png}{Inicio de sesión (modo oscuro)}{fig:oscuro_login_iniciar_sesion}\hfill
     \pantallaUI{modo_oscuro/login_registro.png}{Registro (modo oscuro)}{fig:oscuro_login_registro}\hfill
@@ -146,7 +146,7 @@ El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituy
     \pantallaUI{modo_oscuro/login_restablecer_contrasena.png}{Restablecimiento de contraseña (modo oscuro)}{fig:oscuro_login_restablecer_contrasena}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_oscuro/login_restablecer_contrasena_exito.png}{Contraseña actualizada (modo oscuro)}{fig:oscuro_login_restablecer_contrasena_exito}\hfill
     \pantallaUI{modo_oscuro/mapas_principal.png}{Pantalla principal (modo oscuro)}{fig:oscuro_mapas_principal}\hfill
@@ -158,7 +158,7 @@ El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituy
     \pantallaUI{modo_oscuro/mapas_busqueda_sin_resultados.png}{Búsqueda sin coincidencias (modo oscuro)}{fig:oscuro_mapas_busqueda_sin_resultados}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_oscuro/mapas_seleccion_lugar.png}{Selección de lugar (modo oscuro)}{fig:oscuro_mapas_seleccion_lugar}\hfill
     \pantallaUI{modo_oscuro/mapas_busqueda_lugar.png}{Detalle del lugar buscado (modo oscuro)}{fig:oscuro_mapas_busqueda_lugar}\hfill
@@ -170,7 +170,7 @@ El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituy
     \pantallaUI{modo_oscuro/mapas_reporte_enviado.png}{Reporte enviado (modo oscuro)}{fig:oscuro_mapas_reporte_enviado}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_oscuro/mapas_reporte_limite.png}{Límite de reportes alcanzado (modo oscuro)}{fig:oscuro_mapas_reporte_limite}\hfill
     \pantallaUI{modo_oscuro/lugares_vacio.png}{Lista de lugares vacía (modo oscuro)}{fig:oscuro_lugares_vacio}\hfill
@@ -182,7 +182,7 @@ El modo oscuro conserva la estructura y los flujos del modo claro, pero sustituy
     \pantallaUI{modo_oscuro/lugares_busqueda_resultados.png}{Añadir lugar: resultados de búsqueda (modo oscuro)}{fig:oscuro_lugares_busqueda_resultados}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \pantallaUI{modo_oscuro/lugares_detalle.png}{Añadir lugar: detalle del lugar (modo oscuro)}{fig:oscuro_lugares_detalle}\hfill
     \pantallaUI{modo_oscuro/lugares_guardar.png}{Guardar lugar (modo oscuro)}{fig:oscuro_lugares_guardar}\hfill

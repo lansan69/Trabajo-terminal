@@ -8,7 +8,7 @@ Para determinar la factibilidad técnica es necesario evaluar los aspectos tecno
 Primero, para el desarrollo del prototipo móvil es necesario la utilización de un marco de trabajo que nos permita realizar aplicaciones móviles para android. Múltiples candidatos cumplen con los requisitos básicos. La tabla \ref{tab:tabla-comparativa-framework} muestra una comparativa entre las opciones nativas y frameworks multi-plataforma más populares del mercado.
 
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \footnotesize
 \caption{Comparación de tecnologías de desarrollo de aplicaciones móviles}
@@ -75,7 +75,7 @@ Segundo, una vez definida la herramienta a utilizar para el desarrollo del proto
 
 Asimismo, a pesar del gran número de herramientas open-source autohosteadas que existen en el mercado como Appwrite, Convex, entre otros. Al no contar con la infraestructura de hardware y el tiempo necesario para la configuración de los microservicios, se opta por la adopción de herramientas de Backend como servicio que nos facilita la implementación, aseguran disponibilidades altas, ofrecen tiempos de respuesta óptimos y proveen herramientas en tiempo real. La tabla \ref{tab:comparativa-dbms} muestra una comparativa de las herramientas tomadas en cuenta.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \footnotesize
 \caption{Comparación técnica de Sistemas Gestores de Bases de Datos}
@@ -146,7 +146,7 @@ Con base en estos criterios, las tablas \ref{tab:comparativa-correo}, \ref{tab:c
 % --- Envío de correos ---
 En el caso del correo electrónico, el sistema solo lo utiliza para enviar el correo de verificación de la cuenta. Aunque Supabase Auth incluye un servidor SMTP propio, este solo entrega correos a los miembros del equipo del proyecto, con un límite de dos correos por hora y sin garantía de servicio \cite{supabase_smtp}, por lo que es necesario configurar un proveedor externo. La tabla \ref{tab:comparativa-correo} muestra la comparación.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \footnotesize
 \caption{Comparación de proveedores de envío de correos electrónicos}
@@ -182,7 +182,7 @@ Se puede observar que Resend ofrece una cuota gratuita suficiente para el volume
 % --- Mapas base ---
 Para los mapas base conviene distinguir dos decisiones: el paquete de Flutter que dibuja el mapa y el proveedor que sirve las teselas. Los polígonos de rúbrica y los marcadores son datos propios almacenados en PostGIS que se dibujan encima del mapa base, por lo que el proveedor solo determina el costo, la licencia y la coincidencia de sus calles con las del grafo vial, construido con datos de OpenStreetMap (OSM). La tabla \ref{tab:comparativa-mapas} compara tres combinaciones de paquete y proveedor.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \footnotesize
 \caption{Comparación de proveedores de mapas base}
@@ -218,7 +218,7 @@ Aunque las tres combinaciones permiten dibujar las capas propias, Google Maps se
 % --- Búsqueda de lugares ---
 En la búsqueda de lugares, la licencia resulta más determinante que el precio. Google Places exige que sus resultados se muestren sobre un mapa de Google \cite{google_places_policies} y Mapbox exige mostrarlos sobre un mapa de Mapbox \cite{mapbox_search_terms}, por lo que ninguno es compatible con teselas de OSM. A su vez, el servicio público de Nominatim prohíbe el autocompletado \cite{nominatim_policy}. La tabla \ref{tab:comparativa-busqueda} compara las dos alternativas basadas en OSM con Google Places como referencia.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \footnotesize
 \caption{Comparación de proveedores de búsqueda de lugares (geocodificación)}
@@ -254,7 +254,7 @@ Por lo anterior, se selecciona Geoapify, consultado desde una Edge Function de S
 % --- Notificaciones push ---
 Por último, las notificaciones \textit{push} se utilizan para las alertas de reportes y de seguimiento cuando la aplicación no está abierta. Las alertas que se generan en el propio dispositivo, como entrar a una zona de riesgo durante la navegación, y la ubicación en vivo con la aplicación abierta no requieren este servicio, ya que se resuelven con notificaciones locales y con Supabase Realtime \cite{supabase_pricing}. La tabla \ref{tab:comparativa-notificaciones} compara tres proveedores.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \footnotesize
 \caption{Comparación de proveedores de notificaciones \textit{push}}
