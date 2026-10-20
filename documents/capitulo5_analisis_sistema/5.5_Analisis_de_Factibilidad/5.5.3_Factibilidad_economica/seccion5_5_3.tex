@@ -43,9 +43,8 @@ La Tabla~\ref{tab:sueldos_mercado} presenta el sueldo mensual promedio en Méxic
 
 \begin{table}[H]
     \centering
-    \caption[Sueldo mensual promedio por rol]{Sueldo mensual promedio por rol, según datos de mercado.}
-    \vspace{0.2cm}
-    \resizebox{\textwidth}{!}{%
+    \caption[Sueldo mensual promedio por rol]{Sueldo mensual promedio por rol, según datos de mercado}
+    \label{tab:sueldos_mercado}
     \begin{tabular}{|l|l|c|}
         \hline
         \textbf{Cargo} & \textbf{Fuente} & \textbf{Sueldo mensual promedio} \\ \hline
@@ -53,17 +52,14 @@ La Tabla~\ref{tab:sueldos_mercado} presenta el sueldo mensual promedio en Méxic
         Analista de Datos & Indeed México \cite{indeed_analistas_datos} & \$ 15,221.00 \\ \hline
         Desarrollador Móvil & Indeed México \cite{indeed_android_developer} & \$ 17,302.00 \\ \hline
     \end{tabular}%
-    }
-    \label{tab:sueldos_mercado}
 \end{table}
 
 El costo por hora de cada rol se obtiene dividiendo el sueldo mensual promedio entre 160 horas mensuales, correspondientes a una jornada estándar de 8 horas diarias durante 20 días hábiles al mes. Este costo por hora se multiplica por las 720 horas efectivas estimadas por integrante, obteniendo el costo total de recursos humanos mostrado en la Tabla~\ref{tab:recursos_humanos}.
 
 \begin{table}[H]
     \centering
-    \caption[Recursos humanos necesarios para realizar el proyecto]{Recursos humanos necesarios para realizar el proyecto. Elaboración propia.}
-    \vspace{0.2cm}
-    \resizebox{\textwidth}{!}{%
+    \caption[Recursos humanos necesarios para realizar el proyecto]{Recursos humanos necesarios para realizar el proyecto}
+    \label{tab:recursos_humanos}
     \begin{tabular}{|l|c|c|c|}
         \hline
         \textbf{Cargo} & \textbf{Horas estimadas} & \textbf{Costo/hora} & \textbf{Costo total} \\ \hline
@@ -72,8 +68,7 @@ El costo por hora de cada rol se obtiene dividiendo el sueldo mensual promedio e
         Desarrollador Móvil & 720 & \$ 108.14 & \$ 77,860.80 \\ \hline
         \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 232,797.60} \\ \hline
     \end{tabular}%
-    }
-    \label{tab:recursos_humanos}
+    \nota{Elaboración propia.}
 \end{table}
 
 \subsubsection{Recursos tecnológicos}
@@ -92,10 +87,9 @@ Si el uso del prototipo llegara a superar los planes gratuitos, el único gasto 
 
 \begin{table}[H]
     \centering
-    \caption[Recursos tecnológicos necesarios para realizar el proyecto]{Recursos tecnológicos necesarios para realizar el proyecto. Elaboración propia.}
-    \vspace{0.2cm}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|c|}
+    \caption[Recursos tecnológicos necesarios para realizar el proyecto]{Recursos tecnológicos necesarios para realizar el proyecto}
+    \label{tab:recursos_tecnologicos}
+    \begin{tabularx}{\textwidth}{|c|X|r|}
         \hline
         \textbf{Cantidad} & \textbf{Descripción} & \textbf{Costo} \\ \hline
         \multicolumn{3}{|l|}{\textit{Hardware}} \\ \hline
@@ -119,16 +113,14 @@ Si el uso del prototipo llegara a superar los planes gratuitos, el único gasto 
         \multicolumn{3}{|l|}{\textit{Opcional (no incluido en el total)}} \\ \hline
         1 & Registro de desarrollador Google Play (pago único) & \$ 449.18 \\ \hline
         \multicolumn{2}{|r|}{\textbf{Total}} & \textbf{\$ 86.46} \\ \hline
-    \end{tabular}%
-    }
-    \label{tab:recursos_tecnologicos}
+    \end{tabularx}
+    \nota{Elaboración propia.}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption[Servicios adicionales por suscripción mensual]{Servicios adicionales por suscripción mensual. Elaboración propia.}
-    \vspace{0.2cm}
-    \resizebox{\textwidth}{!}{%
+    \caption[Servicios adicionales por suscripción mensual]{Servicios adicionales por suscripción mensual}
+    \label{tab:servicios_adicionales}
     \begin{tabular}{|c|l|c|c|}
         \hline
         \textbf{Meses} & \textbf{Descripción} & \textbf{Costo mensual} & \textbf{Costo total} \\ \hline
@@ -136,8 +128,7 @@ Si el uso del prototipo llegara a superar los planes gratuitos, el único gasto 
         10 & Udemy (suscripción mensual) & \$ 209.00 & \$ 2,090.00 \\ \hline
         \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 3,400.00} \\ \hline
     \end{tabular}%
-    }
-    \label{tab:servicios_adicionales}
+    \nota{Elaboración propia.}
 \end{table}
 
 \subsubsection{Recursos materiales}
@@ -153,18 +144,16 @@ Dicho consumo se valora con la cuota del consumo excedente de la Tarifa 1 de la 
 
 \begin{table}[H]
     \centering
-    \caption[Recursos materiales necesarios para realizar el proyecto]{Recursos materiales necesarios para realizar el proyecto. Elaboración propia.}
-    \vspace{0.2cm}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|c|c|}
+    \caption[Recursos materiales necesarios para realizar el proyecto]{Recursos materiales necesarios para realizar el proyecto}
+    \label{tab:recursos_materiales}
+    \begin{tabularx}{\textwidth}{|c|X|r|r|}
         \hline
         \textbf{Cantidad} & \textbf{Descripción} & \textbf{Costo} & \textbf{Total} \\ \hline
         140 & Energía eléctrica, Tarifa 1 CFE (kWh) & \$ 4.054 & \$ 567.56 \\ \hline
         30 & Internet residencial 100 Mbps (3 integrantes $\times$ 10 meses) & \$ 390.00 & \$ 11,700.00 \\ \hline
         \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 12,267.56} \\ \hline
-    \end{tabular}%
-    }
-    \label{tab:recursos_materiales}
+    \end{tabularx}
+    \nota{Elaboración propia.}
 \end{table}
 
 \subsubsection{Flujo de pago}
@@ -175,8 +164,8 @@ Con base en lo anterior, el proyecto se considera económicamente viable: el gas
 
 \begin{table}[H]
     \centering
-    \caption[Resumen de costos totales del proyecto]{Resumen de costos totales del proyecto. Elaboración propia.}
-    \vspace{0.2cm}
+    \caption[Resumen de costos totales del proyecto]{Resumen de costos totales del proyecto}
+    \label{tab:flujo_pago}
     \begin{tabular}{|l|c|}
         \hline
         \textbf{Recursos} & \textbf{Costo} \\ \hline
@@ -187,7 +176,7 @@ Con base en lo anterior, el proyecto se considera económicamente viable: el gas
         Imprevistos (10\%) & \$ 24,855.16 \\ \hline
         \textbf{Total} & \textbf{\$ 273,406.78} \\ \hline
     \end{tabular}
-    \label{tab:flujo_pago}
+    \nota{Elaboración propia.}
 \end{table}
 
 

@@ -20,7 +20,8 @@
 % ---------------------------------------------------------
 \usepackage[utf8]{inputenc}     % Entrada en UTF-8 (acentos, ñ)
 \usepackage[T1]{fontenc}        % Codificación de fuente de salida (guiones y acentos correctos)
-\usepackage[spanish]{babel}     % Idioma: separación silábica, "Capítulo", "Cuadro", etc.
+\usepackage[spanish, es-tabla]{babel} % Idioma: separación silábica, "Capítulo", etc.
+                                % es-tabla: "Tabla" e "Índice de tablas" en lugar de "Cuadro"
 \usepackage{csquotes}           % \enquote{}: 2.1 SafetiPin, 2.2 RTMDX, 2.6 Comparativa
 
 
@@ -50,13 +51,32 @@
 % 4. FIGURAS Y FLOTANTES
 % ---------------------------------------------------------
 \usepackage{graphicx}           % \includegraphics: portada, 3.1, 3.2, 3.3, 5.5.2
-                                % \resizebox: 5.5.2, 5.5.3
 \graphicspath{{./figures/}}     % Raíz de imágenes: figures/<capitulo>/<seccion>/
-\usepackage{float}              % Opción [H] para fijar flotantes: 1.1, 5.5.2, 5.5.3
+\usepackage{float}              % Opción [H] para fijar flotantes en su lugar
 \usepackage{caption}            % Personalización de leyendas (captions)
-\usepackage{pdflscape}          % Páginas horizontales (landscape): 5.4 Análisis de riesgos
-\usepackage{pdflscape}
-\usepackage{rotating}
+\usepackage{pdflscape}          % Páginas horizontales (landscape): solo la tabla larga de 5.4
+\usepackage{rotating}           % sidewaysfigure / sidewaystable: contenido girado (3.1, 6.1, 6.4)
+
+% ----- Estándar de tablas y figuras -----
+% Tablas:  [H], \centering, caption ARRIBA, cuadrícula completa (| y \hline),
+%          letra \small y filas con \arraystretch 1.3 (se aplican aquí,
+%          no en cada tabla). Las comparativas de 4 o más columnas
+%          agregan \footnotesize dentro de la tabla. No usar \resizebox.
+% Figuras: [H], \centering, caption ABAJO, ancho relativo a \textwidth.
+% Girado:  sidewaysfigure / sidewaystable. La única excepción es una tabla
+%          que ocupa varias páginas (longtable dentro de landscape), porque
+%          sidewaystable no puede partirse entre páginas.
+\captionsetup{font=normalsize}            % El caption no hereda el \small de la tabla
+\captionsetup[table]{position=top}        % Espaciado correcto para caption arriba
+\AddToHook{env/table/begin}{\small\renewcommand{\arraystretch}{1.3}}
+\AddToHook{env/sidewaystable/begin}{\small\renewcommand{\arraystretch}{1.3}}
+\AddToHook{env/longtable/begin}{\small\renewcommand{\arraystretch}{1.3}}
+
+% \nota{Texto}
+% Nota de fuente o aclaración bajo una tabla o figura, dentro de su entorno
+% (después del tabular en tablas; después del caption en figuras).
+% Ejemplo: \nota{Adaptación propia con base en la Figura 11-1 de \cite{x}.}
+\newcommand{\nota}[1]{\par\smallskip{\footnotesize\textbf{Nota:} #1\par}}
 
 % ---------------------------------------------------------
 % 5. TABLAS
@@ -137,13 +157,14 @@
 % B. TIPOS DE COLUMNA Y AJUSTES DE TABLAS
 % ---------------------------------------------------------
 % C: columna X con texto centrado                (2.6 Comparativa, 5.5.1 Factibilidad técnica)
-\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash\hspace{0pt}}X}  % \hspace{0pt}: permite partir con guion la primera palabra
 
 % K: columna de identificador en negritas (1.6 cm)
-% Q: columna de texto que ocupa el resto del ancho
-% Uso: \begin{longtable}{@{}KQ@{}}               (5.1.2 Requerimientos no funcionales, 5.2 Reglas del negocio)
+% Q: columna de texto que ocupa el resto del ancho, descontando los
+%    separadores (4\tabcolsep) y las tres líneas verticales de la cuadrícula
+% Uso: \begin{longtable}{|K|Q|}                  (5.1.2 Requerimientos no funcionales, 5.2 Reglas del negocio)
 \newcolumntype{K}{>{\bfseries\raggedright\arraybackslash}p{1.6cm}}
-\newcolumntype{Q}{p{\dimexpr\textwidth-1.6cm-2\tabcolsep\relax}}
+\newcolumntype{Q}{p{\dimexpr\textwidth-1.6cm-4\tabcolsep-3\arrayrulewidth\relax}}
 
 % Las longtable quedan alineadas al margen izquierdo y derecho, sin sangría
 % (5.1.2, 5.2, 5.4)
@@ -183,6 +204,7 @@
 \newcommand{\tablaRF}[9]{%
   \par\noindent
   \begingroup
+  \small                              % Mismo tamaño de letra que el resto de las tablas
   \setlength{\extrarowheight}{2pt}%   % Un poco de aire vertical en cada fila
   \begin{tabularx}{\linewidth}{%
       |>{\hsize=.95\hsize\raggedright\arraybackslash\bfseries}X%

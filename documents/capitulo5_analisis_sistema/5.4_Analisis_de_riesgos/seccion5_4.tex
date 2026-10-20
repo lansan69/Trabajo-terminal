@@ -6,7 +6,7 @@ Para evaluar los riesgos, se utilizó una matriz de probabilidad e impacto de \(
 
 Se eligió una escala de cinco niveles para distinguir entre riesgos de diferente gravedad y facilitar la identificación de aquellos que requieren mayor atención. Para ello, se asigna un valor del 1 al 5 a la probabilidad de que ocurra cada riesgo y otro valor del 1 al 5 al impacto que podría tener en el proyecto. Al multiplicar ambos valores, se obtiene una puntuación que ayuda a determinar qué riesgos deben atenderse primero. Las escalas y la matriz utilizada se presentan en las tablas \ref{tab:escalas_riesgo} y \ref{tab:matriz_calor_riesgos}.
 
-\begin{table}[htpb]
+\begin{table}[H]
 \centering
 \caption{Escalas de Probabilidad y Consecuencia}
 \label{tab:escalas_riesgo}
@@ -38,18 +38,15 @@ Se eligió una escala de cinco niveles para distinguir entre riesgos de diferent
 \end{minipage}
 \end{table}
 
-\begin{table}[htpb]
+\begin{table}[H]
 \centering
 \caption{Matriz de Valoración de Riesgos ($5 \times 5$)}
 \label{tab:matriz_calor_riesgos}
-\renewcommand{\arraystretch}{1.5}
-% El makebox fuerza el centrado absoluto, y linewidth asegura que no rebase los márgenes
-\makebox[\linewidth][c]{
-    \resizebox{\linewidth}{!}{
-        \begin{tabular}{cc|c|c|c|c|c|}
+\footnotesize
+\begin{tabular}{cc|c|c|c|c|c|}
         \cline{3-7}
         & & \multicolumn{5}{c|}{\cellcolor{blue!20}\textbf{CONSECUENCIA}} \\ \cline{3-7}
-        & & \textbf{Insignificante 1} & \textbf{Menor 2} & \textbf{Moderado 3} & \textbf{Peligroso 4} & \textbf{Catastrófico 5} \\ \hline
+        & & \textbf{\makecell{Insignificante\\1}} & \textbf{\makecell{Menor\\2}} & \textbf{\makecell{Moderado\\3}} & \textbf{\makecell{Peligroso\\4}} & \textbf{\makecell{Catastrófico\\5}} \\ \hline
         \multicolumn{1}{|c|}{\multirow{5}{*}{\rotatebox{90}{\cellcolor{blue!20}\textbf{PROBABILIDAD}}}} 
         & \textbf{Frecuente 5} & \cellcolor{riskYellow} 5 & \cellcolor{riskOrange} 10 & \cellcolor{riskRed} 15 & \cellcolor{riskRed} 20 & \cellcolor{riskRed} 25 \\ \cline{2-7} 
         \multicolumn{1}{|c|}{} & \textbf{Probable 4}  & \cellcolor{riskGreen} 4  & \cellcolor{riskYellow} 8 & \cellcolor{riskOrange} 12 & \cellcolor{riskRed} 16 & \cellcolor{riskRed} 20 \\ \cline{2-7} 
@@ -57,16 +54,13 @@ Se eligió una escala de cinco niveles para distinguir entre riesgos de diferent
         \multicolumn{1}{|c|}{} & \textbf{Posible 2}   & \cellcolor{riskGreen} 2  & \cellcolor{riskGreen} 4 & \cellcolor{riskYellow} 6 & \cellcolor{riskYellow} 8 & \cellcolor{riskOrange} 10 \\ \cline{2-7} 
         \multicolumn{1}{|c|}{} & \textbf{Improbable 1}& \cellcolor{riskGreen} 1  & \cellcolor{riskGreen} 2 & \cellcolor{riskGreen} 3 & \cellcolor{riskGreen} 4 & \cellcolor{riskYellow} 5 \\ \hline
         \end{tabular}
-    }
-}
 \end{table}
 
 
 Finalmente, en la tabla \ref{tab:matriz-riesgos-detallada} se presenta el análisis detallado de los riesgos identificados, junto con su evaluación y las medidas propuestas para atenderlos.
 
 \begin{landscape}
-\small % Reduce un poco el tamaño de letra para que quepan bien las columnas
-\begin{longtable}{|c|p{3cm}|p{5cm}|p{2cm}|p{1cm}|c|c|p{6cm}|}
+\begin{longtable}{|c|p{3cm}|p{5cm}|p{2cm}|p{1.1cm}|c|c|p{6cm}|}
 \caption{Matriz de Análisis de Riesgos} \label{tab:matriz-riesgos-detallada} \\
 \hline
 \textbf{ID} & \textbf{Nombre del Riesgo} & \textbf{Descripción} & \textbf{Categoría} & \textbf{Prob.} & \textbf{Cons.} & \textbf{Nivel} & \textbf{Estrategia de Mitigación} \\
@@ -74,7 +68,6 @@ Finalmente, en la tabla \ref{tab:matriz-riesgos-detallada} se presenta el análi
 \endfirsthead
 
 \multicolumn{8}{c}%
-%{{\bfseries Continuación de la Tabla \ref{tab:matriz_riesgos}}} \\
 {{\bfseries Continuación de la Tabla \ref{tab:matriz-riesgos-detallada}}} \\
 \hline
 \textbf{ID} & \textbf{Nombre del Riesgo} & \textbf{Descripción} & \textbf{Categoría} & \textbf{Prob.} & \textbf{Cons.} & \textbf{Nivel} & \textbf{Estrategia de Mitigación} \\

@@ -8,11 +8,11 @@ Para determinar la factibilidad técnica es necesario evaluar los aspectos tecno
 Primero, para el desarrollo del prototipo móvil es necesario la utilización de un marco de trabajo que nos permita realizar aplicaciones móviles para android. Múltiples candidatos cumplen con los requisitos básicos. La tabla \ref{tab:tabla-comparativa-framework} muestra una comparativa entre las opciones nativas y frameworks multi-plataforma más populares del mercado.
 
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\footnotesize
 \caption{Comparación de tecnologías de desarrollo de aplicaciones móviles}
+\label{tab:tabla-comparativa-framework}
 \begin{tabularx}{\textwidth}{ |C|C|C|C| }
 \hline
 \textbf{Característica} &
@@ -66,8 +66,7 @@ Referencia &
 $+13.3\%$ \cite{suri2022cross}
 \\ \hline
 \end{tabularx}
-\footnotesize{\textbf{Nota:} Tanto consumo de CPU como consumo de memoria fueron calculados con base en un estudio empírico que compara el rendimiento de estos tres frameworks en condiciones similares.}
-\label{tab:tabla-comparativa-framework}
+\nota{Tanto el consumo de CPU como el consumo de memoria fueron calculados con base en un estudio empírico que compara el rendimiento de estos tres frameworks en condiciones similares.}
 \end{table}
 
 Se puede observar que \textbf{Flutter ofrece un entorno óptimo} para la construcción de un producto mínimo viable (MVP) por ventajas como el hot reload, su renderizado a nivel de pixel, su repositorio oficial de paquetes centralizado y su naturaleza multiplataforma. Si bien el desarrollo del presente proyecto se enfoca únicamente en Android, el uso de esta tecnología y herramientas garantiza que, como parte del trabajo a futuro, el proyecto pueda retomarse y expandirse a otros sistemas operativos de manera sencilla, manteniendo la interfaz diseñada y reutilizando aproximadamente el 90\% del código escrito\cite{suri2022cross}.
@@ -76,11 +75,11 @@ Segundo, una vez definida la herramienta a utilizar para el desarrollo del proto
 
 Asimismo, a pesar del gran número de herramientas open-source autohosteadas que existen en el mercado como Appwrite, Convex, entre otros. Al no contar con la infraestructura de hardware y el tiempo necesario para la configuración de los microservicios, se opta por la adopción de herramientas de Backend como servicio que nos facilita la implementación, aseguran disponibilidades altas, ofrecen tiempos de respuesta óptimos y proveen herramientas en tiempo real. La tabla \ref{tab:comparativa-dbms} muestra una comparativa de las herramientas tomadas en cuenta.
 
-\begin{table}[hbt!]
+\begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\footnotesize
 \caption{Comparación técnica de Sistemas Gestores de Bases de Datos}
+\label{tab:comparativa-dbms}
 \begin{tabularx}{\textwidth}{ |C|C|C|C| }
 \hline
 \textbf{Característica} & \textbf{Supabase} & \textbf{Firebase} & \textbf{MongoDB} \\ \hline
@@ -125,7 +124,6 @@ Sí (REST autogenerada con PostgREST) \cite{supabase_arquitectura} &
 Sí (REST y gRPC sobre Firestore) \cite{firebase_api} &
 No gestionada (Data API y GraphQL retirados; acceso por drivers) \cite{mongodb_deprecacion} \\ \hline
 \end{tabularx}
-\label{tab:comparativa-dbms}
 \end{table}
 
 Si bien los tres son operables a nivel de autenticación, seguridad, API, integraciones y disponibilidad con base en los requerimientos del sistema, solo \textit{Supabase} y \textit{MongoDB} ofrecen las herramientas necesarias para la gestión de bases de datos geoespaciales y entre estos, solo Supabase nos permite integrar un motor de ruteo con una simple extensión, lo que a corto plazo permite integrar de manera más rápida el prototipo de aplicación móvil con el backend.
@@ -148,11 +146,11 @@ Con base en estos criterios, las tablas \ref{tab:comparativa-correo}, \ref{tab:c
 % --- Envío de correos ---
 En el caso del correo electrónico, el sistema solo lo utiliza para enviar el correo de verificación de la cuenta. Aunque Supabase Auth incluye un servidor SMTP propio, este solo entrega correos a los miembros del equipo del proyecto, con un límite de dos correos por hora y sin garantía de servicio \cite{supabase_smtp}, por lo que es necesario configurar un proveedor externo. La tabla \ref{tab:comparativa-correo} muestra la comparación.
 
-\begin{table}[hbt!]
+\begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\footnotesize
 \caption{Comparación de proveedores de envío de correos electrónicos}
+\label{tab:comparativa-correo}
 \begin{tabularx}{\textwidth}{ |C|C|C|C| }
 \hline
 \textbf{Criterio} & \textbf{Resend} & \textbf{Brevo} & \textbf{Amazon SES} \\ \hline
@@ -177,7 +175,6 @@ Envío del correo de verificación; requiere un dominio propio verificado \cite{
 Envío del correo de verificación; sin dominio autenticado, el remitente se reescribe a \texttt{@brevosend.com} \cite{brevo_dominio} &
 Envío del correo de verificación; requiere un dominio verificado \cite{amazon_ses_pricing} \\ \hline
 \end{tabularx}
-\label{tab:comparativa-correo}
 \end{table}
 
 Se puede observar que Resend ofrece una cuota gratuita suficiente para el volumen del prototipo y es el único de los tres con una integración oficial que configura Supabase Auth de forma automática. Su única condición, compartida con el resto de los proveedores, es contar con un dominio propio verificado, ya que los principales servicios de correo exigen remitentes autenticados \cite{brevo_dominio}. Por ello, se selecciona Resend como proveedor SMTP y Brevo como respaldo, gracias a su mayor cuota diaria; Amazon SES se descarta por no contar con un plan gratuito permanente. Además, en Flutter no se requiere ningún paquete adicional, pues basta con registrar al usuario mediante \texttt{supabase\_flutter} para que Supabase envíe el correo \cite{supabase_flutter}.
@@ -185,14 +182,14 @@ Se puede observar que Resend ofrece una cuota gratuita suficiente para el volume
 % --- Mapas base ---
 Para los mapas base conviene distinguir dos decisiones: el paquete de Flutter que dibuja el mapa y el proveedor que sirve las teselas. Los polígonos de rúbrica y los marcadores son datos propios almacenados en PostGIS que se dibujan encima del mapa base, por lo que el proveedor solo determina el costo, la licencia y la coincidencia de sus calles con las del grafo vial, construido con datos de OpenStreetMap (OSM). La tabla \ref{tab:comparativa-mapas} compara tres combinaciones de paquete y proveedor.
 
-\begin{table}[hbt!]
+\begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\footnotesize
 \caption{Comparación de proveedores de mapas base}
+\label{tab:comparativa-mapas}
 \begin{tabularx}{\textwidth}{ |C|C|C|C| }
 \hline
-\textbf{Criterio} & \textbf{OpenFreeMap con \texttt{maplibre\_gl}} & \textbf{Geoapify con \texttt{flutter\_map}} & \textbf{Google Maps con \texttt{google\_maps\_flutter}} \\ \hline
+\textbf{Criterio} & \textbf{OpenFreeMap con \texttt{maplibre\_gl}} & \textbf{Geoapify con \texttt{flutter\_map}} & \textbf{Google Maps con \texttt{google\_maps\_\allowbreak flutter}} \\ \hline
 
 Costo y plan gratuito &
 Sin límite de vistas ni solicitudes y sin registro ni llave de acceso; no ofrece SLA \cite{openfreemap} &
@@ -202,7 +199,7 @@ SDK de mapas para dispositivos móviles sin costo \cite{google_maps_pricing} \\ 
 Facilidad de integración &
 Paquete \texttt{maplibre\_gl} 0.27.1, mantenido por la organización MapLibre; dibujo en GPU \cite{maplibre_gl} &
 Paquete \texttt{flutter\_map} 8.3.2, escrito en Dart; capas de polígonos, líneas y marcadores \cite{flutter_map} &
-Paquete oficial \texttt{google\_maps\_flutter} 2.19.0 \cite{google_maps_flutter} \\ \hline
+Paquete oficial \texttt{google\_maps\_\allowbreak flutter} 2.19.0 \cite{google_maps_flutter} \\ \hline
 
 Compatibilidad con Flutter y Supabase &
 Datos OSM que coinciden con el grafo vial; carga capas GeoJSON generadas en PostGIS \cite{maplibre_gl} &
@@ -214,7 +211,6 @@ Color de cada tramo según su nivel de riesgo, iconos por categoría y teselas p
 Polígonos, rutas y marcadores; agrupar marcadores y mostrar la ubicación del usuario requiere paquetes de la comunidad \cite{flutter_map} &
 Polígonos, polilíneas y marcadores \cite{google_maps_flutter} \\ \hline
 \end{tabularx}
-\label{tab:comparativa-mapas}
 \end{table}
 
 Aunque las tres combinaciones permiten dibujar las capas propias, Google Maps se descarta porque su cartografía no coincide con los tramos del grafo vial y porque obliga a usar su propio servicio de búsqueda. Entre las dos opciones basadas en OSM, \texttt{maplibre\_gl} cubre sin paquetes adicionales el coloreado de tramos por nivel de riesgo, los iconos por categoría y la ubicación del usuario, mientras que \texttt{flutter\_map} requiere paquetes de la comunidad para agrupar marcadores y mostrar la ubicación. Como el proveedor se define con una sola dirección de estilo, OpenFreeMap y Geoapify quedan como respaldo sin necesidad de modificar las capas propias.
@@ -222,11 +218,11 @@ Aunque las tres combinaciones permiten dibujar las capas propias, Google Maps se
 % --- Búsqueda de lugares ---
 En la búsqueda de lugares, la licencia resulta más determinante que el precio. Google Places exige que sus resultados se muestren sobre un mapa de Google \cite{google_places_policies} y Mapbox exige mostrarlos sobre un mapa de Mapbox \cite{mapbox_search_terms}, por lo que ninguno es compatible con teselas de OSM. A su vez, el servicio público de Nominatim prohíbe el autocompletado \cite{nominatim_policy}. La tabla \ref{tab:comparativa-busqueda} compara las dos alternativas basadas en OSM con Google Places como referencia.
 
-\begin{table}[hbt!]
+\begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\footnotesize
 \caption{Comparación de proveedores de búsqueda de lugares (geocodificación)}
+\label{tab:comparativa-busqueda}
 \begin{tabularx}{\textwidth}{ |C|C|C|C| }
 \hline
 \textbf{Criterio} & \textbf{Geoapify} & \textbf{Photon} & \textbf{Google Places} \\ \hline
@@ -251,7 +247,6 @@ Autocompletado, geocodificación inversa y resultados acotados a un rectángulo 
 Autocompletado sobre datos OSM, adecuado como respaldo \cite{photon} &
 Autocompletado y detalles de lugares, sujetos a mostrarse en Google Maps \cite{google_places_policies} \\ \hline
 \end{tabularx}
-\label{tab:comparativa-busqueda}
 \end{table}
 
 Por lo anterior, se selecciona Geoapify, consultado desde una Edge Function de Supabase que resguarda la llave de acceso y acota los resultados al área de servicio, con Photon como respaldo ante fallas. Antes de ambos, la búsqueda consulta un índice propio en PostGIS con los lugares y calles de OSM del área de servicio, que responde sin costo y sin enviar datos a terceros. Este orden también cumple con RN-16, ya que la búsqueda se orienta con el área de servicio y no con la posición del usuario. Como limitación, en una prueba exploratoria con datos de OSM realizada en la Ciudad de México, dos de seis consultas de direcciones residenciales con número exterior se resolvieron solo a nivel de calle, por lo que la aplicación debe permitir ajustar el punto manualmente sobre el mapa.
@@ -259,11 +254,11 @@ Por lo anterior, se selecciona Geoapify, consultado desde una Edge Function de S
 % --- Notificaciones push ---
 Por último, las notificaciones \textit{push} se utilizan para las alertas de reportes y de seguimiento cuando la aplicación no está abierta. Las alertas que se generan en el propio dispositivo, como entrar a una zona de riesgo durante la navegación, y la ubicación en vivo con la aplicación abierta no requieren este servicio, ya que se resuelven con notificaciones locales y con Supabase Realtime \cite{supabase_pricing}. La tabla \ref{tab:comparativa-notificaciones} compara tres proveedores.
 
-\begin{table}[hbt!]
+\begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\footnotesize
 \caption{Comparación de proveedores de notificaciones \textit{push}}
+\label{tab:comparativa-notificaciones}
 \begin{tabularx}{\textwidth}{ |C|C|C|C| }
 \hline
 \textbf{Criterio} & \textbf{Firebase Cloud Messaging (FCM)} & \textbf{OneSignal} & \textbf{Pusher Beams} \\ \hline
@@ -288,7 +283,6 @@ Prioridad alta que entrega aun con el dispositivo en reposo; hasta 600,000 mensa
 Segmentación de usuarios, pruebas A/B y analítica básica \cite{onesignal_pricing} &
 Servicio gestionado, con mantenimiento incierto del paquete \cite{pusher_beams_pkg} \\ \hline
 \end{tabularx}
-\label{tab:comparativa-notificaciones}
 \end{table}
 
 Se observa que FCM es la única opción sin límite de usuarios en su plan gratuito, que cuenta con un paquete oficial y con una guía de Supabase que describe el flujo completo de envío. OneSignal añade segmentación y analítica, pero limita su plan gratuito a 1,000 usuarios activos al mes, y Pusher Beams presenta un mantenimiento incierto. Por ello, se selecciona FCM, con envíos desde una Edge Function de Supabase. Su uso tiene dos condiciones: el dispositivo debe contar con Google Play Services y, a partir de Android 13, la aplicación debe solicitar el permiso de notificaciones en tiempo de ejecución \cite{firebase_messaging}.

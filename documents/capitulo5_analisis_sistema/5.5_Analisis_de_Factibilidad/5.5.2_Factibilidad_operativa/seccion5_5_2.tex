@@ -32,8 +32,8 @@ En la tabla \ref{tab:conoc_generales} se muestran a detalle los conocimientos ge
 
 \begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
+\caption{Evaluación de conocimientos generales del equipo}
+\label{tab:conoc_generales}
 \begin{tabular}{| >{\centering\arraybackslash}m{0.5\textwidth} | c |}
 \hline
 \textbf{Conocimientos técnicos generales necesarios para el desarrollo del proyecto} & \textbf{¿El equipo cumple el requisito?} \\ \hline
@@ -46,8 +46,6 @@ Conocimientos generales en desarrollo Front-End y Back-End & Sí \\ \hline
 Gestión ágil de proyectos de software y manejo de sistemas de control de versiones & Sí \\ \hline
 
 \end{tabular}
-\caption{Evaluación de conocimientos generales del equipo}
-\label{tab:conoc_generales}
 \end{table}
 
 Como se puede apreciar en la tabla \ref{tab:conoc_generales} se determina que el equipo cumple con los conocimiento iniciales necesarios para llevar a cabo el proyecto. Se toma como base el perfil básico de un ingeniero en sistemas computacionales considerando que los tres integrantes del equipo están actualmente cursando la carrera de Ingeniería en Sistemas Computacionales (2020) dentro de la Escuela Superior de Computo del IPN (Instituto Politécnico Nacional) y se encuentran en sus últimos semestres.
@@ -56,9 +54,10 @@ La definición de roles se realizo previamente dentro de la sección \ref{Roles_
 
 \begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{| >{\centering\arraybackslash}m{0.15\textwidth} | >{\centering\arraybackslash}m{0.20\textwidth} | >{\centering\arraybackslash}m{0.40\textwidth} | >{\centering\arraybackslash}m{0.15\textwidth} |}
+\footnotesize
+\caption{Distribución de roles, conocimientos y nivel de dominio del equipo}
+\label{tab:roles_conocimientos}
+\begin{tabular}{| >{\centering\arraybackslash}m{0.14\textwidth} | >{\centering\arraybackslash}m{0.19\textwidth} | >{\centering\arraybackslash}m{0.38\textwidth} | >{\centering\arraybackslash}m{0.14\textwidth} |}
 \hline
 \textbf{Rol} & \textbf{Asignación} & \textbf{Conocimientos específicos requeridos} & \textbf{Nivel de dominio} \\ \hline
 
@@ -70,8 +69,6 @@ La definición de roles se realizo previamente dentro de la sección \ref{Roles_
 
 \textbf{Equipo de desarrollo} & Todos los integrantes & Programación de aplicaciones móviles (Dart/Flutter), administración de bases de datos espaciales (PostGIS/pgRouting), algoritmos de ruteo y control de versiones (Git). & Alto (80\%) \\ \hline
 \end{tabular}
-\caption{Distribución de roles, conocimientos y nivel de dominio del equipo}
-\label{tab:roles_conocimientos}
 \end{table}
 
 Para cuantificar el nivel de dominio de los conocimientos específicos requeridos por el equipo de desarrollo y justificar la factibilidad operativa del proyecto, se establece la siguiente métrica de evaluación basada en rangos porcentuales:
@@ -99,8 +96,8 @@ En la tabla \ref{tab:proc_trabajo} se definen a detalle los procesos y flujo de 
 
 \begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{2} 
+\caption{Procesos y flujos de trabajo dividos en ámbitos laborales}
+\label{tab:proc_trabajo}
 \begin{tabular}{| p{0.3\textwidth} | p{0.1\textwidth} | p{0.5\textwidth} |}
 \hline
 \textbf{Ámbitos laborales} & \textbf{ID} & \textbf{Proceso o flujo de trabajo definido} \\ \hline
@@ -122,19 +119,16 @@ En la tabla \ref{tab:proc_trabajo} se definen a detalle los procesos y flujo de 
 & U-1 & Previo a la codificación en el \textit{framework} móvil, se diseñan maquetas (mockups) interactivas para validar la navegación y ubicación de los elementos visuales. \\ \hline
 
 \end{tabular}
-\caption{Procesos y flujos de trabajo dividos en ámbitos laborales}
-\label{tab:proc_trabajo}
 \end{table}
 
 \begin{table}[H]
 \centering
-\scriptsize
-\renewcommand{\arraystretch}{2} 
+\caption*{Continuación de la Tabla \ref{tab:proc_trabajo}}
 \begin{tabular}{| p{0.3\textwidth} | p{0.1\textwidth} | p{0.5\textwidth} |}
 \hline
 \textbf{Ámbitos laborales} & \textbf{ID} & \textbf{Proceso o flujo de trabajo definido} \\ \hline
 
-\multirow{3}{=}{Control de calidad (QA) y Pruebas.} 
+\multirow{3}{=}{Control de calidad (QA) y Pruebas.}
 & Q-1 & El Líder de QA ejecuta pruebas de integración y valida la usabilidad de las interfaces antes de dar por finalizado y aprobado cada incremento del prototipo. \\ \cline{2-3}
 & Q-2 & Los errores técnicos identificados (\textit{bugs}) se registran inmediatamente en el tablero de trabajo para ser resueltos antes de avanzar a la siguiente fase. \\ \cline{2-3}
 & Q-3 & Se evalúa el rendimiento del sistema mediante pruebas de latencia para garantizar que el cálculo de rutas seguras no exceda los tiempos de respuesta operativos. \\ \hline
@@ -146,7 +140,6 @@ En la tabla \ref{tab:proc_trabajo} se definen a detalle los procesos y flujo de 
 & I-3 & A las correcciones señaladas por el grupo de interesados en el proyecto se les dará prioridad con el objetivo de presentar un avance satisfactorio en la siguiente reunión o revisión.  \\ \hline
 
 \end{tabular}
-\caption*{Continuación de la tabla \ref{tab:proc_trabajo}}
 \end{table}
 
 Como se muestra en la tabla \ref{tab:proc_trabajo}, la integración del sistema es operativamente factible. Los procesos definidos no interrumpen las actividades habituales del equipo, sino que optimizan su flujo de trabajo continuo durante el desarrollo.
@@ -185,28 +178,25 @@ En la tabla \ref{tab:resumen_dias} se calcula el tiempo de esfuerzo requerido en
 El plazo de trabajo parte en la tercera semana de Agosto de 2026 y finaliza entre mediados de Mayo del 2027 y la primera semana de Junio del 2027, considerando que las fechas de presentación de TT I-II se realizan aproximadamente un mes antes de la finalización del periodo escolar. 
 \begin{table}[H]
 \centering
-\renewcommand{\arraystretch}{1.2}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{l c c c c c c c}
+\caption{Resumen de días para el desarrollo del proyecto (16 de Agosto 2026 - 7 de Junio 2027) con base a los plazos establecidos en el Diagrama de Gantt \ref{fig:cronograma_actividades}}
+\label{tab:resumen_dias}
+\footnotesize
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
 \hline
 \textbf{Mes} & \textbf{Días} & \textbf{\makecell{Fin de\\semana}} & \textbf{\makecell{Días no\\laborales}} & \textbf{\makecell{Días\\hábiles}} & \textbf{\makecell{Horas de\\trabajo\\por día\\(promedio)}} & \textbf{\makecell{Horas\\totales}} & \textbf{\makecell{Días\\laborales\\(8 horas\\al día)}} \\ \hline
-\textbf{Agosto} & 16 & 5 & 0 & 11 & 4 & 44 & 5.5 \\ 
-\textbf{Septiembre} & 30 & 8 & 1 & 21 & 4 & 84 & 10.5 \\ 
-\textbf{Octubre} & 31 & 9 & 1 & 21 & 4 & 84 & 10.5 \\ 
-\textbf{Noviembre} & 30 & 9 & 3 & 18 & 4 & 72 & 9.0 \\ 
-\textbf{Diciembre} & 31 & 8 & 9 & 14 & 4 & 56 & 7.0 \\ 
-\textbf{Enero} & 31 & 10 & 1 & 20 & 4 & 80 & 10.0 \\ 
-\textbf{Febrero} & 28 & 8 & 1 & 19 & 4 & 76 & 9.5 \\ 
-\textbf{Marzo} & 31 & 8 & 9 & 14 & 4 & 56 & 7.0 \\ 
-\textbf{Abril} & 30 & 8 & 2 & 20 & 4 & 80 & 10.0 \\ 
-\textbf{Mayo} & 31 & 10 & 4 & 17 & 4 & 68 & 8.5 \\ 
+\textbf{Agosto} & 16 & 5 & 0 & 11 & 4 & 44 & 5.5 \\ \hline
+\textbf{Septiembre} & 30 & 8 & 1 & 21 & 4 & 84 & 10.5 \\ \hline
+\textbf{Octubre} & 31 & 9 & 1 & 21 & 4 & 84 & 10.5 \\ \hline
+\textbf{Noviembre} & 30 & 9 & 3 & 18 & 4 & 72 & 9.0 \\ \hline
+\textbf{Diciembre} & 31 & 8 & 9 & 14 & 4 & 56 & 7.0 \\ \hline
+\textbf{Enero} & 31 & 10 & 1 & 20 & 4 & 80 & 10.0 \\ \hline
+\textbf{Febrero} & 28 & 8 & 1 & 19 & 4 & 76 & 9.5 \\ \hline
+\textbf{Marzo} & 31 & 8 & 9 & 14 & 4 & 56 & 7.0 \\ \hline
+\textbf{Abril} & 30 & 8 & 2 & 20 & 4 & 80 & 10.0 \\ \hline
+\textbf{Mayo} & 31 & 10 & 4 & 17 & 4 & 68 & 8.5 \\ \hline
 \textbf{Junio} & 7 & 2 & 0 & 5 & 4 & 20 & 2.5 \\ \hline
 \textbf{Total} & \textbf{296} & \textbf{85} & \textbf{31} & \textbf{180} & \textbf{4} & \textbf{720} & \textbf{90.0} \\ \hline
 \end{tabular}
-}
-
-\caption{Resumen de días para el desarrollo del proyecto (16 de Agosto 2026 - 7 de Junio 2027) con base a los plazos establecidos en el Diagrama de Gantt \ref{fig:cronograma_actividades}.}
-\label{tab:resumen_dias}
 \end{table}
 
 Como se aprecia en la tabla \ref{tab:resumen_dias} se cuentan con aproximadamente 90 días laborales para el desarrollo del trabajo terminal considerando una jornada laboral de 8 días, eliminando días festivos, fines de semana y periodos que no entran en el intervalo de tiempo.

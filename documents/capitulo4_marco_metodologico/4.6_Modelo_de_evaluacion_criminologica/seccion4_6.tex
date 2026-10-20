@@ -13,22 +13,24 @@ A partir de la revisión de literatura y de los antecedentes analizados, se defi
 \subsubsection{Variable dependiente}
 Determina los datos reales y reportados con los cuales se hará el cálculo de la relevancia por variable. Se utiliza únicamente la variable mostrada en la tabla \ref{tab:variable-dependiente}.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\caption{Variable dependiente del modelo}
+\label{tab:variable-dependiente}
 \begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
 \hline
 \textbf{Variable} & \textbf{Descripción} & \textbf{Unidad} \\ \hline
 Incidencia delictiva & Número de delitos violentos reportados por segmento de calle dentro del periodo de estudio & Conteo \\ \hline
 \end{tabular}
-\caption{Variable dependiente del modelo}
-\label{tab:variable-dependiente}
 \end{table}
 
 \subsubsection{Variables físicas del entorno construido}
 Funcionan como una serie de variables a nivel micro que definen aspectos físicos de las calles. Estas se muestran en la tabla \ref{tab:variables-fisicas}.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\caption{Variables físicas derivadas del entorno construido}
+\label{tab:variables-fisicas}
 \begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
 \hline
 \textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
@@ -40,8 +42,6 @@ Presencia de personas & Porcentaje o conteo aproximado de personas visibles & St
 Mantenimiento del entorno & Presencia de grafiti, basura o edificios en mal estado & Street View \\ \hline
 Uso de suelo & Categoría del uso de suelo (residencial, comercial, mixto) & OSM / catastro \\ \hline
 \end{tabular}
-\caption{Variables físicas derivadas del entorno construido}
-\label{tab:variables-fisicas}
 \end{table}
 
 Las variables extraídas de Street View reflejan las condiciones diurnas de un instante determinado, por lo que no capturan variaciones horarias del entorno (por ejemplo, la iluminación efectiva durante la noche o la presencia habitual de personas). Esta limitación se considera en la interpretación de los resultados.
@@ -49,24 +49,26 @@ Las variables extraídas de Street View reflejan las condiciones diurnas de un i
 \subsubsection{Variables de percepción}
 Recogen cómo los individuos perciben su entorno y cómo lo hace el modelo de inteligencia artificial (\textit{describir el modelo empleado}). Su salida se contrasta con una muestra de segmentos etiquetada manualmente para verificar su fiabilidad. Estas variables se establecen en la tabla \ref{tab:variables-percepcion}.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\caption{Variables de percepción del entorno}
+\label{tab:variables-percepcion}
 \begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
 \hline
 \textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
 Percepción de seguridad & Grado en que el segmento es percibido como seguro & Modelo de percepción \\ \hline
 Percepción de abandono & Grado en que el segmento es percibido como deteriorado o descuidado & Modelo de percepción \\ \hline
 \end{tabular}
-\caption{Variables de percepción del entorno}
-\label{tab:variables-percepcion}
 \end{table}
 
 \subsubsection{Variables de control por generadores de crimen}
 
 Con el fin de aislar el efecto de las variables de criminología ambiental de otros factores conocidos como generadores de crimen, se contempla la inclusión de las siguientes variables de control, calculadas mediante un área de influencia alrededor de cada segmento, con decaimiento exponencial en función de la distancia. Estas se muestran en la tabla \ref{tab:variables-control}.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\caption{Variables de control por generadores de crimen}
+\label{tab:variables-control}
 \begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
 \hline
 \textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
@@ -75,16 +77,16 @@ Proximidad a lotes baldíos & Distancia ponderada a predios sin uso o abandonado
 Proximidad a transporte público & Distancia ponderada a paradas de metro, metrobús o autobús & OSM / datos públicos \\ \hline
 Densidad de actividad comercial & Número de comercios dentro del área de influencia del segmento & OSM \\ \hline
 \end{tabular}
-\caption{Variables de control por generadores de crimen}
-\label{tab:variables-control}
 \end{table}
 
 \subsubsection{Variables de control socioeconómico}
 
 Adaptadas al contexto mexicano a partir de datos disponibles a nivel de Área Geoestadística Básica (AGEB) publicados por el INEGI, con el fin de controlar el efecto de la desventaja social concentrada sobre la incidencia delictiva. Estas variables se muestran en la tabla \ref{tab:variables-control-socioeconomico}.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
+\caption{Variables de control socioeconómico}
+\label{tab:variables-control-socioeconomico}
 \begin{tabular}{|p{3cm}|p{6cm}|p{3cm}|}
 \hline
 \textbf{Variable} & \textbf{Descripción} & \textbf{Fuente} \\ \hline
@@ -92,8 +94,6 @@ Nivel educativo & Porcentaje de población con educación superior en el AGEB & 
 Densidad poblacional & Población total por AGEB & INEGI \\ \hline
 Grupo etario predominante & Porcentaje de población entre 15 y 29 años & INEGI \\ \hline
 \end{tabular}
-\caption{Variables de control socioeconómico}
-\label{tab:variables-control-socioeconomico}
 \end{table}
 
 \subsubsection{Nota metodológica sobre la dirección de las relaciones}
