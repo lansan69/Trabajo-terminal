@@ -1,0 +1,47 @@
+% =========================================================
+% Diagrama de secuencia: Inicio de sesión con Google  (6.3.1)
+% CU-06 (incluye CU-01) · RF-06, RF-12 · RN-17
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
+  \sdExterno{goo}{6.0}{Identidad de Google}{Google Sign-In}
+  \sdContenedor{auth}{9.1}{Autenticación}{Supabase Auth}
+  \sdContenedor{bd}{12.2}{Base de datos}{PostgreSQL}
+  \sdIniciar
+
+  % ---------------- Aviso de privacidad (CU-01) ----------------
+  \sdAbrir{aviso}{opt}{[primer uso de la aplicación]}{usr}{bd}
+    \sdMensaje[2]{app}{usr}{muestra el aviso\\de privacidad}
+    \sdMensaje{usr}{app}{acepta el aviso}
+  \sdCerrar{aviso}
+
+  % ---------------- Autorización en Google ----------------
+  \sdMensaje[2]{usr}{app}{elige «Continuar\\con Google»}
+  \sdMensaje[2]{app}{goo}{solicita el inicio\\de sesión}
+  \sdMensaje{goo}{usr}{muestra el selector de cuentas}
+  \sdMensaje{usr}{goo}{elige su cuenta y autoriza}
+  \sdRespuesta[2]{goo}{app}{token de identidad\\(ID token)}
+
+  % ---------------- Sesión en Supabase ----------------
+  \sdMensaje{app}{auth}{signInWithIdToken(token)}
+  \sdMensaje[2]{auth}{goo}{valida la firma, el emisor\\y la audiencia del token}
+  \sdRespuesta[2]{goo}{auth}{token válido\\(correo y nombre)}
+  \sdMensaje[2]{auth}{bd}{busca la cuenta\\por correo}
+  \sdRespuesta{bd}{auth}{resultado}
+
+  \sdAbrir{cuenta}{alt}{[el correo ya tiene cuenta con contraseña]}{app}{bd}
+    \sdMensaje[2]{auth}{bd}{vincula la identidad\\de Google (RF-06)}
+  \sdSino{cuenta}{[usuario nuevo]}
+    \sdMensaje[2]{auth}{bd}{crea la cuenta sin\\verificación (RN-17)}
+  \sdCerrar{cuenta}
+
+  \sdRespuesta[2]{auth}{app}{sesión (tokens de\\acceso y renovación)}
+  \sdMensaje[2]{app}{usr}{muestra el mapa\\principal}
+
+  \sdTerminar
+\end{tikzpicture}

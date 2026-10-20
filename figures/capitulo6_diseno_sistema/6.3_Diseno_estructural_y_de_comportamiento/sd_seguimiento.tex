@@ -1,0 +1,51 @@
+% =========================================================
+% Diagrama de secuencia: Compartir y visualizar un seguimiento  (6.3.1)
+% CU-35, CU-38 · RF-29, RF-42, RF-45 · RN-13, RNF-10, RNF-18
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% Seis participantes: cabeceras de 2.1 cm. La ubicación en segundo plano
+% y el menú de compartir del sistema se muestran como mensajes propios de
+% la aplicación para que el diagrama quepa en el ancho de la página.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdContenedor[2.1cm]{app}{2.65}{Aplicación del usuario}{Flutter}
+  \sdContenedor[2.1cm]{api}{5.3}{API REST}{Supabase Realtime}
+  \sdContenedor[2.1cm]{bd}{7.95}{Base de datos}{PostgreSQL}
+  \sdContenedor[2.1cm]{apps}{10.6}{Aplicación del seguidor}{Flutter}
+  \sdActor{seg}{13.25}{Seguidor}
+  \sdIniciar
+
+  % ---------------- Generar y compartir (CU-35) ----------------
+  \sdMensaje[3]{usr}{app}{genera un enlace\\con la vigencia\\elegida (RN-13)}
+  \sdMensaje[2]{app}{api}{crea el\\seguimiento}
+  \sdMensaje[3]{api}{bd}{guarda el enlace\\y el código\\(RNF-18)}
+  \sdRespuesta{bd}{api}{identificador}
+  \sdRespuesta[2]{api}{app}{enlace y\\código}
+  \sdPropio[2]{app}{abre el menú de compartir\\(aplicaciones de mensajería)}
+  \sdMensaje{app}{seg}{envía el enlace por mensajería}
+
+  % ---------------- Abrir el seguimiento (CU-38) ----------------
+  \sdMensaje{seg}{apps}{abre el enlace}
+  \sdMensaje[2]{apps}{api}{consulta el seguimiento}
+  \sdMensaje[2]{api}{bd}{valida la\\vigencia (RN-13)}
+  \sdRespuesta{bd}{api}{estado}
+
+  \sdAbrir{vigente}{alt}{[enlace vigente y activo]}{app}{seg}
+    \sdRespuesta[2]{api}{apps}{datos del trayecto}
+    \sdMensaje[2]{apps}{api}{se suscribe al canal\\de ubicación}
+    \sdAbrir[0.55]{vivo}{loop}{[mientras el enlace siga vigente]}{app}{seg}
+      \sdPropio[2]{app}{obtiene la posición\\en segundo plano}
+      \sdMensaje{app}{api}{publica la posición}
+      \sdMensaje[2]{api}{apps}{reenvía la posición (Realtime)}
+      \sdMensaje[3]{apps}{seg}{muestra posición,\\ruta, distancia,\\tiempo y riesgo}
+    \sdCerrar{vivo}
+  \sdSino{vigente}{[expirado, pausado o eliminado]}
+    \sdRespuesta[2]{api}{apps}{enlace no válido}
+    \sdMensaje[3]{apps}{seg}{informa el estado\\del enlace\\(RNF-10)}
+  \sdCerrar{vigente}
+
+  \sdTerminar
+\end{tikzpicture}

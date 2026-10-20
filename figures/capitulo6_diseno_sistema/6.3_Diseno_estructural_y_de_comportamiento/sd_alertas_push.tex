@@ -1,0 +1,49 @@
+% =========================================================
+% Diagrama de secuencia: Alertas de reportes cercanos  (6.3.1)
+% CU-34 · RF-29, RF-41 · RN-07, RN-18
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% Primera parte: el usuario activa las alertas. Segunda parte: cuando un
+% reporte pasa a validado, un webhook de la base de datos dispara una
+% Edge Function que notifica por FCM a los usuarios cercanos.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdContenedor[2.1cm]{app}{2.6}{Aplicación móvil}{Flutter}
+  \sdExterno[2.1cm]{dev}{5.2}{Servicios del dispositivo}{Android}
+  \sdContenedor[2.1cm]{api}{7.8}{API REST}{Supabase Edge Functions}
+  \sdContenedor[2.1cm]{bd}{10.4}{Base de datos}{PostGIS}
+  \sdExterno[2.1cm]{push}{13.0}{Servicio push}{Firebase Cloud Messaging}
+  \sdIniciar
+
+  % ---------------- Activación (RF-41) ----------------
+  \sdMensaje[3]{usr}{app}{activa las alertas\\de reportes\\cercanos}
+  \sdMensaje[3]{app}{dev}{solicita ubicación\\en segundo plano\\y notificaciones}
+  \sdMensaje{dev}{usr}{muestra los diálogos}
+  \sdMensaje{usr}{dev}{concede los permisos}
+  \sdRespuesta[2]{dev}{app}{permisos\\concedidos}
+  \sdMensaje[2]{app}{push}{solicita el token del dispositivo}
+  \sdRespuesta{push}{app}{token de FCM}
+  \sdMensaje[2]{app}{api}{registra el token\\y la preferencia}
+  \sdMensaje{api}{bd}{guarda el token}
+
+  \sdAbrir{fondo}{loop}{[con la aplicación en segundo plano]}{app}{bd}
+    \sdMensaje{dev}{app}{posición}
+    \sdMensaje[3]{app}{api}{actualiza la\\última ubicación\\conocida}
+    \sdMensaje{api}{bd}{guarda la ubicación}
+  \sdCerrar{fondo}
+
+  % ---------------- Notificación de un reporte validado ----------------
+  \sdMensaje[3]{bd}{api}{webhook: un\\reporte pasa a\\validado (RN-07)}
+  \sdMensaje[3]{api}{bd}{busca usuarios\\a 1.5 km o\\menos (RN-18)}
+  \sdRespuesta[2]{bd}{api}{tokens de los\\dispositivos}
+  \sdAbrir{envio}{loop}{[por cada dispositivo cercano]}{usr}{push}
+    \sdMensaje[2]{api}{push}{envía la notificación\\(prioridad alta)}
+    \sdMensaje{push}{dev}{entrega la notificación}
+    \sdMensaje[2]{dev}{usr}{muestra la alerta del\\reporte cercano}
+  \sdCerrar{envio}
+
+  \sdTerminar
+\end{tikzpicture}

@@ -1,0 +1,45 @@
+% =========================================================
+% Diagrama de secuencia: Registro de un reporte de riesgo  (6.3.1)
+% CU-31 · RF-29, RF-36, RF-37, RF-38 · RN-01, RN-06, RN-07, RN-12
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% La validación por confirmaciones de otros usuarios (CU-33, RN-07)
+% ocurre después y no forma parte de este flujo.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
+  \sdExterno{dev}{6.0}{Servicios del dispositivo}{GPS, Android}
+  \sdContenedor{api}{9.1}{API REST}{Supabase PostgREST}
+  \sdContenedor{bd}{12.2}{Base de datos}{PostgreSQL, PostGIS}
+  \sdIniciar
+
+  \sdMensaje[2]{usr}{app}{abre «Reportar\\incidente»}
+
+  \sdAbrir{lugar}{alt}{[usa su ubicación actual]}{usr}{dev}
+    \sdMensaje[2]{app}{dev}{solicita la ubicación\\actual}
+    \sdRespuesta{dev}{app}{coordenadas}
+  \sdSino{lugar}{[elige un punto en el mapa]}
+    \sdMensaje[2]{usr}{app}{selecciona el punto\\en el mapa}
+  \sdCerrar{lugar}
+
+  \sdMensaje[3]{usr}{app}{elige la categoría\\(RN-06) y escribe una\\descripción opcional}
+  \sdMensaje[2]{app}{api}{inserta el reporte (categoría,\\ubicación y descripción)}
+  \sdMensaje[2]{api}{bd}{INSERT con políticas\\de seguridad (RLS)}
+  \sdPropioIzq[3]{bd}{verifica la cuenta verificada,\\el área de servicio (RN-01)\\y el límite de 10 en 24 h (RN-12)}
+
+  \sdAbrir{valido}{alt}{[límite alcanzado o fuera del área]}{usr}{bd}
+    \sdRespuesta{bd}{api}{rechazo}
+    \sdRespuesta{api}{app}{error}
+    \sdMensaje[2]{app}{usr}{avisa que alcanzó el\\límite (RF-37)}
+  \sdSino{valido}{[reporte válido]}
+    \sdPropioIzq[2]{bd}{guarda el reporte en\\estado pendiente (RN-07)}
+    \sdRespuesta{bd}{api}{reporte registrado}
+    \sdRespuesta{api}{app}{confirmación}
+    \sdMensaje{app}{usr}{«Reporte enviado»}
+  \sdCerrar{valido}
+
+  \sdTerminar
+\end{tikzpicture}

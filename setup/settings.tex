@@ -403,6 +403,130 @@
 
 
 % ---------------------------------------------------------
+% G3. DIAGRAMAS DE SECUENCIA (UML)               (6.3.1 Diagramas de secuencia)
+% ---------------------------------------------------------
+% Participantes (cabeceras, alineadas por arriba en y = 0):
+%   \sdActor{id}{x}{Nombre}                       monito UML (usuario)
+%   \sdContenedor[ancho]{id}{x}{Nombre}{Tecnología}  caja azul (contenedor del sistema)
+%   \sdExterno[ancho]{id}{x}{Nombre}{Tecnología}     caja gris (sistema externo)
+% Mensajes (cada uno baja automáticamente; se numeran solos):
+%   \sdMensaje[renglones]{de}{a}{texto}           llamada: línea continua
+%   \sdRespuesta[renglones]{de}{a}{texto}         respuesta: línea discontinua
+%   \sdPropio[renglones]{id}{texto}               mensaje a sí mismo (texto a la derecha)
+%   \sdPropioIzq[renglones]{id}{texto}            ídem, a la izquierda (última línea de vida)
+% Fragmentos combinados (pueden anidarse; "id" es un nombre libre):
+%   \sdAbrir[margen]{id}{alt|opt|loop}{[guarda]}{id izquierdo}{id derecho}
+%   \sdSino{id}{[guarda]}                         separador de alt
+%   \sdCerrar{id}
+% Inicio y fin del diagrama:
+%   \sdIniciar   (después de las cabeceras)       \sdTerminar  (dibuja las líneas de vida)
+% El texto de un mensaje va encima de la flecha; con [renglones] se reserva
+% espacio para textos partidos con \\.
+\newcounter{sdNumero}
+\newcommand{\sdLista}{}
+\newcommand{\sdY}{0}
+\newcommand{\sdAvanzar}[1]{\pgfmathparse{\sdY-(#1)}\xdef\sdY{\pgfmathresult}}
+
+\tikzset{
+  sdCaja/.style={
+    rectangle, rounded corners=3pt, line width=0.7pt, align=flush center,
+    font=\footnotesize, text=white, inner sep=3pt, text width=2.5cm,
+    minimum height=1.25cm, anchor=north
+  },
+  sdLineaVida/.style={draw=c4Relacion, line width=0.6pt, dash pattern=on 3pt off 2pt},
+  sdLlamada/.style={draw=cuLinea, line width=0.6pt, -{Stealth[length=5pt, width=4pt]}},
+  sdVuelta/.style={draw=cuLinea, line width=0.6pt, dashed, -{Straight Barb[length=4pt, width=5pt]}},
+  % Fondo blanco: las líneas de vida pasan por detrás del texto, no encima
+  sdTexto/.style={font=\footnotesize, align=center, inner sep=1.5pt, text=black!90, fill=white},
+  sdMarco/.style={draw=cuBorde, line width=0.7pt},
+  sdEtiquetaMarco/.style={font=\footnotesize\bfseries, text=cuBorde, inner sep=2pt},
+  sdGuarda/.style={font=\footnotesize\itshape, text=cuBorde, inner sep=2pt},
+}
+
+\newcommand{\sdRegistrar}[1]{\xdef\sdLista{\sdLista,#1}}
+\newcommand{\sdActor}[3]{%
+  \pic (#1) at (#2,-0.65) {cuActor={#3}};
+  \coordinate (#1) at (#2,0);
+  \coordinate (#1-base) at (#1-nombre.south -| #1);
+  \sdRegistrar{#1}}
+% [ancho]: text width de la cabecera (2.5 cm por defecto; 2.1 cm en diagramas
+% de 6 o más participantes)
+\newcommand{\sdContenedor}[5][2.5cm]{%
+  \node[sdCaja, text width=#1, fill=c4Contenedor, draw=c4ContenedorBorde] (#2-caja) at (#3,0)
+    {\textbf{#4}\\[1pt]{\scriptsize [#5]}};
+  \coordinate (#2) at (#3,0);
+  \coordinate (#2-base) at (#2-caja.south);
+  \sdRegistrar{#2}}
+\newcommand{\sdExterno}[5][2.5cm]{%
+  \node[sdCaja, text width=#1, fill=c4Externo, draw=c4ExternoBorde] (#2-caja) at (#3,0)
+    {\textbf{#4}\\[1pt]{\scriptsize [#5]}};
+  \coordinate (#2) at (#3,0);
+  \coordinate (#2-base) at (#2-caja.south);
+  \sdRegistrar{#2}}
+
+% Empieza los mensajes 0.5 cm debajo de la cabecera más baja
+\newcommand{\sdIniciar}{%
+  \setcounter{sdNumero}{0}%
+  \xdef\sdY{0}%
+  \foreach \sdP in \sdLista {%
+    \ifx\sdP\empty\else
+      \path let \p1=(\sdP-base) in \pgfextra{%
+        \pgfmathparse{min(\sdY, \y1/28.45274 - 0.5)}\xdef\sdY{\pgfmathresult}}; \fi}}
+
+% Altura de un mensaje: 0.33 cm por renglón de texto más 0.25 cm de aire
+\newcommand{\sdMensaje}[4][1]{%
+  \sdAvanzar{0.33*#1+0.25}\stepcounter{sdNumero}%
+  \draw[sdLlamada] (#2 |- 0,\sdY) -- (#3 |- 0,\sdY)
+    node[sdTexto, midway, above] {\arabic{sdNumero}. #4};}
+\newcommand{\sdRespuesta}[4][1]{%
+  \sdAvanzar{0.33*#1+0.25}\stepcounter{sdNumero}%
+  \draw[sdVuelta] (#2 |- 0,\sdY) -- (#3 |- 0,\sdY)
+    node[sdTexto, midway, above] {\arabic{sdNumero}. #4};}
+\newcommand{\sdPropio}[3][1]{%
+  \sdAvanzar{0.3}\stepcounter{sdNumero}%
+  \draw[sdLlamada] (#2 |- 0,\sdY) -- ++(0.45,0) -- ++(0,-0.33*#1-0.05) -- ++(-0.45,0);
+  \node[sdTexto, anchor=north west, align=left] at ($(#2 |- 0,\sdY)+(0.5,0.17)$) {\arabic{sdNumero}. #3};
+  \sdAvanzar{0.33*#1+0.1}}
+% Igual, pero el lazo y el texto van a la izquierda (para la última línea de vida)
+\newcommand{\sdPropioIzq}[3][1]{%
+  \sdAvanzar{0.3}\stepcounter{sdNumero}%
+  \draw[sdLlamada] (#2 |- 0,\sdY) -- ++(-0.45,0) -- ++(0,-0.33*#1-0.05) -- ++(0.45,0);
+  \node[sdTexto, anchor=north east, align=right] at ($(#2 |- 0,\sdY)+(-0.5,0.17)$) {\arabic{sdNumero}. #3};
+  \sdAvanzar{0.33*#1+0.1}}
+
+% Fragmentos: se guarda la altura de inicio, los extremos y el margen; el marco
+% se dibuja al cerrar. [margen]: distancia del marco a las líneas de vida
+% extremas (0.75 cm; usar uno menor en fragmentos anidados).
+\newcommand{\sdAbrir}[6][0.75]{%
+  \sdAvanzar{0.45}%
+  \expandafter\xdef\csname sdYa@#2\endcsname{\sdY}%
+  \expandafter\xdef\csname sdIz@#2\endcsname{#5}%
+  \expandafter\xdef\csname sdDe@#2\endcsname{#6}%
+  \expandafter\xdef\csname sdMa@#2\endcsname{#1}%
+  \node[sdEtiquetaMarco, anchor=north west] (sdTab-#2) at ($(#5 |- 0,\sdY)+(-#1,0)$) {#3};
+  \draw[sdMarco] (sdTab-#2.south west) -| ([xshift=4pt]sdTab-#2.east) -- ([xshift=4pt, yshift=-4pt]sdTab-#2.north east) |- (sdTab-#2.north west);
+  \node[sdGuarda, anchor=west] at ([xshift=6pt]sdTab-#2.east) {#4};
+  \sdAvanzar{0.3}}
+\newcommand{\sdSino}[2]{%
+  \sdAvanzar{0.3}%
+  \draw[sdMarco, dashed] ($(\csname sdIz@#1\endcsname |- 0,\sdY)+(-\csname sdMa@#1\endcsname,0)$) -- ($(\csname sdDe@#1\endcsname |- 0,\sdY)+(\csname sdMa@#1\endcsname,0)$);
+  \node[sdGuarda, anchor=north west] at ($(\csname sdIz@#1\endcsname |- 0,\sdY)+(-\csname sdMa@#1\endcsname+0.05,0)$) {#2};
+  \sdAvanzar{0.3}}
+\newcommand{\sdCerrar}[1]{%
+  \sdAvanzar{0.3}%
+  \draw[sdMarco] ($(\csname sdIz@#1\endcsname |- 0,\csname sdYa@#1\endcsname)+(-\csname sdMa@#1\endcsname,0)$)
+    rectangle ($(\csname sdDe@#1\endcsname |- 0,\sdY)+(\csname sdMa@#1\endcsname,0)$);}
+
+% Líneas de vida, del pie de cada cabecera hasta el último mensaje
+\newcommand{\sdTerminar}{%
+  \sdAvanzar{0.4}%
+  \begin{pgfonlayer}{background}
+    \foreach \sdP in \sdLista {\ifx\sdP\empty\else \draw[sdLineaVida] (\sdP-base) -- (\sdP |- 0,\sdY);\fi}
+  \end{pgfonlayer}%
+  \gdef\sdLista{}}
+
+
+% ---------------------------------------------------------
 % G. colores para tabla de riesgos
 % ---------------------------------------------------------
 

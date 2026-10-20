@@ -1,0 +1,52 @@
+% =========================================================
+% Diagrama de secuencia: Registro y verificación de cuenta  (6.3.1)
+% CU-01, CU-02, CU-03 · RF-12, RF-01, RF-02, RF-04 · RN-14, RN-17
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% Los textos se parten con \\ para que no rebasen el espacio entre dos
+% líneas de vida; [n] reserva la altura de n renglones.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
+  \sdContenedor{auth}{6.0}{Autenticación}{Supabase Auth}
+  \sdContenedor{bd}{9.1}{Base de datos}{PostgreSQL}
+  \sdExterno{mail}{12.2}{Servicio de email}{Resend}
+  \sdIniciar
+
+  % ---------------- Aviso de privacidad (CU-01) ----------------
+  \sdMensaje[2]{app}{usr}{muestra el aviso\\de privacidad}
+  \sdMensaje{usr}{app}{acepta el aviso}
+
+  % ---------------- Registro (CU-02) ----------------
+  \sdMensaje[2]{usr}{app}{captura nombre,\\correo y contraseña}
+  \sdMensaje[3]{app}{auth}{signUp(nombre,\\correo, contraseña,\\consentimiento)}
+  \sdMensaje{auth}{bd}{busca el correo}
+  \sdRespuesta{bd}{auth}{resultado}
+
+  \sdAbrir{correo}{alt}{[correo ya registrado]}{usr}{mail}
+    \sdRespuesta[2]{auth}{app}{error:\\correo en uso}
+    \sdMensaje[2]{app}{usr}{informa que el\\correo ya existe}
+  \sdSino{correo}{[correo disponible]}
+    \sdMensaje[3]{auth}{bd}{crea la cuenta no\\verificada y guarda\\el consentimiento}
+    \sdMensaje[2]{auth}{mail}{envía el enlace de verificación\\(vigencia de 10 min, RN-14)}
+    \sdMensaje{mail}{usr}{entrega el correo con el enlace}
+    \sdRespuesta[2]{auth}{app}{cuenta creada\\(no verificada)}
+    \sdMensaje[2]{app}{usr}{aviso de verificación\\pendiente (RF-04)}
+  \sdCerrar{correo}
+
+  % ---------------- Verificación (CU-03) ----------------
+  \sdMensaje{usr}{auth}{abre el enlace de verificación}
+  \sdAbrir{enlace}{alt}{[enlace vigente y sin usar]}{usr}{mail}
+    \sdMensaje[2]{auth}{bd}{marca el correo\\como verificado}
+    \sdRespuesta[2]{auth}{app}{redirige a la\\aplicación}
+    \sdMensaje[2]{app}{usr}{habilita las\\funciones (RN-17)}
+  \sdSino{enlace}{[enlace expirado o ya usado]}
+    \sdRespuesta{auth}{app}{enlace inválido}
+    \sdMensaje[2]{app}{usr}{ofrece reenviar el\\enlace (RF-03)}
+  \sdCerrar{enlace}
+
+  \sdTerminar
+\end{tikzpicture}

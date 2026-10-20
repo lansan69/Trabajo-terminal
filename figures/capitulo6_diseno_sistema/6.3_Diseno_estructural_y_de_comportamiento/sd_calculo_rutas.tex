@@ -1,0 +1,46 @@
+% =========================================================
+% Diagrama de secuencia: Cálculo de rutas  (6.3.1)
+% CU-25 · RF-20, RF-21, RF-22, RF-25, RF-26, RF-27 · RN-01, RN-02, RN-03, RN-05, RN-18
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% La lógica de ruteo vive en una función de la base de datos (pgRouting)
+% que la aplicación invoca como RPC a través de la API REST.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdContenedor{app}{3.2}{Aplicación móvil}{Flutter}
+  \sdContenedor{api}{6.8}{API REST}{Supabase PostgREST}
+  \sdContenedor{bd}{11.4}{Base de datos}{PostGIS, pgRouting}
+  \sdIniciar
+
+  \sdMensaje[2]{usr}{app}{solicita las rutas\\(origen y destino)}
+
+  \sdAbrir{red}{alt}{[sin conexión a internet]}{usr}{bd}
+    \sdMensaje[2]{app}{usr}{avisa que no hay\\conexión (RF-26)}
+  \sdSino{red}{[con conexión]}
+    \sdMensaje[2]{app}{api}{rpc calcular\_rutas(origen,\\destino, hora de consulta)}
+    \sdMensaje{api}{bd}{ejecuta calcular\_rutas()}
+    \sdPropioIzq[2]{bd}{valida el origen y el destino\\en el área de servicio (RN-01)}
+    \sdPropioIzq[2]{bd}{toma los pesos de la\\franja horaria (RN-05)}
+    \sdPropioIzq[3]{bd}{calcula las rutas segura,\\rápida y balanceada\\(RN-02, RN-03)}
+
+    \sdAbrir[0.55]{resultado}{alt}{[origen o destino fuera del área]}{app}{bd}
+      \sdRespuesta{bd}{api}{error de cobertura}
+      \sdRespuesta{api}{app}{error de cobertura}
+      \sdMensaje[2]{app}{usr}{indica la restricción\\de cobertura (RF-20)}
+    \sdSino{resultado}{[no existe ruta peatonal]}
+      \sdRespuesta{bd}{api}{sin resultados}
+      \sdRespuesta{api}{app}{sin resultados}
+      \sdMensaje[2]{app}{usr}{avisa que no existe\\ruta (RF-25)}
+    \sdSino{resultado}{[rutas encontradas]}
+      \sdRespuesta[2]{bd}{api}{rutas con distancia y\\riesgo por tramo}
+      \sdRespuesta[2]{api}{app}{rutas (GeoJSON)\\y resumen}
+      \sdPropio[2]{app}{calcula el tiempo a 4.5 km/h (RN-18)\\y marca las rutas iguales (RF-21)}
+      \sdMensaje[3]{app}{usr}{muestra las rutas con\\distancia, tiempo y\\riesgo (RF-22)}
+    \sdCerrar{resultado}
+  \sdCerrar{red}
+
+  \sdTerminar
+\end{tikzpicture}
