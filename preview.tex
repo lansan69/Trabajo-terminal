@@ -1,0 +1,23 @@
+% =========================================================
+% preview.tex — Vista previa rápida de una figura
+% ---------------------------------------------------------
+% Compila una sola figura con el mismo preámbulo de la tesis.
+% Cambia la ruta del \input por la figura que quieras revisar.
+% Si la figura no va girada, cambia sidewaysfigure por figure.
+% showframe dibuja los márgenes: si algo se sale, se nota.
+% Este archivo está en .gitignore (no se sube a GitHub/Overleaf).
+% =========================================================
+\documentclass[12pt, oneside]{report}
+\input{setup/metadata}
+\input{setup/settings}
+\geometry{showframe}
+
+\begin{document}
+
+\begin{sidewaysfigure}
+  \centering
+  \input{figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_contexto_sistema}
+  \caption{Vista previa}
+\end{sidewaysfigure}
+
+\end{document}
