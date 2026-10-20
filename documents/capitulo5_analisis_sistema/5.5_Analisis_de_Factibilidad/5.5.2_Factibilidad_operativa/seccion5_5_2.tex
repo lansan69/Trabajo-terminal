@@ -94,53 +94,39 @@ La metodología de desarrollo para el proyecto es Scrumban la cual funciona como
 
 En la tabla \ref{tab:proc_trabajo} se definen a detalle los procesos y flujo de trabajo relacionados al marco metodológico, centrándose en el seguimiento del proyecto con base a las metodologías seleccionadas para la gestión y el desarrollo de la aplicación móvil con la finalidad de determinar si dichos procesos afectan de forma positiva o negativa en la factibilidad operativa. 
 
-\begin{table}[H]
-\centering
-\caption{Procesos y flujos de trabajo dividos en ámbitos laborales}
-\label{tab:proc_trabajo}
-\begin{tabular}{| p{0.3\textwidth} | p{0.1\textwidth} | p{0.5\textwidth} |}
+% longtable: la tabla mide más de una página y así se parte con su encabezado.
+% Cada grupo abre con una fila de título; los ID (S-, F-, U-, Q-, I-) indican el grupo.
+\begin{longtable}{|>{\bfseries}p{0.1\textwidth}|p{0.8\textwidth}|}
+\caption{Procesos y flujos de trabajo dividos en ámbitos laborales}\label{tab:proc_trabajo} \\
 \hline
-\textbf{Ámbitos laborales} & \textbf{ID} & \textbf{Proceso o flujo de trabajo definido} \\ \hline
-
-\multirow{4}{=}{Marco de gestión: Scrumban, y Documentación} 
-& S-1 & El seguimiento del proyecto y actividades establecidas se realiza por medio de reuniones semanales donde se proporciona retroalimentación de los avances entre todos los integrantes.  \\ \cline{2-3}
-& S-2 & La organización de actividades y pendientes se realiza mediante un tablero Kanban que se actualiza según las necesidades del equipo. \\ \cline{2-3} 
-& S-3 & El equipo dedica 10 a 20 horas mínimas a la semana para el desarrollo de la documentación a través de un proyecto compartido en Overleaf. \\ \cline{2-3} 
-& S-4 & La priorización del \textit{Product Backlog} se realiza al inicio de cada iteración para enfocar el esfuerzo de programación en los requerimientos más críticos. \\ \hline 
-
-\multirow{5}{=}{Fase de desarrollo del prototipo} 
-& F-1 & El desarrollo del sistema se divide en módulos funcionales independientes. La integración validada de cada módulo a la rama principal del código constituye un nuevo incremento del producto. \\ \cline{2-3} 
-& F-2 & Cada incremento en el sistema parte como un prototipo para observar el valor que proporciona y la dificultad de su desarrollo formal para decidir si continuar con el incremento, descartarlo, pausarlo o re-asignarle una nueva prioridad. \\ \cline{2-3} 
-& F-3 & El código fuente se gestiona de manera centralizada en GitHub, utilizando ramas independientes para desarrollar cada nueva característica de forma aislada. \\ \cline{2-3}
-& F-4 & Antes de integrar cualquier avance a la rama principal, se realiza una revisión cruzada para evitar conflictos y asegurar la estabilidad. \\ \cline{2-3}
-& F-5 & La codificación se distribuye según las fortalezas técnicas (Flutter, PostGIS, ruteo), pero se mantiene una arquitectura compartida para que todos conozcan el sistema. \\ \hline
-
-\multirow{2}{=}{Diseño de Interfaces y Experiencia de Usuario (UI/UX)}
-& U-1 & Previo a la codificación en el \textit{framework} móvil, se diseñan maquetas (mockups) interactivas para validar la navegación y ubicación de los elementos visuales. \\ \hline
-
-\end{tabular}
-\end{table}
-
-\begin{table}[H]
-\centering
-\caption*{Continuación de la Tabla \ref{tab:proc_trabajo}}
-\begin{tabular}{| p{0.3\textwidth} | p{0.1\textwidth} | p{0.5\textwidth} |}
+\textbf{ID} & \textbf{Proceso o flujo de trabajo definido} \\ \hline
+\endfirsthead
+\multicolumn{2}{c}{\bfseries Continuación de la Tabla \thetable} \\
 \hline
-\textbf{Ámbitos laborales} & \textbf{ID} & \textbf{Proceso o flujo de trabajo definido} \\ \hline
-
-\multirow{3}{=}{Control de calidad (QA) y Pruebas.}
-& Q-1 & El Líder de QA ejecuta pruebas de integración y valida la usabilidad de las interfaces antes de dar por finalizado y aprobado cada incremento del prototipo. \\ \cline{2-3}
-& Q-2 & Los errores técnicos identificados (\textit{bugs}) se registran inmediatamente en el tablero de trabajo para ser resueltos antes de avanzar a la siguiente fase. \\ \cline{2-3}
-& Q-3 & Se evalúa el rendimiento del sistema mediante pruebas de latencia para garantizar que el cálculo de rutas seguras no exceda los tiempos de respuesta operativos. \\ \hline
-
-
-\multirow{3}{=}{Seguimiento e interacciones con los evaluadores interesados en el proyecto} 
-& I-1 & El seguimiento del trabajo con las partes interesadas en el, se llevan a cabo mediante reuniones presenciales donde se presentan los avances del producto y se hacen retroalimentaciones.\\ \cline{2-3} 
-& I-2 & El número de reuniones al igual que la fecha lo definen los evaluadores y el equipo busca adaptarse a estas necesidades.  \\ \cline{2-3} 
-& I-3 & A las correcciones señaladas por el grupo de interesados en el proyecto se les dará prioridad con el objetivo de presentar un avance satisfactorio en la siguiente reunión o revisión.  \\ \hline
-
-\end{tabular}
-\end{table}
+\textbf{ID} & \textbf{Proceso o flujo de trabajo definido} \\ \hline
+\endhead
+\rowcolor{gray!15}\multicolumn{2}{|l|}{\textbf{Marco de gestión: Scrumban, y Documentación}} \\* \hline
+S-1 & El seguimiento del proyecto y actividades establecidas se realiza por medio de reuniones semanales donde se proporciona retroalimentación de los avances entre todos los integrantes. \\ \hline
+S-2 & La organización de actividades y pendientes se realiza mediante un tablero Kanban que se actualiza según las necesidades del equipo. \\ \hline
+S-3 & El equipo dedica 10 a 20 horas mínimas a la semana para el desarrollo de la documentación a través de un proyecto compartido en Overleaf. \\ \hline
+S-4 & La priorización del \textit{Product Backlog} se realiza al inicio de cada iteración para enfocar el esfuerzo de programación en los requerimientos más críticos. \\ \hline
+\rowcolor{gray!15}\multicolumn{2}{|l|}{\textbf{Fase de desarrollo del prototipo}} \\* \hline
+F-1 & El desarrollo del sistema se divide en módulos funcionales independientes. La integración validada de cada módulo a la rama principal del código constituye un nuevo incremento del producto. \\ \hline
+F-2 & Cada incremento en el sistema parte como un prototipo para observar el valor que proporciona y la dificultad de su desarrollo formal para decidir si continuar con el incremento, descartarlo, pausarlo o re-asignarle una nueva prioridad. \\ \hline
+F-3 & El código fuente se gestiona de manera centralizada en GitHub, utilizando ramas independientes para desarrollar cada nueva característica de forma aislada. \\ \hline
+F-4 & Antes de integrar cualquier avance a la rama principal, se realiza una revisión cruzada para evitar conflictos y asegurar la estabilidad. \\ \hline
+F-5 & La codificación se distribuye según las fortalezas técnicas (Flutter, PostGIS, ruteo), pero se mantiene una arquitectura compartida para que todos conozcan el sistema. \\ \hline
+\rowcolor{gray!15}\multicolumn{2}{|l|}{\textbf{Diseño de Interfaces y Experiencia de Usuario (UI/UX)}} \\* \hline
+U-1 & Previo a la codificación en el \textit{framework} móvil, se diseñan maquetas (mockups) interactivas para validar la navegación y ubicación de los elementos visuales. \\ \hline
+\rowcolor{gray!15}\multicolumn{2}{|l|}{\textbf{Control de calidad (QA) y Pruebas}} \\* \hline
+Q-1 & El Líder de QA ejecuta pruebas de integración y valida la usabilidad de las interfaces antes de dar por finalizado y aprobado cada incremento del prototipo. \\ \hline
+Q-2 & Los errores técnicos identificados (\textit{bugs}) se registran inmediatamente en el tablero de trabajo para ser resueltos antes de avanzar a la siguiente fase. \\ \hline
+Q-3 & Se evalúa el rendimiento del sistema mediante pruebas de latencia para garantizar que el cálculo de rutas seguras no exceda los tiempos de respuesta operativos. \\ \hline
+\rowcolor{gray!15}\multicolumn{2}{|l|}{\textbf{Seguimiento e interacciones con los evaluadores interesados en el proyecto}} \\* \hline
+I-1 & El seguimiento del trabajo con las partes interesadas en el, se llevan a cabo mediante reuniones presenciales donde se presentan los avances del producto y se hacen retroalimentaciones. \\ \hline
+I-2 & El número de reuniones al igual que la fecha lo definen los evaluadores y el equipo busca adaptarse a estas necesidades. \\ \hline
+I-3 & A las correcciones señaladas por el grupo de interesados en el proyecto se les dará prioridad con el objetivo de presentar un avance satisfactorio en la siguiente reunión o revisión. \\ \hline
+\end{longtable}
 
 Como se muestra en la tabla \ref{tab:proc_trabajo}, la integración del sistema es operativamente factible. Los procesos definidos no interrumpen las actividades habituales del equipo, sino que optimizan su flujo de trabajo continuo durante el desarrollo.
 

@@ -20,14 +20,16 @@ Para asegurar el cumplimiento de los principios de la ley LFPDPPP y las reglas d
 
 \textbf{Nota}: Es importante mencionar que la tabla \ref{tab:LFPDPPP} hace referencia a reglas y requerimientos previamente establecidos en el capitulo \ref{cap:analisis_sistema}, específicamente en las secciones \ref{sec:requerimientos} y \ref{sec:reglas_negocio}.
 
-\begin{table}[H]
-\centering
-\caption{Cumplimiento de normativas de la LFDPPP y su relación con requerimientos del sistema}
-\label{tab:LFPDPPP}
-\begin{tabular}{|>{\raggedright\arraybackslash}p{0.25\textwidth}|>{\raggedright\arraybackslash}p{0.68\textwidth}|}
+% longtable: la tabla mide más de una página y así se parte con su encabezado
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.25\textwidth}|>{\raggedright\arraybackslash}p{0.68\textwidth}|}
+\caption{Cumplimiento de normativas de la LFDPPP y su relación con requerimientos del sistema}\label{tab:LFPDPPP} \\
 \hline
 \textbf{\centering Normativa / Artículos LFPDPPP} & \textbf{\centering Descripción y Cumplimiento} \\ \hline
-
+\endfirsthead
+\multicolumn{2}{c}{\bfseries Continuación de la Tabla \thetable} \\
+\hline
+\textbf{\centering Normativa / Artículos LFPDPPP} & \textbf{\centering Descripción y Cumplimiento} \\ \hline
+\endhead
 \textbf{Consentimiento expreso e Información}\newline (Artículos 7, 14 y 16) & Conforme al requerimiento RF-46 y la regla RN-16, el sistema hace uso de un Aviso de Privacidad dentro de la aplicación en el acceso inicial de los usuarios, registrando el consentimiento explícito del usuario antes de crear la cuenta. \\ \hline
 
 \textbf{Proporcionalidad en Geolocalización}\newline (Artículos 11 y 12) & En la regla RN-16 se establece el uso exclusivo de la ubicación GPS para funciones que la requieran, como el cálculo de rutas o navegación en vivo. La recolección de datos GPS se detiene una vez terminadas las tareas dentro de la aplicación, sin ceder dicha información a terceros o ejecutar rastreo en segundo plano sin autorización. Para ello, las búsquedas de lugares se envían al proveedor desde una Edge Function de Supabase y se orientan con el área de servicio, no con la posición del usuario. \\ \hline
@@ -36,8 +38,7 @@ Para asegurar el cumplimiento de los principios de la ley LFPDPPP y las reglas d
 \textbf{Derechos ARCO y Disociación de Datos}\newline (Art. 2 fracc. IX, Art. 21 y 24) & El requerimiento RF-11 permite al usuario solicitar la cancelación definitiva de su cuenta. La regla RN-15 establece que los datos personales asociados serán destruidos en un plazo máximo de 7 días. Los reportes ciudadanos son sometidos a un proceso de disociación (anonimización), conservándolos únicamente con fines estadísticos. \\ \hline
 
 \textbf{Transferencia Internacional de Datos}\newline (Art. 2 fracc. XX y Art. 35) & Al utilizar Supabase como infraestructura Backend, la información puede almacenarse en servidores fuera del territorio nacional. Esta condición se estipula explícitamente en el Aviso de Privacidad, respaldando la transferencia en certificaciones internacionales de seguridad (SOC 2) del proveedor. De igual forma, el correo electrónico del usuario se transmite a Resend para enviar el correo de verificación y el token de notificaciones del dispositivo se transmite a Firebase Cloud Messaging, por lo que ambos proveedores también se declaran en el Aviso de Privacidad. \\ \hline
-\end{tabular}
-\end{table}
+\end{longtable}
 
 \subsubsection{Licenciamiento de las herramientas tecnológicas para el proyecto.}
 
@@ -124,15 +125,18 @@ Para garantizar el funcionamiento adecuado de la aplicación y delimitar el alca
 
 A continuación, en la Tabla \ref{tab:terminos_condiciones} se desglosan y detallan a fondo las cláusulas normativas principales que conforman este acuerdo, especificando la descripción de cada condición jurídica y la responsabilidad operativa directa que asume el usuario al interactuar con el prototipo.
 
-\begin{table}[H]
-\centering
-\footnotesize
-\caption{Detalle de los términos y condiciones de uso para el usuario final del sistema}
-\label{tab:terminos_condiciones}
-\begin{tabular}{|>{\raggedright\arraybackslash}p{0.21\textwidth}|>{\raggedright\arraybackslash}p{0.37\textwidth}|>{\raggedright\arraybackslash}p{0.31\textwidth}|}
+% longtable: la tabla mide más de una página y así se parte con su encabezado
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.21\textwidth}|>{\raggedright\arraybackslash}p{0.37\textwidth}|>{\raggedright\arraybackslash}p{0.31\textwidth}|}
+\caption{Detalle de los términos y condiciones de uso para el usuario final del sistema}\label{tab:terminos_condiciones} \\
 \hline
 \rowcolor{gray!15}
-\textbf{\centering Tema / Cláusula} & \textbf{\centering Descripción de la Condición} & \textbf{\centering Responsabilidad y Aceptación del Usuario} \\ \hline
+\textbf{Tema / Cláusula} & \textbf{Descripción de la Condición} & \textbf{Responsabilidad y Aceptación del Usuario} \\ \hline
+\endfirsthead
+\multicolumn{3}{c}{\bfseries Continuación de la Tabla \thetable} \\
+\hline
+\rowcolor{gray!15}
+\textbf{Tema / Cláusula} & \textbf{Descripción de la Condición} & \textbf{Responsabilidad y Aceptación del Usuario} \\ \hline
+\endhead
 
 \textbf{1. Naturaleza del Sistema y Descargo de Responsabilidad} & 
 El sistema provee rutas peatonales sugeridas basándose en un modelo algorítmico de riesgo socio-espacial y reportes ciudadanos. No garantiza la seguridad absoluta ni la evasión total de incidentes delictivos. & 
@@ -165,7 +169,5 @@ El usuario acepta que el servicio puede presentar interrupciones, demoras o bloq
 \textbf{8. Modificación y Cancelación de Cuenta} & 
 El sistema retendrá los datos del usuario mientras la cuenta esté activa. Ante la eliminación de la misma, los datos personales se destruirán en un plazo máximo de 7 días. & 
 El usuario tiene el derecho de cancelar su cuenta en cualquier momento, aceptando que sus reportes previos se conservarán de forma anonimizada para fines estadísticos. \\ \hline
-
-\end{tabular}
-\end{table}
+\end{longtable}
 
