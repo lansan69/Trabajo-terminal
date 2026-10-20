@@ -3,7 +3,9 @@
 % El \section{} de esta sección está en el chapter.tex del capítulo;
 % sus referencias van en seccion6_1.bib (misma carpeta).
 % =========================================================
-Para documentar la arquitectura del sistema se utiliza el modelo C4, propuesto por Simon Brown entre 2006 y 2011 \cite{simon_brown_history}. Este modelo describe la arquitectura de software mediante diagramas jerárquicos que van de lo general a lo particular, de modo que cada nivel constituye un acercamiento del anterior. Define cuatro niveles de abstracción: contexto, contenedores, componentes y código\cite{brown_software_architecture}. En este trabajo se emplean los tres primeros, dado que el nivel de código es opcional y su detalle puede obtenerse directamente del código fuente.
+Para documentar la arquitectura del sistema se utiliza el modelo C4, propuesto por Simon Brown entre 2006 y 2011 \cite{simon_brown_history}. Este modelo describe la arquitectura de software mediante diagramas jerárquicos que van de lo general a lo particular, de modo que cada nivel constituye un acercamiento del anterior. Define cuatro niveles de abstracción: contexto, contenedores, componentes y código\cite{brown_software_architecture}. 
+
+En este trabajo se emplean los dos primeros, dado que estos diagramas buscan el objetivo de comunicar el alcance del sistema, sus actores y las decisiones tecnológicas principales sin descender a detalles de implementación. El diagrama de contexto sitúa el sistema frente a sus usuarios y a los sistemas externos con los que interactúa, mientras que el de contenedores muestra las unidades desplegables que lo componen y la forma en que se comunican. Se omiten los niveles de componentes y código porque la organización interna de cada contenedor responde a decisiones de implementación que cambian con frecuencia, por lo que su representación duplicaría la estructura del código fuente y se desactualizaría rápidamente. Además, el propio Brown señala que los diagramas de contexto y contenedores son suficientes para la mayoría de los equipos \cite{brown_software_architecture}.
 
 
 \subsection{Diagrama de contexto}
@@ -27,16 +29,5 @@ El diagrama de contenedores descompone el sistema en las aplicaciones y los alma
     \label{fig:diagrama_contenedor}
 \end{sidewaysfigure}
 
-\subsection{Diagrama de componentes}
-El diagrama de componentes detalla la estructura interna de un contenedor \cite{brown_software_architecture}. La figura \ref{fig:diagrama_componente} muestra el diagrama correspondiente al presente proyecto.
-
-\clearpage
-
-\begin{figure}[htbp]
-    \centering
-    \input{figures/capitulo6_diseno_sistema/6.1_Arquitectura_del_sistema/diagrama_componente_sistema}
-    \caption{Diagrama de contenedor del sistema}
-    \label{fig:diagrama_componente}
-\end{figure}
 \clearpage
 \restoregeometry
