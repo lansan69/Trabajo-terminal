@@ -17,7 +17,15 @@
       "Bash(grep MEASURE m2.log)",
       "Bash(awk -F' = ' '{v=$2; sub\\(/pt/,\"\",v\\); printf \"%-34s %5.2f cm\\\\n\", $1, v*2.54/72.27}')",
       "Bash(pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex)",
-      "Bash(echo \"EXIT $?\")"
+      "Bash(echo \"EXIT $?\")",
+      "Bash(sort -k6)",
+      "Bash(pdflatex -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex)",
+      "Bash(BIBINPUTS=\"C:/Users/sango/Desktop/TT/Trabajo-terminal;\" bibtex main)",
+      "Bash(echo \"bibtex exit $?\")",
+      "PowerShell(Set-Location C:\\\\Users\\\\sango\\\\Desktop\\\\TT\\\\Trabajo-terminal; cmd /c \"set BIBINPUTS=..&& cd /d C:\\\\Users\\\\sango\\\\Desktop\\\\TT\\\\Trabajo-terminal\\\\debug_files && bibtex main\" | Select-String -Pattern \"error|couldn't|Database file\" | ForEach-Object { $_.Line }; \"EXIT: $LASTEXITCODE\")",
+      "Bash(pdflatex -interaction=nonstopmode -output-directory=debug_files main.tex)",
+      "Bash(echo \"pdflatex exit $?\")",
+      "Bash(grep -oE \"\\\\`[^']+'\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\sango\\AppData\\Local\\Temp\\claude\\c--Users-sango-Desktop-TT-Trabajo-terminal\\8a3e6336-80ab-4ca4-a815-b53ba57792b4\\scratchpad\\build",

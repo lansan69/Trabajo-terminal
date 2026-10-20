@@ -22,7 +22,7 @@ Estas herramientas se emplean en el desarrollo del prototipo de aplicación móv
 El desarrollo del sistema se realiza en \textbf{Visual Studio Code}, empleado para la escritura, depuración y ejecución del código del prototipo. Se eligió por su versatilidad y por su facilidad de instalación y configuración.
 
 \subsubsection{Framework}
-Se utiliza \textbf{Flutter}, un framework de código abierto para el desarrollo de aplicaciones multiplataforma con el lenguaje de programación Dart\cite{flutter_businessvalue}, para construir el cliente móvil del prototipo. Su elección se justifica en la sección \ref{sec:factibilidad_técnica}.
+Se utiliza \textbf{Flutter}, un framework de código abierto para el desarrollo de aplicaciones multiplataforma con el lenguaje de programación Dart\cite{flutter_businessvalue}, para construir el cliente móvil del prototipo. Su elección se justifica en la sección \ref{sec:factibilidad_tecnica}.
 
 \subsubsection{Sistema Operativo}
 El desarrollo se lleva a cabo sobre \textbf{Windows 11}, porque el equipo ya cuenta con este sistema y funciona correctamente con el resto de las herramientas descritas en esta sección.
@@ -37,7 +37,9 @@ Se utiliza \textbf{GitHub} para el alojamiento del código y la revisión de los
 Se utiliza \textbf{Supabase}, que provee una base de datos PostgreSQL con soporte para las extensiones PostGIS, para el análisis geoespacial, y pgRouting, para el cálculo de rutas. Además, expone una capa de API sobre la base de datos y cuenta con un paquete para Flutter disponible en pub.dev, lo que facilita la integración con el cliente móvil. La justificación completa se presenta en la sección \ref{sec:factibilidad_tecnica}.
 
 \subsubsection{APIs}
-Se utilizan la API de \textbf{Google Street View}, para la obtención de imágenes del entorno, y \textbf{Google Places API}, para la consulta de puntos de interés. Google ofrece una cobertura amplia y actualizada de la zona de estudio, por lo que se eligieron estas APIs como fuentes de datos.
+Para el preprocesamiento de los datos se utiliza la API de \textbf{Google Street View} para la obtención de imágenes del entorno, ya que ofrece una cobertura amplia y actualizada de la zona de estudio. Los puntos de interés, como comercios y expendios de alcohol, se obtienen de \textbf{OpenStreetMap}, cuyos datos abiertos pueden almacenarse en la base de datos con la atribución que exige su licencia (ODbL).
+
+Durante la operación de la aplicación se utilizan los servicios externos seleccionados en la sección \ref{sec:factibilidad_tecnica}: \textbf{MapLibre} con teselas de \textbf{OpenFreeMap} para el mapa base, \textbf{Geoapify} para la búsqueda de lugares, \textbf{Resend} para el envío de correos y \textbf{Firebase Cloud Messaging} para las notificaciones \textit{push}.
 
 El Cuadro \ref{tab:herramientas_proyecto} resume el software seleccionado para cubrir las características requeridas por el sistema.
 
@@ -57,7 +59,8 @@ El Cuadro \ref{tab:herramientas_proyecto} resume el software seleccionado para c
 \textbf{Sistema de control de versiones} & Git \\ \hline
 \textbf{Gestor de repositorios} & GitHub \\ \hline
 \textbf{Gestor de Base de Datos} & Supabase (PostgreSQL, PostGIS, pgRouting) \\ \hline
-\textbf{APIs} & Google Street View, Google Places API \\ \hline
+\textbf{Fuentes de datos de preprocesamiento} & Google Street View, OpenStreetMap \\ \hline
+\textbf{Servicios externos de operación} & MapLibre y OpenFreeMap, Geoapify, Resend, Firebase Cloud Messaging \\ \hline
 \end{tabular}
 \caption{Herramientas para el desarrollo del proyecto}
 \label{tab:herramientas_proyecto}

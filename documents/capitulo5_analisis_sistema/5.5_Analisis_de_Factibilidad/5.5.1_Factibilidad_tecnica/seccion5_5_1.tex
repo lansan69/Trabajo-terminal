@@ -51,32 +51,32 @@ Parcial \cite{kotlin_docs} &
 Sí (\textit{Fast Refresh}) \cite{reactnative_docs}
 \\ \hline
 Porcentaje de reutilización de código &
-$\approx$90\,\% \cite{suri2022cross} &
+$\approx$90\% \cite{suri2022cross} &
 No aplica &
-$\approx$95\,\% \cite{suri2022cross}
+$\approx$95\% \cite{suri2022cross}
 \\ \hline
 Consumo de CPU &
-$\approx$27\,\% \cite{suri2022cross} &
-$\approx$20\,\% \cite{suri2022cross} &
-$\approx$100\,\% \cite{suri2022cross}
+$\approx$27\% \cite{suri2022cross} &
+$\approx$20\% \cite{suri2022cross} &
+$\approx$100\% \cite{suri2022cross}
 \\ \hline
 Consumo de memoria respecto a Kotlin &
-$+1.6\,\%$ \cite{suri2022cross} &
+$+1.6\%$ \cite{suri2022cross} &
 Referencia &
-$+13.3\,\%$ \cite{suri2022cross}
+$+13.3\%$ \cite{suri2022cross}
 \\ \hline
 \end{tabularx}
 \footnotesize{\textbf{Nota:} Tanto consumo de CPU como consumo de memoria fueron calculados con base en un estudio empírico que compara el rendimiento de estos tres frameworks en condiciones similares.}
 \label{tab:tabla-comparativa-framework}
 \end{table}
 
-Se puede observar que Flutter ofrece un entorno óptimo para la construcción de un producto mínimo viable (MVP) por ventajas como el hot reload, su renderizado a nivel de pixel, su repositorio oficial de paquetes centralizado y su naturaleza multiplataforma. Si bien el desarrollo del presente proyecto se enfoca únicamente en Android, el uso de esta tecnología y herramientas garantiza que, como parte del trabajo a futuro, el proyecto pueda retomarse y expandirse a otros sistemas operativos de manera sencilla, manteniendo la interfaz diseñada y reutilizando apróximadamente el 90\% del código escrito\cite{suri2022cross}.
+Se puede observar que Flutter ofrece un entorno óptimo para la construcción de un producto mínimo viable (MVP) por ventajas como el hot reload, su renderizado a nivel de pixel, su repositorio oficial de paquetes centralizado y su naturaleza multiplataforma. Si bien el desarrollo del presente proyecto se enfoca únicamente en Android, el uso de esta tecnología y herramientas garantiza que, como parte del trabajo a futuro, el proyecto pueda retomarse y expandirse a otros sistemas operativos de manera sencilla, manteniendo la interfaz diseñada y reutilizando aproximadamente el 90\% del código escrito\cite{suri2022cross}.
 
-Kotlin no posee un entorno tan versatil como el de Flutter y carece de características de desarrollo que permitan la retoma del proyecto como se desea. Asimismo, React Native a pesar de adaptarse mejor en témrinos de reutilización de código, carece de características óptimas de rendimiento. 
+Kotlin no posee un entorno tan versátil como el de Flutter y carece de características de desarrollo que permitan la retoma del proyecto como se desea. Asimismo, React Native a pesar de adaptarse mejor en términos de reutilización de código, carece de características óptimas de rendimiento. 
 
 Segundo, una vez definida la herramienta a utilizar para el desarrollo del prototipo de aplicación móvil, lo siguiente por analizar es el sistema gestor de base de datos que almacenará la base de datos con la red vial de la Gustavo A. Madero y tendrá el modelo integrado con las ponderaciones de criminología ambiental. Se buscan alternativas con soporte para bases de datos espaciales, con integraciones de seguridad y con una alta disponibilidad.
 
-Asímismo, a pesar del gran número de herramientas open-source autohosteadas que existen en el mercado como Appwrite, Convex, entre otros. Al no contar con la infraestructura de hardware y el tiempo necesario para la configuración de los microservicios, se opta por la adopción de herramientas de Backend como servicio que nos facilita la implementación, aseguran disponibilidades altas, ofrecen tiempos de respuesta óptimos y proveen herramientas en tiempo real. La tabla \ref{tab:comparativa-dbms} muestra una comparativa de las herramientas tomadas en cuenta.
+Asimismo, a pesar del gran número de herramientas open-source autohosteadas que existen en el mercado como Appwrite, Convex, entre otros. Al no contar con la infraestructura de hardware y el tiempo necesario para la configuración de los microservicios, se opta por la adopción de herramientas de Backend como servicio que nos facilita la implementación, aseguran disponibilidades altas, ofrecen tiempos de respuesta óptimos y proveen herramientas en tiempo real. La tabla \ref{tab:comparativa-dbms} muestra una comparativa de las herramientas tomadas en cuenta.
 
 \begin{table}[hbt!]
 \centering
@@ -130,12 +130,179 @@ No gestionada (Data API y GraphQL retirados; acceso por drivers) \cite{mongodb_d
 \label{tab:comparativa-dbms}
 \end{table}
 
-Si bien los tres son operables a nivel de autenticación, seguridad, API, integraciones y disponibilidad con base en los requerimientos del sistema, solo \textit{Supabase} y \textit{MongoDB} ofrecen las herramientas necesarias para la gestión de bases de datos geoespaciales y entre estos, solo Supabase nos permite integrar un motor de ruteo con una simple extensión, lo que a corto plazo permite integrar de manera más rápida el prototipo de palicación móvil con el backend.
+Si bien los tres son operables a nivel de autenticación, seguridad, API, integraciones y disponibilidad con base en los requerimientos del sistema, solo \textit{Supabase} y \textit{MongoDB} ofrecen las herramientas necesarias para la gestión de bases de datos geoespaciales y entre estos, solo Supabase nos permite integrar un motor de ruteo con una simple extensión, lo que a corto plazo permite integrar de manera más rápida el prototipo de aplicación móvil con el backend.
 
 De este modo, se consolida Supabase como el gestor de base de datos y backend como servicio del presente proyecto. Generando así una combinación nativa con Flutter con herramientas de autenticación integradas, documentación minuciosa, integración geoespacial con ruteo y una API que nos permite realizar una implementación sencilla.
 
+Tercero, aunque Supabase y Flutter cubren por sí mismos la mayor parte de las funcionalidades del sistema, existen cuatro que dependen por completo de proveedores externos: el envío de correos electrónicos, los mapas base, la búsqueda de lugares (geocodificación) y el envío de notificaciones \textit{push} cuando la aplicación no está abierta en el dispositivo. Para elegir el proveedor de cada uno de estos servicios se definieron los siguientes criterios de selección:
+\begin{enumerate}
+    \item Costo y disponibilidad de un plan gratuito.
+    \item Facilidad de integración.
+    \item Compatibilidad con las tecnologías ya seleccionadas (Flutter y Supabase).
+    \item Cobertura de las funcionalidades que exigen los requerimientos del sistema (sección \ref{sec:requerimientos}).
+\end{enumerate}
+
+Con base en estos criterios, las tablas \ref{tab:comparativa-correo}, \ref{tab:comparativa-mapas}, \ref{tab:comparativa-busqueda} y \ref{tab:comparativa-notificaciones} comparan tres alternativas para el envío de correos, los mapas base, la búsqueda de lugares y las notificaciones \textit{push}, respectivamente. En cada tabla, las filas corresponden a los criterios anteriores y las columnas a los proveedores evaluados.
+
+% ---------------------------------------------------------
+% Proveedores externos: una tabla por servicio
+% Filas: los cuatro criterios de selección. Columnas: proveedores.
+% ---------------------------------------------------------
+
+% --- Envío de correos ---
+En el caso del correo electrónico, el sistema solo lo utiliza para enviar el correo de verificación de la cuenta. Aunque Supabase Auth incluye un servidor SMTP propio, este solo entrega correos a los miembros del equipo del proyecto, con un límite de dos correos por hora y sin garantía de servicio \cite{supabase_smtp}, por lo que es necesario configurar un proveedor externo. La tabla \ref{tab:comparativa-correo} muestra la comparación.
+
+\begin{table}[hbt!]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\caption{Comparación de proveedores de envío de correos electrónicos}
+\begin{tabularx}{\textwidth}{ |C|C|C|C| }
+\hline
+\textbf{Criterio} & \textbf{Resend} & \textbf{Brevo} & \textbf{Amazon SES} \\ \hline
+
+Costo y plan gratuito &
+3,000 correos al mes, con un máximo de 100 al día y sin vencimiento \cite{resend_pricing} &
+300 correos al día (aprox. 9,000 al mes), sin tarjeta ni vencimiento \cite{brevo_api} &
+Sin plan gratuito permanente: créditos de hasta 200 USD por 6 meses y después 0.10 USD por cada 1,000 correos \cite{amazon_ses_pricing} \\ \hline
+
+Facilidad de integración &
+Integración oficial de un clic que crea la llave de acceso y configura el SMTP de Supabase \cite{resend_supabase} &
+Configuración SMTP manual \cite{supabase_smtp} &
+Configuración SMTP manual y solicitud para salir del modo de pruebas (\textit{sandbox}) \cite{amazon_ses_pricing} \\ \hline
+
+Compatibilidad con Flutter y Supabase &
+SMTP estándar para Supabase Auth; no requiere paquete en Flutter \cite{resend_supabase} &
+Proveedor incluido en la documentación de Supabase; no requiere paquete en Flutter \cite{supabase_smtp} &
+Proveedor incluido en la documentación de Supabase; no requiere paquete en Flutter \cite{supabase_smtp} \\ \hline
+
+Funcionalidades requeridas &
+Envío del correo de verificación; requiere un dominio propio verificado \cite{resend_supabase} &
+Envío del correo de verificación; sin dominio autenticado, el remitente se reescribe a \texttt{@brevosend.com} \cite{brevo_dominio} &
+Envío del correo de verificación; requiere un dominio verificado \cite{amazon_ses_pricing} \\ \hline
+\end{tabularx}
+\label{tab:comparativa-correo}
+\end{table}
+
+Se puede observar que Resend ofrece una cuota gratuita suficiente para el volumen del prototipo y es el único de los tres con una integración oficial que configura Supabase Auth de forma automática. Su única condición, compartida con el resto de los proveedores, es contar con un dominio propio verificado, ya que los principales servicios de correo exigen remitentes autenticados \cite{brevo_dominio}. Por ello, se selecciona Resend como proveedor SMTP y Brevo como respaldo, gracias a su mayor cuota diaria; Amazon SES se descarta por no contar con un plan gratuito permanente. Además, en Flutter no se requiere ningún paquete adicional, pues basta con registrar al usuario mediante \texttt{supabase\_flutter} para que Supabase envíe el correo \cite{supabase_flutter}.
+
+% --- Mapas base ---
+Para los mapas base conviene distinguir dos decisiones: el paquete de Flutter que dibuja el mapa y el proveedor que sirve las teselas. Los polígonos de rúbrica y los marcadores son datos propios almacenados en PostGIS que se dibujan encima del mapa base, por lo que el proveedor solo determina el costo, la licencia y la coincidencia de sus calles con las del grafo vial, construido con datos de OpenStreetMap (OSM). La tabla \ref{tab:comparativa-mapas} compara tres combinaciones de paquete y proveedor.
+
+\begin{table}[hbt!]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\caption{Comparación de proveedores de mapas base}
+\begin{tabularx}{\textwidth}{ |C|C|C|C| }
+\hline
+\textbf{Criterio} & \textbf{OpenFreeMap con \texttt{maplibre\_gl}} & \textbf{Geoapify con \texttt{flutter\_map}} & \textbf{Google Maps con \texttt{google\_maps\_flutter}} \\ \hline
+
+Costo y plan gratuito &
+Sin límite de vistas ni solicitudes y sin registro ni llave de acceso; no ofrece SLA \cite{openfreemap} &
+3,000 créditos diarios compartidos con la búsqueda de lugares, equivalentes a cerca de 12,000 teselas \cite{geoapify_pricing,geoapify_creditos} &
+SDK de mapas para dispositivos móviles sin costo \cite{google_maps_pricing} \\ \hline
+
+Facilidad de integración &
+Paquete \texttt{maplibre\_gl} 0.27.1, mantenido por la organización MapLibre; dibujo en GPU \cite{maplibre_gl} &
+Paquete \texttt{flutter\_map} 8.3.2, escrito en Dart; capas de polígonos, líneas y marcadores \cite{flutter_map} &
+Paquete oficial \texttt{google\_maps\_flutter} 2.19.0 \cite{google_maps_flutter} \\ \hline
+
+Compatibilidad con Flutter y Supabase &
+Datos OSM que coinciden con el grafo vial; carga capas GeoJSON generadas en PostGIS \cite{maplibre_gl} &
+Datos OSM que coinciden con el grafo vial; carga capas GeoJSON generadas en PostGIS \cite{flutter_map} &
+Cartografía propia de Google, distinta de OSM; la búsqueda queda ligada a Google Places \cite{google_places_policies} \\ \hline
+
+Funcionalidades requeridas &
+Color de cada tramo según su nivel de riesgo, iconos por categoría y teselas propias del área de servicio en formato PMTiles \cite{maplibre_gl,supabase_protomaps} &
+Polígonos, rutas y marcadores; agrupar marcadores y mostrar la ubicación del usuario requiere paquetes de la comunidad \cite{flutter_map} &
+Polígonos, polilíneas y marcadores \cite{google_maps_flutter} \\ \hline
+\end{tabularx}
+\label{tab:comparativa-mapas}
+\end{table}
+
+Aunque las tres combinaciones permiten dibujar las capas propias, Google Maps se descarta porque su cartografía no coincide con los tramos del grafo vial y porque obliga a usar su propio servicio de búsqueda. Entre las dos opciones basadas en OSM, \texttt{maplibre\_gl} cubre sin paquetes adicionales el coloreado de tramos por nivel de riesgo, los iconos por categoría y la ubicación del usuario, mientras que \texttt{flutter\_map} requiere paquetes de la comunidad para agrupar marcadores y mostrar la ubicación.
+
+Además, como el área de servicio se limita a las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero (RN-01), es posible generar un archivo de teselas en formato PMTiles solo con esa área y alojarlo en Supabase Storage \cite{supabase_protomaps}, de modo que el mapa no dependa de un tercero. Así, se selecciona \texttt{maplibre\_gl} con OpenFreeMap durante el desarrollo y con teselas propias en la entrega del prototipo, siempre que el archivo no supere los 50 MB por archivo que permite el plan gratuito de Supabase \cite{supabase_pricing}. Como el proveedor se define con una sola dirección de estilo, OpenFreeMap y Geoapify quedan como respaldo sin necesidad de modificar las capas propias.
+
+% --- Búsqueda de lugares ---
+En la búsqueda de lugares, la licencia resulta más determinante que el precio. Google Places exige que sus resultados se muestren sobre un mapa de Google \cite{google_places_policies} y Mapbox exige mostrarlos sobre un mapa de Mapbox \cite{mapbox_search_terms}, por lo que ninguno es compatible con teselas de OSM. A su vez, el servicio público de Nominatim prohíbe el autocompletado \cite{nominatim_policy}. La tabla \ref{tab:comparativa-busqueda} compara las dos alternativas basadas en OSM con Google Places como referencia.
+
+\begin{table}[hbt!]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\caption{Comparación de proveedores de búsqueda de lugares (geocodificación)}
+\begin{tabularx}{\textwidth}{ |C|C|C|C| }
+\hline
+\textbf{Criterio} & \textbf{Geoapify} & \textbf{Photon} & \textbf{Google Places} \\ \hline
+
+Costo y plan gratuito &
+3,000 créditos diarios; cada autocompletado consume un crédito, con un máximo de 5 solicitudes por segundo \cite{geoapify_pricing,geoapify_creditos} &
+Gratuito bajo uso justo; limita el uso intensivo y no ofrece SLA \cite{photon} &
+10,000 solicitudes de autocompletado al mes \cite{google_maps_pricing} \\ \hline
+
+Facilidad de integración &
+API REST de autocompletado con filtros por país y por área geográfica \cite{geoapify_autocomplete} &
+API REST de búsqueda mientras se escribe \cite{photon} &
+API REST de autocompletado y detalles de lugares \cite{google_maps_pricing} \\ \hline
+
+Compatibilidad con Flutter y Supabase &
+Datos OSM sin restricción sobre el mapa utilizado; se consulta desde una Edge Function de Supabase \cite{geoapify_terminos} &
+Datos OSM; se consulta desde una Edge Function de Supabase \cite{photon} &
+Resultados solo sobre un mapa de Google; prohíbe almacenar su contenido salvo el identificador del lugar \cite{google_places_policies} \\ \hline
+
+Funcionalidades requeridas &
+Autocompletado, geocodificación inversa y resultados acotados a un rectángulo del área de servicio \cite{geoapify_autocomplete} &
+Autocompletado sobre datos OSM, adecuado como respaldo \cite{photon} &
+Autocompletado y detalles de lugares, sujetos a mostrarse en Google Maps \cite{google_places_policies} \\ \hline
+\end{tabularx}
+\label{tab:comparativa-busqueda}
+\end{table}
+
+Por lo anterior, se selecciona Geoapify, consultado desde una Edge Function de Supabase que resguarda la llave de acceso y acota los resultados al área de servicio, con Photon como respaldo ante fallas. Antes de ambos, la búsqueda consulta un índice propio en PostGIS con los lugares y calles de OSM del área de servicio, que responde sin costo y sin enviar datos a terceros. Este orden también cumple con RN-16, ya que la búsqueda se orienta con el área de servicio y no con la posición del usuario. Como limitación, en una prueba exploratoria con datos de OSM realizada en la Ciudad de México, dos de seis consultas de direcciones residenciales con número exterior se resolvieron solo a nivel de calle, por lo que la aplicación debe permitir ajustar el punto manualmente sobre el mapa.
+
+% --- Notificaciones push ---
+Por último, las notificaciones \textit{push} se utilizan para las alertas de reportes y de seguimiento cuando la aplicación no está abierta. Las alertas que se generan en el propio dispositivo, como entrar a una zona de riesgo durante la navegación, y la ubicación en vivo con la aplicación abierta no requieren este servicio, ya que se resuelven con notificaciones locales y con Supabase Realtime \cite{supabase_pricing}. La tabla \ref{tab:comparativa-notificaciones} compara tres proveedores.
+
+\begin{table}[hbt!]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.5}
+\caption{Comparación de proveedores de notificaciones \textit{push}}
+\begin{tabularx}{\textwidth}{ |C|C|C|C| }
+\hline
+\textbf{Criterio} & \textbf{Firebase Cloud Messaging (FCM)} & \textbf{OneSignal} & \textbf{Pusher Beams} \\ \hline
+
+Costo y plan gratuito &
+Sin costo en los planes Spark y Blaze \cite{firebase_pricing} &
+Envíos ilimitados hasta 1,000 usuarios activos al mes; el plan Growth cuesta desde 19 USD al mes \cite{onesignal_pricing} &
+Hasta 1,000 suscriptores; el plan Startup cuesta 29 USD al mes \cite{pusher_beams_pricing} \\ \hline
+
+Facilidad de integración &
+Paquete oficial \texttt{firebase\_messaging} 17.0.0 \cite{firebase_messaging} &
+Paquete \texttt{onesignal\_flutter} 5.7.1 \cite{onesignal_flutter} &
+Paquete \texttt{pusher\_beams} 1.1.2, sin versiones nuevas en 22 meses \cite{pusher_beams_pkg} \\ \hline
+
+Compatibilidad con Flutter y Supabase &
+Guía oficial de Supabase: webhook de la base de datos, Edge Function y envío por FCM \cite{supabase_push} &
+Envío desde una Edge Function mediante su API; opera como una capa sobre FCM \cite{onesignal_flutter} &
+Envío desde una Edge Function mediante su API \cite{pusher_beams_pricing} \\ \hline
+
+Funcionalidades requeridas &
+Prioridad alta que entrega aun con el dispositivo en reposo; hasta 600,000 mensajes por minuto por proyecto \cite{fcm_priority,fcm_quotas} &
+Segmentación de usuarios, pruebas A/B y analítica básica \cite{onesignal_pricing} &
+Servicio gestionado, con mantenimiento incierto del paquete \cite{pusher_beams_pkg} \\ \hline
+\end{tabularx}
+\label{tab:comparativa-notificaciones}
+\end{table}
+
+Se observa que FCM es la única opción sin límite de usuarios en su plan gratuito, que cuenta con un paquete oficial y con una guía de Supabase que describe el flujo completo de envío. OneSignal añade segmentación y analítica, pero limita su plan gratuito a 1,000 usuarios activos al mes, y Pusher Beams presenta un mantenimiento incierto. Por ello, se selecciona FCM, con envíos desde una Edge Function de Supabase. Su uso tiene dos condiciones: el dispositivo debe contar con Google Play Services y, a partir de Android 13, la aplicación debe solicitar el permiso de notificaciones en tiempo de ejecución \cite{firebase_messaging}.
+
+De este modo, los cuatro servicios externos se cubren con planes gratuitos compatibles con Flutter y Supabase, con un costo operativo de 0 USD al mes durante la etapa académica del proyecto. La única condición es registrar un dominio propio para el envío de correos. Además, las llaves de acceso de los proveedores se resguardan en las Edge Functions o en la configuración de Supabase y no dentro de la aplicación, y cada proveedor se integra mediante un adaptador propio, de manera que pueda sustituirse por su respaldo sin modificar la aplicación si cambian las condiciones de su plan gratuito.
+
 \subsubsection{Hardware}
-Con la elección de tecnologías de la sección \ref{subsubsec: software}, podemos determianr que Supabase no requiere condiciones de hardware específicas dado que no se planea hostearlo en equipo propio y por tanto, funciona directamente en la web. Por el otro lado, para el uso de Flutter se eligió Visual Studio Code, misma integración que no requiere especificaciones de hardware que necesiten ser listadas. Sin embargo, para probar la aplicación Flutter en dispositivos android se tienen solo dos caminos: (1) un emulador de android y (2) un dispositivo físico de android.
+Con la elección de tecnologías de la sección \ref{subsubsec: software}, podemos determinar que Supabase no requiere condiciones de hardware específicas dado que no se planea hostearlo en equipo propio y por tanto, funciona directamente en la web. Por el otro lado, para el uso de Flutter se eligió Visual Studio Code, misma integración que no requiere especificaciones de hardware que necesiten ser listadas. Sin embargo, para probar la aplicación Flutter en dispositivos android se tienen solo dos caminos: (1) un emulador de android y (2) un dispositivo físico de android.
 
 Así, para el desarrollo del prototipo de aplicación se necesitan aproximadamente 8 GB de memoria RAM y 8 GB de espacio libre en disco para ejecutar Android Studio, que provee el SDK de Android, si las pruebas se hacen en un dispositivo físico. Si además se utiliza el emulador, los requisitos suben a 16 GB de RAM y 16 GB de espacio libre, con una resolución de pantalla mínima de 1280 $\times$ 800 píxeles \cite{androidstudio_install}.
 

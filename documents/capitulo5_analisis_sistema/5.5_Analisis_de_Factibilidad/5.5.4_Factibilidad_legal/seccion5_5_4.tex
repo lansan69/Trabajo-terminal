@@ -29,12 +29,12 @@ Para asegurar el cumplimiento de los principios de la ley LFPDPPP y las reglas d
 
 \textbf{Consentimiento expreso e Información}\newline (Artículos 7, 14 y 16) & Conforme al requerimiento RF-46 y la regla RN-16, el sistema hace uso de un Aviso de Privacidad dentro de la aplicación en el acceso inicial de los usuarios, registrando el consentimiento explícito del usuario antes de crear la cuenta. \\ \hline
 
-\textbf{Proporcionalidad en Geolocalización}\newline (Artículos 11 y 12) & En la regla RN-16 se establece el uso exclusivo de la ubicación GPS para funciones que la requieran, como el cálculo de rutas o navegación en vivo. La recolección de datos GPS se detiene una vez terminadas las tareas dentro de la aplicación, sin ceder dicha información a terceros o ejecutar rastreo en segundo plano sin autorización. \\ \hline
+\textbf{Proporcionalidad en Geolocalización}\newline (Artículos 11 y 12) & En la regla RN-16 se establece el uso exclusivo de la ubicación GPS para funciones que la requieran, como el cálculo de rutas o navegación en vivo. La recolección de datos GPS se detiene una vez terminadas las tareas dentro de la aplicación, sin ceder dicha información a terceros o ejecutar rastreo en segundo plano sin autorización. Para ello, las búsquedas de lugares se envían al proveedor desde una Edge Function de Supabase y se orientan con el área de servicio, no con la posición del usuario. \\ \hline
 \textbf{Medidas de Seguridad de la Información}\newline (Artículo 18) & El requerimiento RNF-14 establece que el almacenamiento de contraseñas se lleva a cabo mediante funciones hash con sal (bcrypt o Argon2). Además, la transmisión de datos opera obligatoriamente bajo el protocolo HTTPS con cifrado TLS (RNF-15), garantizando la protección técnica contra el acceso no autorizado. \\ \hline
 
 \textbf{Derechos ARCO y Disociación de Datos}\newline (Art. 2 fracc. IX, Art. 21 y 24) & El requerimiento RF-11 permite al usuario solicitar la cancelación definitiva de su cuenta. La regla RN-15 establece que los datos personales asociados serán destruidos en un plazo máximo de 7 días. Los reportes ciudadanos son sometidos a un proceso de disociación (anonimización), conservándolos únicamente con fines estadísticos. \\ \hline
 
-\textbf{Transferencia Internacional de Datos}\newline (Art. 2 fracc. XX y Art. 35) & Al utilizar Supabase como infraestructura Backend, la información puede almacenarse en servidores fuera del territorio nacional. Esta condición se estipula explícitamente en el Aviso de Privacidad, respaldando la transferencia en certificaciones internacionales de seguridad (SOC 2) del proveedor. \\ \hline
+\textbf{Transferencia Internacional de Datos}\newline (Art. 2 fracc. XX y Art. 35) & Al utilizar Supabase como infraestructura Backend, la información puede almacenarse en servidores fuera del territorio nacional. Esta condición se estipula explícitamente en el Aviso de Privacidad, respaldando la transferencia en certificaciones internacionales de seguridad (SOC 2) del proveedor. De igual forma, el correo electrónico del usuario se transmite a Resend para enviar el correo de verificación y el token de notificaciones del dispositivo se transmite a Firebase Cloud Messaging, por lo que ambos proveedores también se declaran en el Aviso de Privacidad. \\ \hline
 \end{tabular}
 \caption{Cumplimiento de normativas de la LFDPPP y su relación con requerimientos del sistema}
 \label{tab:LFPDPPP}
@@ -46,7 +46,7 @@ El desarrollo del prototipo integra tecnologías, lenguajes y plataformas de bas
 
 Todas las herramientas tecnológicas contempladas para el desarrollo del proyecto se establecieron con anterioridad en la tabla \ref{tab:herramientas_proyecto}. La factibilidad legal para el desarrollo del software recae en la utilización de herramientas de código abierto con licencia gratuita, comprobado en la tabla de costos \ref{tab:recursos_tecnologicos}, donde cada una de las herramientas contempla un costo de 0 pesos (considerando el uso de licencia gratuita), lo que mitiga los riesgos por demandas de propiedad intelectual o uso indebido de software privado.    
 
-El uso de software de pago y la compra de licencias se contempla dentro de la sección \ref{sec:factibilidad_economica} cumpliendo con los marcos legales sin incurrir en practicas ilícitas como el uso de licencias ilegales. La unica excepción recae en el uso de APIs de operación de la aplicación (Google Street View Static API y Qwen3.7-Flash) ya que el consumo  sale de los limites de las cuotas gratuitas establecidas, por lo que se contempla el pago por uso una vez superada la tarifa estándar.  
+El uso de software de pago y la compra de licencias se contempla dentro de la sección \ref{sec:factibilidad_economica} cumpliendo con los marcos legales sin incurrir en practicas ilícitas como el uso de licencias ilegales. La unica excepción recae en el uso de APIs de preprocesamiento (Google Street View Static API y Qwen3.7-Flash) ya que el consumo  sale de los limites de las cuotas gratuitas establecidas, por lo que se contempla el pago por uso una vez superada la tarifa estándar.  
 
 El costo de uso de servicios tecnológicos adicionales como Overleaf y Udemy se contempla en la tabla \ref{tab:servicios_adicionales}, donde ya se consideran los costos necesarios para evitar el uso de software de forma ilegal. 
 
@@ -66,8 +66,13 @@ Notion & Gratuito  \\ \hline
 OpenStreetMap (OSM) & Gratuito  \\ \hline
 Google Street View Static API & Pago (al exceder la tarifa estándar) \\ \hline
 Qwen3.7-Flash & Pago (al exceder la tarifa estándar) \\ \hline
-Maps SDK (para móvil) & Gratuito \\ \hline
-Places API (new)  & Gratuito \\ \hline
+MapLibre (\texttt{maplibre\_gl}) & Gratuito (código abierto) \\ \hline
+OpenFreeMap & Gratuito (con atribución) \\ \hline
+Geoapify & Gratuito (plan gratuito, con atribución) \\ \hline
+Photon & Gratuito (uso justo) \\ \hline
+Resend & Gratuito (plan gratuito) \\ \hline
+Firebase Cloud Messaging & Gratuito \\ \hline
+Dominio propio para el correo & Gratuito (primer año, GitHub Student Developer Pack) \\ \hline
 Registro de desarrollador Google Play & Pago \\ \hline
 Overleaf & Suscripción \\ \hline
 Udemy & Suscripción \\ \hline
@@ -89,18 +94,28 @@ Este apartado hace referencia al cumplimento de reglas establecidas al consumir 
 
 El funcionamiento del prototipo de aplicación móvil depende del consumo de interfaces de programación de aplicaciones (APIs) y bases de datos espaciales provistas por terceros. Para garantizar la factibilidad legal y operativa del sistema, el diseño de la arquitectura tecnológica se desarrolla conforme el estricto cumplimiento de Términos de Servicio (ToS) y las licencias de uso de datos externos de cada proveedor, detallados a continuación: 
 
-\textbf{Ecosistema de Goolgle Maps Platform}: El sistema integra 3 servicios de Google fundamentales para el funcionamiento: Street View Static API, Maps SDK para móvil y Places API. Conforme a los Términos de Servicio de Google Maps Platform, el proyecto cumple con los siguientes lineamientos: 
+\textbf{Ecosistema de Google Maps Platform}: El sistema utiliza únicamente Street View Static API, durante el preprocesamiento de los datos. No se utilizan el SDK de Google Maps ni Places API: las políticas de Places exigen mostrar sus resultados sobre un mapa de Google, lo que es incompatible con el mapa base basado en OpenStreetMap seleccionado en la sección~\ref{sec:factibilidad_tecnica}, y prohíben almacenar su contenido salvo el identificador del lugar \cite{google_places_policies}. Por ello, los puntos de interés del modelo de riesgo se obtienen de OpenStreetMap. Conforme a los Términos de Servicio de Google Maps Platform, el proyecto cumple con los siguientes lineamientos:
 
 \begin{itemize}
-    \item\textbf{Prohibición de extracción masiva (Scrapping)}: Las 35,100 imágenes extraídas mediante Street View Static API son utilizadas temporalmente para calcular las condiciones de riesgo. El sistema no almacena las imágenes obtenidas del API permanentemente ni busca crear una base de datos que compita con Google, unicamente conserva información útil para el procesamiento del análisis de riesgo. 
-    \item\textbf{Uso comercial y cuotas}: El consumo de APIs de operación (Maps SDK y Places API) se mantiene dentro de los lineamientos de la cuota gratuita mensual. Para la parte del preprocesamiento masivo de imágenes, se ha contemplado con anterioridad el pago correspondiente por exceder la tarifa estándar, lo que garantiza que el uso del servicio sea legitimo sin incurrir en practicas ilegales como la evasión de facturación. 
+    \item\textbf{Prohibición de extracción masiva (Scrapping)}: Las 35,100 imágenes extraídas mediante Street View Static API son utilizadas temporalmente para calcular las condiciones de riesgo. El sistema no almacena las imágenes obtenidas del API permanentemente ni busca crear una base de datos que compita con Google, unicamente conserva información útil para el procesamiento del análisis de riesgo.
+    \item\textbf{Uso comercial y cuotas}: Para el preprocesamiento masivo de imágenes se ha contemplado con anterioridad el pago correspondiente por exceder la tarifa estándar, lo que garantiza que el uso del servicio sea legitimo sin incurrir en practicas ilegales como la evasión de facturación.
 \end{itemize}
 
 \textbf{Modelo de Lenguaje Visual Qwen3.7-Flash}: El análisis de las características del entorno físico se realiza mediante el modelo Qwen3.7-Flash. El cumplimiento de sus Términos de Servicio se aborda mediante el pago por consumo de tokens (estimado en 70.2 millones de tokens de entrada y 17.55 millones de salida). Cabe mencionar que el sistema no infringe las normativas de la API sobre el procesamiento de contenido privado o material protegido por derechos de autor ya que solo procesa imágenes de fachadas y calles públicas. 
 
-\textbf{Cartografía base y OpenStreetMap (OSM)}: Debido a que el sistema implementa el uso de PostGIS y pgRouting para calcular las rutas y guardar los mapas, la red vial es capaz de ser alimentada de datos gratuitos de OpenStreetMap. Para cumplir con la Licencia Abierta de Bases de Datos (ODbL, por sus siglas en inglés) que rige a OSM, la aplicación móvil debe incluir en su interfaz gráfica el reconocimiento y atribución explícita indicando "© Colaboradores de OpenStreetMap", garantizando así el respeto a la propiedad intelectual comunitaria.
+\textbf{Cartografía base y OpenStreetMap (OSM)}: Debido a que el sistema implementa el uso de PostGIS y pgRouting para calcular las rutas y guardar los mapas, la red vial es capaz de ser alimentada de datos gratuitos de OpenStreetMap. Para cumplir con la Licencia Abierta de Bases de Datos (ODbL, por sus siglas en inglés) que rige a OSM, la aplicación móvil debe incluir en su interfaz gráfica el reconocimiento y atribución explícita indicando "© Colaboradores de OpenStreetMap", garantizando así el respeto a la propiedad intelectual comunitaria. El mapa base también se construye con datos de OSM: las teselas de OpenFreeMap exigen la atribución «OpenFreeMap © OpenMapTiles Data from OpenStreetMap», que el paquete \texttt{maplibre\_gl} muestra de forma automática \cite{openfreemap}, y las teselas propias en formato PMTiles, al derivarse de OSM, mantienen la misma obligación de atribución.
 
-\textbf{Infraestructura Backend-BD (Supabase}: La gestión de la base de datos y el almacenamiento en la nube se realiza a través de Supabase bajo su plan gratuito. El proyecto se adhiere a los limites establecidos dentro del plan gratuito asegurando que el volumen de almacenamiento y las transferencias mensuales no excedas los límites previstos. Además, se garantiza que la infraestructura no será utilizada para alojar contenido ilícito o realizar ataques de denegación de servicio.   
+\textbf{Proveedores externos de operación}: Los servicios de búsqueda de lugares, correo y notificaciones se utilizan dentro de las condiciones de sus planes gratuitos:
+
+\begin{itemize}
+    \item\textbf{Geoapify y Photon}: Geoapify permite el uso de sus resultados sobre mapas de terceros a cambio de una atribución visible \cite{geoapify_terminos}, mientras que la instancia pública de Photon se utiliza solo como respaldo para respetar su política de uso justo \cite{photon}. Las llaves de acceso se resguardan en Edge Functions de Supabase y no se incluyen en la aplicación.
+    \item\textbf{Resend}: El envío de correos se realiza desde un dominio propio autenticado, como exigen el proveedor y los principales servicios de correo para evitar la suplantación de remitentes \cite{resend_supabase,brevo_dominio}.
+    \item\textbf{Firebase Cloud Messaging}: El envío de notificaciones no tiene costo \cite{firebase_pricing}. A partir de Android 13, la aplicación solicita al usuario el permiso de notificaciones antes de enviarlas \cite{firebase_messaging}, y el token del dispositivo se elimina al cerrar la sesión.
+\end{itemize}
+
+Las atribuciones de OpenStreetMap, OpenFreeMap y Geoapify se muestran sobre el mapa y en la pantalla de información de la aplicación.
+
+\textbf{Infraestructura Backend-BD (Supabase)}: La gestión de la base de datos y el almacenamiento en la nube se realiza a través de Supabase bajo su plan gratuito. El proyecto se adhiere a los limites establecidos dentro del plan gratuito asegurando que el volumen de almacenamiento y las transferencias mensuales no excedas los límites previstos. Además, se garantiza que la infraestructura no será utilizada para alojar contenido ilícito o realizar ataques de denegación de servicio.   
 
 
 \subsubsection{Términos y condiciones de uso. }
@@ -146,7 +161,7 @@ El sistema permite la generación de URLs temporales para compartir el trayecto 
 El usuario asume la total responsabilidad sobre las personas o plataformas con las que decide compartir su enlace de seguimiento en vivo. \\ \hline
 
 \textbf{7. Disponibilidad del Servicio de Ruteo} & 
-La generación de rutas seguras depende de la disponibilidad de APIs de terceros (Google, Supabase) y de la conectividad a internet del dispositivo móvil. & 
+La generación de rutas seguras depende de la disponibilidad de servicios de terceros (Supabase, OpenFreeMap, Geoapify y Firebase) y de la conectividad a internet del dispositivo móvil. & 
 El usuario acepta que el servicio puede presentar interrupciones, demoras o bloqueos por fallas de conectividad externas al control de los desarrolladores del sistema. \\ \hline
 
 \textbf{8. Modificación y Cancelación de Cuenta} & 
