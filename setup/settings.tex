@@ -54,7 +54,9 @@
 \graphicspath{{./figures/}}     % Raíz de imágenes: figures/<capitulo>/<seccion>/
 \usepackage{float}              % Opción [H] para fijar flotantes en su lugar
 \usepackage{caption}            % Personalización de leyendas (captions)
-\usepackage{pdflscape}          % Páginas horizontales (landscape): solo la tabla larga de 5.4
+\usepackage{lscape}             % landscape: gira el contenido, no la página (el número de
+                                % página queda abajo, como en sidewaysfigure). Solo la tabla
+                                % larga de 5.4. No usar pdflscape: voltea toda la página.
 \usepackage{rotating}           % sidewaysfigure / sidewaystable: contenido girado (3.1, 6.1, 6.4)
 
 % ----- Estándar de tablas y figuras -----
