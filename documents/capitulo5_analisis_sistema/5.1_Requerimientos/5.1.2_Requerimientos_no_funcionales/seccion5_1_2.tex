@@ -72,7 +72,8 @@ ID & \textbf{Requisito} \\
 \endlastfoot
 RNF-15 & Las contraseñas deben almacenarse mediante una función de hash con sal diseñada para contraseñas, como bcrypt o Argon2; no deben almacenarse en texto plano ni mediante ningún método reversible. \\
 RNF-16 & La comunicación entre la aplicación y los servicios del sistema debe realizarse exclusivamente mediante HTTPS con TLS 1.2 o superior, protegiendo la información durante su transmisión. \\
-RNF-17 & La ubicación del usuario debe recolectarse y transmitirse únicamente mientras se ejecuta alguna de las funciones que la requieren (cálculo de rutas, navegación, registro y confirmación de reportes, alertas de reportes cercanos y enlace de seguimiento), y debe dejar de recolectarse al terminar dichas funciones. \\
+RNF-17 & La ubicación del usuario debe recolectarse y transmitirse únicamente
+mientras exista un enlace de seguimiento activo.  \\
 RNF-18 & El identificador del enlace de seguimiento debe generarse de forma aleatoria con una entropía mínima de 128 bits, de modo que no sea deducible ni enumerable a partir de otros enlaces. \\
 \end{longtable}
 
