@@ -11,7 +11,13 @@
       "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); miktex packages check-update; miktex packages update)",
       "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); initexmf --set-config-value=[MPM]AutoInstall=1; New-Item -ItemType Directory -Force debug_files | Out-Null; pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex | Select-Object -Last 8; \"EXIT: $LASTEXITCODE\")",
       "PowerShell($env:Path = [Environment]::GetEnvironmentVariable\\('Path','User'\\) + ';' + [Environment]::GetEnvironmentVariable\\('Path','Machine'\\); miktex packages install cm-super 2>&1 | Select-Object -Last 3; pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex | Out-Null; \"EXIT: $LASTEXITCODE\"; Select-String -Path debug_files\\\\preview.log -Pattern 'Overfull|Error|\\\\.pfb' | Select-Object -First 8 | ForEach-Object { $_.Line.Trim\\(\\) })",
-      "Bash(/c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/tools/venv/Scripts/python.exe -c ' *)"
+      "Bash(/c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/tools/venv/Scripts/python.exe -c ' *)",
+      "Bash(cd /c/Users/sango/AppData/Local/Temp/claude/c--Users-sango-Desktop-TT-Trabajo-terminal/8a3e6336-80ab-4ca4-a815-b53ba57792b4/scratchpad/build)",
+      "Bash(pdflatex -interaction=nonstopmode m2.tex)",
+      "Bash(grep MEASURE m2.log)",
+      "Bash(awk -F' = ' '{v=$2; sub\\(/pt/,\"\",v\\); printf \"%-34s %5.2f cm\\\\n\", $1, v*2.54/72.27}')",
+      "Bash(pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=debug_files preview.tex)",
+      "Bash(echo \"EXIT $?\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\sango\\AppData\\Local\\Temp\\claude\\c--Users-sango-Desktop-TT-Trabajo-terminal\\8a3e6336-80ab-4ca4-a815-b53ba57792b4\\scratchpad\\build",

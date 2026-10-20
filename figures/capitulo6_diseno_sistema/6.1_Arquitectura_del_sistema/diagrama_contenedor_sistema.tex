@@ -10,31 +10,35 @@
 % Columnas: externos de autenticación | límite del sistema | externos
 % de la app y la API. Las flechas son rectas u ortogonales; el texto va
 % junto a la línea (arriba, abajo o a un lado) para no tapar las puntas.
+% Las flechas internas llevan el texto hacia afuera (izquierda en la
+% columna de Autenticación, derecha en la de API REST).
 % =========================================================
 \begin{tikzpicture}[
   % flush center: centra el texto sin partir palabras con guion
-  contenedor/.style={c4contenedor, text width=4cm, minimum height=1.8cm, align=flush center},
-  externo/.style={c4externo, text width=3.2cm, minimum height=2.7cm, align=flush center},
+  contenedor/.style={c4contenedor, text width=4cm, minimum height=1.6cm, align=flush center},
+  externo/.style={c4externo, text width=3.2cm, minimum height=2.9cm, align=flush center},
   % Texto junto a la línea (sin fondo blanco)
   etiquetaLado/.style={c4etiqueta, fill=none}
 ]
 
   % ---------------- Contenedores ----------------
+  % Huecos verticales: 1.6 cm bajo la app (texto de 3 renglones)
+  % y 1.3 cm sobre la base de datos (texto de 2 renglones)
   \node[contenedor] (app) at (0, 0)
     {\elementoCuatro{Aplicación móvil}{Contenedor: Flutter}};
 
-  \node[contenedor] (auth) at (-2.53, -2.8)
+  \node[contenedor] (auth) at (-2.53, -3.2)
     {\elementoCuatro{Autenticación}{Contenedor: Supabase}};
 
-  \node[contenedor] (api) at (2.53, -2.8)
+  \node[contenedor] (api) at (2.53, -3.2)
     {\elementoCuatro{API REST}{Contenedor: Supabase}};
 
-  \node[c4basedatos, text width=4.5cm, align=flush center, anchor=north] (db) at (0, -4.7)
+  \node[c4basedatos, text width=4.5cm, align=flush center, anchor=north] (db) at (0, -5.3)
     {\elementoCuatro{Base de datos}{Contenedor: PostgreSQL}};
 
   % ---------------- Límite del sistema ----------------
   % Etiqueta arriba a la izquierda, por encima de la aplicación móvil
-  \node[c4limiteEtiqueta, anchor=north west] (etiquetaLimite) at (-4.81, 1.95)
+  \node[c4limiteEtiqueta, anchor=north west] (etiquetaLimite) at (-4.81, 1.85)
     {\textbf{Sistema de rutas seguras}\\{[Sistema de software]}};
 
   \begin{scope}[on background layer]
@@ -43,27 +47,27 @@
 
   % ---------------- Persona ----------------
   % Corrida 0.8 cm a la derecha para que su flecha no roce la etiqueta del límite
-  \node[c4persona, text width=4.5cm, minimum height=1.8cm, anchor=south] (usuario)
-    at ($(limite.north)+(0.8,0.5)$)
+  \node[c4persona, text width=4.5cm, minimum height=1.6cm, anchor=south] (usuario)
+    at ($(limite.north)+(0.8,0.35)$)
     {\elementoCuatro{Usuario del sistema}{Persona}};
   \filldraw[c4cabeza] ($(usuario.north)+(0,0.6)$) circle[radius=0.8cm];
 
   % ---------------- Sistemas externos ----------------
   % Izquierda: los que usa la autenticación
-  \node[externo] (google) at (-9.89, -1.75)
+  \node[externo] (google) at (-9.89, -1.65)
     {\elementoCuatro{Identidad de Google}{Sistema externo}};
 
-  \node[externo] (email) at (-9.89, -4.9)
+  \node[externo] (email) at (-9.89, -4.95)
     {\elementoCuatro{Servicio de email}{Sistema externo}};
 
   % Derecha: los que usan la aplicación móvil y la API
-  \node[externo] (mapas) at (9.89, 1.75)
+  \node[externo] (mapas) at (9.89, 1.65)
     {\elementoCuatro{Servicio de mapas}{Sistema externo}};
 
-  \node[externo] (geocodi) at (9.89, -1.75)
+  \node[externo] (geocodi) at (9.89, -1.65)
     {\elementoCuatro{Servicio de geocodificación}{Sistema externo}};
 
-  \node[externo] (notificaciones) at (9.89, -4.9)
+  \node[externo] (notificaciones) at (9.89, -4.95)
     {\elementoCuatro{Servicio de notificaciones push}{Sistema externo}};
 
   % ---------------- Puntos de apoyo ----------------
@@ -76,16 +80,28 @@
   \coordinate (carrilIzq) at (-1.3, 0);
   \coordinate (carrilDer) at (1.3, 0);
 
-  % Salidas laterales de la aplicación móvil
-  \coordinate (appIzq)       at ($(app.west)+(0,-0.65)$);
-  \coordinate (appDerArriba) at ($(app.east)+(0,0.65)$);
-  \coordinate (appDerAbajo)  at ($(app.east)+(0,-0.65)$);
+  % Salidas laterales de la aplicación móvil y de la autenticación
+  \coordinate (appIzq)       at ($(app.west)+(0,-0.5)$);
+  \coordinate (appDerArriba) at ($(app.east)+(0,0.5)$);
+  \coordinate (appDerAbajo)  at ($(app.east)+(0,-0.5)$);
+  \coordinate (authIzq)      at ($(auth.west)+(0,0.4)$);
 
   % ---------------- Relaciones internas ----------------
-  \draw[c4relacion] (app.south -| carrilIzq) -- (auth.north -| carrilIzq);
-  \draw[c4relacion] (app.south -| carrilDer) -- (api.north -| carrilDer);
-  \draw[c4relacion] (auth.south -| carrilIzq) -- (db.north -| carrilIzq);
-  \draw[c4relacion] (api.south -| carrilDer) -- (db.north -| carrilDer);
+  \draw[c4relacion] (app.south -| carrilIzq) -- (auth.north -| carrilIzq)
+    node[etiquetaLado, midway, anchor=east, align=right]
+    {Registra usuarios y\\verifica el login\\};
+
+  \draw[c4relacion] (app.south -| carrilDer) -- (api.north -| carrilDer)
+    node[etiquetaLado, midway, anchor=west, align=left]
+    {Consulta y modifica\\ datos};
+
+  \draw[c4relacion] (auth.south -| carrilIzq) -- (db.north -| carrilIzq)
+    node[etiquetaLado, midway, anchor=east, align=right]
+    {Lee y escribe\\usuarios en};
+
+  \draw[c4relacion] (api.south -| carrilDer) -- (db.north -| carrilDer)
+    node[etiquetaLado, midway, anchor=west, align=left]
+    {Lee y escribe\\datos en};
 
   % ---------------- Usuario ----------------
   \draw[c4relacion] (usuario.south) -- (usuario.south |- app.north)
@@ -95,10 +111,11 @@
   \draw[c4relacion] (appIzq) -- (appIzq -| google.east)
     node[etiquetaLado, anchor=south] at (appIzq -| huecoIzq) {Obtiene token\\de Google};
 
-  \draw[c4relacion] (auth.west) -- (auth.west -| google.east)
-    node[etiquetaLado, anchor=south] at (auth.west -| huecoIzq) {Verifica/\\agrega token};
+  \draw[c4relacion] (authIzq) -- (authIzq -| google.east)
+    node[etiquetaLado, anchor=south] at (authIzq -| huecoIzq) {Verifica/\\agrega token};
 
-  \draw[c4relacion] ([xshift=-1.3cm]auth.south) |- (email.east)
+  % Sale del borde izquierdo de la caja para dejar libre el texto de Auth -> BD
+  \draw[c4relacion] ([xshift=-1.9cm]auth.south) |- (email.east)
     node[etiquetaLado, anchor=south] at (email.east -| huecoIzq) {Envía\\verificación};
 
   % Rodea la columna izquierda por fuera para llegar a la persona
@@ -113,7 +130,8 @@
   \draw[c4relacion] (appDerAbajo) -- (appDerAbajo -| geocodi.west)
     node[etiquetaLado, anchor=north] at (appDerAbajo -| huecoDer) {Busca lugares\\usando};
 
-  \draw[c4relacion] ([xshift=1.3cm]api.south) |- (notificaciones.west)
+  % Sale del borde derecho de la caja para dejar libre el texto de API -> BD
+  \draw[c4relacion] ([xshift=1.9cm]api.south) |- (notificaciones.west)
     node[etiquetaLado, anchor=south] at (notificaciones.west -| huecoDer) {Envía alertas\\vía};
 
 \end{tikzpicture}
