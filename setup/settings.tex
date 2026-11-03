@@ -544,3 +544,24 @@
 \definecolor{riskYellow}{HTML}{FFFF00}
 \definecolor{riskOrange}{HTML}{FFC000}
 \definecolor{riskRed}{HTML}{FF0000}
+
+
+% ---------------------------------------------------------
+% H. Formato de colores y estilos para bloques de codigo breves - capitulo 6  
+% ---------------------------------------------------------
+\usepackage{listings}
+
+% Configuración del estilo visual para los bloques de código
+\lstset{
+    backgroundcolor=\color{black!5},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{teal}\itshape,
+    stringstyle=\color{red},
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    language=SQL,
+    showstringspaces=false
+}

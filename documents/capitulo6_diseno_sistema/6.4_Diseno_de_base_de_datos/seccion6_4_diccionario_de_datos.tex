@@ -1,0 +1,752 @@
+\subsubsection{Diccionario de datos}
+Este diccionario describe las 21 tablas del diagrama E-R de la base de datos de usuarios: 19 propias y 2 gestionadas por Supabase Auth. 
+
+\vspace{1em}
+\noindent
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+\toprule
+\textbf{Marca} & \textbf{Significado} \\
+\midrule
+\textbf{PK} & Llave primaria \\
+\textbf{FK} & Llave foránea. ON DELETE indica qué ocurre con las filas hijas al borrar la fila padre \\
+\textbf{UK} & Valor único en la tabla \\
+\textbf{UK1} & Parte de una restricción única compuesta: la combinación de todos los campos con esta marca no puede repetirse \\
+\textbf{NN} & NOT NULL: el campo es obligatorio \\
+\bottomrule
+\end{tabularx}
+\vspace{1em}
+
+\begin{itemize}
+    \item Un campo sin \texttt{NN} admite valores nulos. Una FK con \texttt{ON DELETE SET NULL} también los admite: es la señal de que la fila debe sobrevivir sin identificar a nadie.
+    \item Las llaves de catálogos y de tablas de eventos son \texttt{INT} con identidad (\texttt{GENERATED ALWAYS AS IDENTITY}). En el diagrama aparecen como \texttt{INT IDENTITY (1,1)}.
+    \item Las fechas son \texttt{TIMESTAMPTZ} (con zona horaria). Los valores por defecto \linebreak \texttt{CURRENT\_TIMESTAMP} se asignan al insertar la fila.
+    \item Los campos \texttt{GEOGRAPHY} usan PostGIS con SRID 4326 (WGS 84). El orden de las coordenadas es longitud y después latitud.
+    \item Las referencias RN, RNF y RF remiten al documento del trabajo terminal.
+\end{itemize}
+
+\subsubsection{Resumen de tablas}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Resumen de tablas de la base de datos de usuarios.}
+\label{tab:resumen_tablas}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|l|p{0.32\textwidth}|p{0.18\textwidth}|}
+\hline
+\textbf{Nº} & \textbf{Tabla} & \textbf{Propósito} & \textbf{Origen} \\ \hline
+1 & \texttt{auth\_users} & Cuentas de acceso, credenciales y verificación de correo (Supabase Auth) & Registro e inicio de sesión \\ \hline
+2 & \texttt{auth\_identities} & Formas de acceso vinculadas a una cuenta (correo, Google) & Inicio de sesión con Google \\ \hline
+3 & \texttt{usuario} & Perfil y reputación de cada persona & RN-10, RN-11 \\ \hline
+4 & \texttt{status\_cuenta} & Catálogo de estados de la cuenta & Gestión de cuentas \\ \hline
+5 & \texttt{solic\_eliminacion} & Plazo y constancia de la eliminación de cuenta & RN-23 \\ \hline
+6 & \texttt{aviso\_privacidad} & Versiones del aviso de privacidad & LFPDPPP \\ \hline
+7 & \texttt{consentimiento\_privacidad} & Versión del aviso que aceptó cada usuario & LFPDPPP \\ \hline
+8 & \texttt{dispositivo} & Token de notificaciones y alertas por equipo & RN-13, RF-42 \\ \hline
+9 & \texttt{categoria\_lugar} & Catálogo de categorías de lugar & Lugares favoritos \\ \hline
+10 & \texttt{lugar\_favorito} & Lugares guardados por el usuario & RF-18 \\ \hline
+11 & \texttt{categoria\_reporte} & Categorías de reporte y duración de cada periodo & RN-07, RN-09 \\ \hline
+12 & \texttt{tipo\_reporte} & Tipos de reporte y su clave en la BD espacial & RN-06 \\ \hline
+13 & \texttt{reporte\_user} & Reportes ciudadanos y su ciclo de vida & RN-08 a RN-11 \\ \hline
+14 & \texttt{reporte\_val} & Confirmaciones y desmentidos, por ciclo & RN-11, RF-39 \\ \hline
+15 & \texttt{navegacion} & Navegación del usuario y su ruta actual & Navegación y seguimiento \\ \hline
+16 & \texttt{evento\_nav} & Eventos de navegación que generan avisos & RN-20 \\ \hline
+17 & \texttt{ubicacion\_ev} & Última ubicación conocida del usuario & RN-13, RN-24 \\ \hline
+18 & \texttt{estado\_sesion} & Catálogo de estados de un enlace o código & RF-44 \\ \hline
+19 & \texttt{seguimiento\_sesion} & Enlace y código que genera quien comparte su ubicación & RN-17 a RN-19 \\ \hline
+20 & \texttt{estado\_seguimiento} & Catálogo de estados de cada seguidor & RN-18 \\ \hline
+21 & \texttt{seguimiento} & Personas que usan o solicitan un enlace o código & RN-18, RN-19, RF-43 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Diccionario de tablas}
+
+\subsubsection{Cuenta, perfil y privacidad}
+
+\textbf{\texttt{auth\_users} (Supabase Auth)}
+
+Cuentas de acceso administradas por Supabase Auth. No se modifica ni se duplica: \texttt{usuario} cuelga de ella por medio de \texttt{id}.
+
+\begin{table}[ht!]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{auth\_users}.}
+\label{tab:auth_users}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{id} & \texttt{UUID} & PK & Identificador de la cuenta. Es el mismo valor que \texttt{usuario.ID\_usuario} \\ \hline
+\texttt{email} & \texttt{VARCHAR(255)} & NULL en Auth; la aplicación siempre lo exige & Correo de acceso \\ \hline
+\texttt{email\_confirmed\_at} & \texttt{TIMESTAMPTZ} & NULL & Fecha de verificación del correo. NULL significa cuenta pendiente de verificar \\ \hline
+\texttt{encrypted\_password} & \texttt{VARCHAR(255)} & NULL & Hash de la contraseña. Es NULL en cuentas que solo entran con Google. La aplicación nunca lo lee ni lo escribe \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{auth\_identities} (Supabase Auth)}
+
+Formas de acceso vinculadas a una cuenta. Una cuenta puede tener varias, por ejemplo correo y Google.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{auth\_identities}.}
+\label{tab:auth_identities}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{id} & \texttt{UUID} & PK & Identificador de la identidad \\ \hline
+\texttt{user\_id} & \texttt{UUID} & FK $\rightarrow$ \texttt{auth\_users.id}, NN, ON DELETE CASCADE & Cuenta a la que pertenece la identidad \\ \hline
+\texttt{provider} & \texttt{TEXT} & NN & Proveedor de acceso: email o google \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{usuario}}
+
+Perfil de la persona dentro de la aplicación. Tiene relación 1:1 con \texttt{auth\_users}: comparte su llave. El tema de la aplicación se conserva en el dispositivo (RNF-14) y no en esta tabla.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{usuario}.}
+\label{tab:usuario}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_usuario} & \texttt{UUID} & PK, FK $\rightarrow$ \texttt{auth\_users.id}, ON DELETE CASCADE & Mismo valor que el id de la cuenta. No genera valor propio (sin DEFAULT) \\ \hline
+\texttt{id\_status\_cuenta} & \texttt{INT} & FK $\rightarrow$ \texttt{status\_cuenta}, NN, ON DELETE RESTRICT & Estado de la cuenta \\ \hline
+\texttt{nombre\_user} & \texttt{VARCHAR(255)} & NN & Nombre o nombres de la persona \\ \hline
+\texttt{apellidos\_user} & \texttt{VARCHAR(50)} & NN & Apellidos de la persona \\ \hline
+\texttt{foto\_perfil\_url} & \texttt{TEXT} & NULL & Ruta de la foto de perfil. Si no existe, la aplicación muestra un avatar por defecto \\ \hline
+\texttt{reputacion\_user} & \texttt{DECIMAL(2,1)} & NN, DEFAULT 2.5, CHECK entre 0 y 5 & Reputación del usuario. Define cuántas confirmaciones necesitan sus reportes (RN-11) y se ajusta una sola vez por reporte (RN-10) \\ \hline
+\texttt{fecha\_registro} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Fecha de creación del perfil \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{status\_cuenta}}
+
+Catálogo de estados de la cuenta (por ejemplo activa, suspendida o con eliminación pendiente).
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{status\_cuenta}.}
+\label{tab:status_cuenta}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_status\_cuenta} & \texttt{INT} & PK, identidad & Identificador del estado \\ \hline
+\texttt{Desc\_status\_cuenta} & \texttt{VARCHAR(100)} & NN & Descripción del estado \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{solic\_eliminacion}}
+
+Solicitud de eliminación de cuenta. Controla el plazo máximo de borrado de los datos personales (RN-23) y deja constancia anónima cuando el usuario ya no existe.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{solic\_eliminacion}.}
+\label{tab:solic_eliminacion}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_solic\_eliminacion} & \texttt{UUID} & PK, DEFAULT gen\_random\_uuid() & Identificador de la solicitud \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & FK $\rightarrow$ \texttt{usuario}, UK, NULL, ON DELETE SET NULL & Usuario que pidió la baja. Queda en NULL al borrar la cuenta, por lo que la solicitud permanece sin datos personales. Una persona tiene como máximo una solicitud \\ \hline
+\texttt{fecha\_solic} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Momento en que se confirmó la baja \\ \hline
+\texttt{limite\_borrado} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP + INTERVAL '7 days' & Fecha máxima para borrar los datos personales \\ \hline
+\texttt{ejecutada\_en} & \texttt{TIMESTAMPTZ} & NULL & Momento en que se borraron los datos. NULL mientras esté pendiente \\ \hline
+\texttt{estado} & \texttt{VARCHAR(20)} & NN, DEFAULT 'PENDIENTE', CHECK en (PENDIENTE, EJECUTADA) & Avance de la baja \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{aviso\_privacidad}}
+
+Versiones del aviso de privacidad. Permite demostrar qué texto exacto existió en cada momento.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{aviso\_privacidad}.}
+\label{tab:aviso_privacidad}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_aviso\_privacidad} & \texttt{INT} & PK, identidad & Identificador de la versión \\ \hline
+\texttt{version} & \texttt{VARCHAR(20)} & UK, NN & Etiqueta legible de la versión, por ejemplo 1.0 \\ \hline
+\texttt{contenido\_aviso\_url} & \texttt{TEXT} & NN & Ubicación del texto completo de esa versión \\ \hline
+\texttt{fecha\_vigencia} & \texttt{TIMESTAMPTZ} & NN & Fecha desde la que rige la versión \\ \hline
+\texttt{activo\_aviso} & \texttt{BOOLEAN} & NN, DEFAULT FALSE & Marca la versión vigente. Un índice único parcial garantiza una sola fila en TRUE \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{consentimiento\_privacidad}}
+
+Evidencia de la versión del aviso que aceptó cada usuario. Resuelve la relación muchos a muchos entre \texttt{usuario} y \texttt{aviso\_privacidad}.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{consentimiento\_privacidad}.}
+\label{tab:consentimiento_privacidad}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_consentimiento\_priv} & \texttt{INT} & PK, identidad & Identificador de la aceptación \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & UK1, FK $\rightarrow$ \texttt{usuario}, NN, ON DELETE CASCADE & Usuario que aceptó. Sus aceptaciones se borran con su cuenta \\ \hline
+\texttt{id\_aviso\_privacidad} & \texttt{INT} & UK1, FK $\rightarrow$ \texttt{aviso\_privacidad}, NN, ON DELETE RESTRICT & Versión aceptada. No se puede borrar un aviso que ya fue aceptado \\ \hline
+\texttt{fecha\_aceptado} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Momento de la aceptación \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} Restricción única compuesta UK1: (\texttt{id\_usuario}, \texttt{id\_aviso\_privacidad}).
+\normalsize
+\vspace{0.4cm}
+
+\textbf{\texttt{dispositivo}}
+
+Un registro por equipo donde el usuario inició sesión. Permite enviar notificaciones push con la aplicación cerrada (RN-13). El permiso de notificaciones lo concede cada equipo, por eso \texttt{alertas\_activas} vive aquí.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{dispositivo}.}
+\label{tab:dispositivo}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_dispositivo} & \texttt{UUID} & PK, DEFAULT gen\_random\_uuid() & Identificador del dispositivo \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & FK $\rightarrow$ \texttt{usuario}, NN, ON DELETE CASCADE & Propietario del equipo \\ \hline
+\texttt{token\_fcm} & \texttt{TEXT} & UK, NN & Token de Firebase Cloud Messaging. Si otro usuario inicia sesión en el mismo equipo, la fila se actualiza \\ \hline
+\texttt{alertas\_activas} & \texttt{BOOLEAN} & NN, DEFAULT FALSE & Indica si en este equipo se activaron las alertas de reportes cercanos \\ \hline
+\texttt{fecha\_registro} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Fecha de alta del token \\ \hline
+\texttt{fecha\_actualizacion} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Última renovación del token. Sirve para depurar tokens viejos \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} Al cerrar sesión se borra la fila, para que los avisos no lleguen a un equipo donde ya está otra persona.
+\normalsize
+
+\subsubsection{Lugares}
+
+\textbf{\texttt{categoria\_lugar}}
+
+Catálogo de categorías para organizar los lugares favoritos.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{categoria\_lugar}.}
+\label{tab:categoria_lugar}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_categoria\_lugar} & \texttt{INT} & PK, identidad & Identificador de la categoría \\ \hline
+\texttt{codigo\_lugar} & \texttt{VARCHAR(20)} & UK, NN & Clave estable de la categoría \\ \hline
+\texttt{nombre\_lug} & \texttt{VARCHAR(40)} & NN & Nombre visible en la aplicación \\ \hline
+\texttt{icono\_lug} & \texttt{VARCHAR(100)} & NN & Clave del icono. La aplicación la asocia con un archivo local \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{lugar\_favorito}}
+
+Lugares que el usuario guarda para reutilizarlos como origen o destino (RF-18).
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{lugar\_favorito}.}
+\label{tab:lugar_favorito}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_lugar\_favorito} & \texttt{UUID} & PK, DEFAULT gen\_random\_uuid() & Identificador del lugar \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & FK $\rightarrow$ \texttt{usuario}, NN, ON DELETE CASCADE & Dueño del lugar. Se borra con su cuenta \\ \hline
+\texttt{id\_categoria\_lugar} & \texttt{INT} & FK $\rightarrow$ \texttt{categoria\_lugar}, NN, ON DELETE RESTRICT & Categoría del lugar \\ \hline
+\texttt{etiqueta\_lug} & \texttt{VARCHAR(100)} & NN & Nombre que le da el usuario, por ejemplo Casa de mis abuelos \\ \hline
+\texttt{ubic\_lug\_fav} & \texttt{GEOGRAPHY(Point, 4326)} & NN & Ubicación del lugar \\ \hline
+\texttt{direccion} & \texttt{TEXT} & NULL & Dirección en texto, opcional \\ \hline
+\texttt{fecha\_creacion} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Fecha en que se guardó \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Reportes}
+
+\textbf{\texttt{categoria\_reporte}}
+
+Categorías de reporte definidas en RN-07. Fijan cuánto dura cada periodo de un reporte (RN-09).
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{categoria\_reporte}.}
+\label{tab:categoria_reporte}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_categoria\_reporte} & \texttt{INT} & PK, identidad & Identificador de la categoría \\ \hline
+\texttt{codigo\_categoria\_rep} & \texttt{VARCHAR(50)} & UK, NN & Clave estable: VIOLENCIA, INCIVILIDAD o INFRAESTRUCTURA \\ \hline
+\texttt{nom\_categoria\_rep} & \texttt{VARCHAR(100)} & UK, NN & Nombre visible \\ \hline
+\texttt{duracion\_estado} & \texttt{INTERVAL} & NN, CHECK mayor que cero & Duración de cada periodo de los reportes de la categoría: 3 días, 1 mes o 1 año. Se suma a una fecha para calcular \texttt{vigencia\_report} \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{tipo\_reporte}}
+
+Tipos de condición que el usuario elige al reportar. Cada tipo pertenece a una categoría y se une con la BD espacial por medio de \texttt{codigo\_BD}.
+
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{tipo\_reporte}.}
+\label{tab:tipo_reporte}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_tipo\_reporte} & \texttt{INT} & PK, identidad & Identificador del tipo \\ \hline
+\texttt{codigo\_BD} & \texttt{VARCHAR(50)} & UK, NN & Clave compartida con la BD espacial. No hay FK entre las dos bases \\ \hline
+\texttt{id\_categoria\_reporte} & \texttt{INT} & FK $\rightarrow$ \texttt{categoria\_reporte}, NN, ON DELETE RESTRICT & Categoría del tipo \\ \hline
+\texttt{Desc\_tipo\_report} & \texttt{VARCHAR(100)} & NN & Descripción del tipo \\ \hline
+\texttt{nombre\_tipo} & \texttt{VARCHAR(100)} & NN & Nombre visible en la aplicación \\ \hline
+\texttt{activo\_tipo} & \texttt{BOOLEAN} & NN, DEFAULT TRUE & Indica si se ofrece en el formulario. Un tipo en desuso se desactiva y no se borra \\ \hline
+\texttt{clave\_icono} & \texttt{VARCHAR(50)} & NN & Clave del icono, idéntico en el mapa, la leyenda y el formulario \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{reporte\_user}}
+
+Reportes ciudadanos. Recorre los estados PENDIENTE, VALIDADO, DESCARTADO y CADUCADO (RN-08, RN-09).
+
+\begin{table}[ht!]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{reporte\_user}.}
+\label{tab:reporte_user}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_reporte\_user} & \texttt{INT} & PK, identidad & Identificador del reporte \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & FK $\rightarrow$ \texttt{usuario}, NULL, ON DELETE SET NULL & Autor. Queda en NULL al eliminar su cuenta: el reporte se conserva anonimizado \\ \hline
+\texttt{id\_tipo\_reporte} & \texttt{INT} & FK $\rightarrow$ \texttt{tipo\_reporte}, NN, ON DELETE RESTRICT & Tipo del reporte. De él se obtiene la categoría \\ \hline
+\texttt{Desc\_report} & \texttt{TEXT} & NULL & Descripción opcional \\ \hline
+\texttt{ubic\_reporte} & \texttt{GEOGRAPHY(Point, 4326)} & NN & Ubicación del incidente \\ \hline
+\texttt{fecha\_regis\_hrs} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Fecha y hora de registro. Sirve para el límite de reportes en 24 horas \\ \hline
+\texttt{estado\_report} & \texttt{VARCHAR(20)} & NN, DEFAULT 'PENDIENTE', CHECK en (PENDIENTE, VALIDADO, DESCARTADO, CADUCADO) & Estado actual \\ \hline
+\texttt{vigencia\_report} & \texttt{TIMESTAMPTZ} & NULL & Fin del periodo del estado actual: fecha del último cambio de estado más la duración de la categoría. NULL en descartado y caducado \\ \hline
+\texttt{ciclo\_report} & \texttt{INT} & NN, DEFAULT 1 & Ronda de verificación. Aumenta cuando un reporte validado regresa a pendiente (RN-09, RN-11) \\ \hline
+\texttt{reputacion\_aplicada} & \texttt{BOOLEAN} & NN, DEFAULT FALSE & TRUE cuando ya se ajustó la reputación del autor. Evita ajustarla dos veces por el mismo reporte (RN-10) \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} El número de confirmaciones necesarias no se guarda: se calcula al evaluar con la reputación vigente del autor (RN-11). Menos de 3 estrellas requiere 3 confirmaciones, de 3 a 4.5 requiere 2 y 5 requiere 1. Si el autor ya no existe (\texttt{id\_usuario} en NULL), se aplica el umbral de 3.
+\normalsize
+\vspace{0.4cm}
+
+\textbf{\texttt{reporte\_val}}
+
+Votos de confirmación o desmentido sobre un reporte (RF-39).
+
+\begin{table}[ht!]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{reporte\_val}.}
+\label{tab:reporte_val}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_reporte\_val} & \texttt{INT} & PK, identidad & Identificador del voto \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & UK1, FK $\rightarrow$ \texttt{usuario}, NULL, ON DELETE SET NULL & Quien votó. Queda en NULL al eliminar su cuenta: el voto se conserva anónimo \\ \hline
+\texttt{id\_reporte\_user} & \texttt{INT} & UK1, FK $\rightarrow$ \texttt{reporte\_user}, NN, ON DELETE CASCADE & Reporte votado \\ \hline
+\texttt{ciclo\_voto} & \texttt{INT} & UK1, NN & Ciclo del reporte en que se emitió el voto. Lo escribe la función del servidor, no la aplicación \\ \hline
+\texttt{voto\_report} & \texttt{VARCHAR(50)} & NN, CHECK en (CONFIRMACION, DESMENTIDO) & Tipo de voto \\ \hline
+\texttt{fecha\_voto} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Fecha del voto \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} Restricción única compuesta UK1: (\texttt{id\_usuario}, \texttt{id\_reporte\_user}, \texttt{ciclo\_voto}). Una persona vota una sola vez por ciclo, sea cual sea su voto, porque \texttt{voto\_report} no forma parte de la restricción. Para contar se usan solo los votos cuyo \texttt{ciclo\_voto} coincide con el \texttt{ciclo\_report} actual.
+\normalsize
+\vspace{0.4cm}
+
+
+\subsubsection{Navegación y seguimiento}
+
+\textbf{\texttt{navegacion}}
+
+Navegación que inicia el usuario sobre una ruta elegida. Mientras está activa, quienes lo siguen ven su destino, su trazo y su nivel de riesgo. El criterio de la ruta (rápida, segura o balanceada) no se guarda: la aplicación lo conserva y lo envía en cada cálculo o recálculo.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{navegacion}.}
+\label{tab:navegacion}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_navegacion} & \texttt{UUID} & PK, DEFAULT gen\_random\_uuid() & Identificador de la navegación \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & FK $\rightarrow$ \texttt{usuario}, NN, ON DELETE CASCADE & Usuario que navega \\ \hline
+\texttt{origen\_nav} & \texttt{GEOGRAPHY(Point, 4326)} & NULL & Punto de inicio \\ \hline
+\texttt{destino\_nav} & \texttt{GEOGRAPHY(Point, 4326)} & NN & Punto de destino \\ \hline
+\texttt{trazo\_nav} & \texttt{GEOGRAPHY(LineString, 4326)} & NULL & Ruta actual. Se reemplaza en cada recálculo y puede depurarse al terminar \\ \hline
+\texttt{estado\_nav} & \texttt{VARCHAR(20)} & NN, DEFAULT 'EN\_CURSO', CHECK en (EN\_CURSO, PAUSADA, FINALIZADA, CANCELADA) & Estado de la navegación \\ \hline
+\texttt{nivel\_riesgo} & \texttt{VARCHAR(20)} & NN, CHECK en (BAJO, MEDIO, ALTO) & Nivel de riesgo de la ruta. Los valores deben coincidir con los niveles que defina el documento \\ \hline
+\texttt{distancia\_m} & \texttt{INT} & NN, CHECK mayor o igual a cero & Distancia de la ruta en metros \\ \hline
+\texttt{tiempo\_estimado\_s} & \texttt{INT} & NN, CHECK mayor o igual a cero & Tiempo estimado en segundos \\ \hline
+\texttt{inicio\_nav} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Inicio de la navegación \\ \hline
+\texttt{fin\_nav} & \texttt{TIMESTAMPTZ} & NULL & Fin de la navegación. NULL mientras siga activa \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} Un índice único parcial garantiza una sola navegación con estado EN\_CURSO o PAUSADA por usuario. Un seguidor llega a esta tabla por medio de \texttt{seguimiento\_sesion.id\_usuario}: no existe una FK directa.
+\normalsize
+\vspace{0.4cm}
+
+\textbf{\texttt{evento\_nav}}
+
+Eventos de una navegación que generan un aviso a los seguidores (RN-20).
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{evento\_nav}.}
+\label{tab:evento_nav}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_evento\_nav} & \texttt{INT} & PK, identidad & Identificador del evento \\ \hline
+\texttt{id\_navegacion} & \texttt{UUID} & FK $\rightarrow$ \texttt{navegacion}, NN, ON DELETE CASCADE & Navegación a la que pertenece \\ \hline
+\texttt{tipo\_evento} & \texttt{VARCHAR(50)} & NN, CHECK en (INICIO, DESVIO, LLEGADA) & Qué ocurrió \\ \hline
+\texttt{ocurrido\_en} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Momento del evento \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{ubicacion\_ev}}
+
+Última ubicación conocida de un usuario. Se usa para el seguimiento y para buscar usuarios cercanos a un reporte (RN-13, RN-24). Solo se conserva la última posición, sin historial.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{ubicacion\_ev}.}
+\label{tab:ubicacion_ev}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_usuario} & \texttt{UUID} & PK, FK $\rightarrow$ \texttt{usuario.ID\_usuario}, ON DELETE CASCADE & Usuario al que pertenece. Una sola fila por usuario \\ \hline
+\texttt{posicion\_ev} & \texttt{GEOGRAPHY(Point, 4326)} & NN & Posición más reciente \\ \hline
+\texttt{actz\_en} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Momento de la última actualización \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} La fila se borra cuando el usuario ya no tiene una finalidad activa: alertas desactivadas, sesión cerrada y ningún enlace de seguimiento vigente.
+\normalsize
+\vspace{0.4cm}
+
+\textbf{\texttt{estado\_sesion}}
+
+Catálogo de estados de un enlace o código de seguimiento. El estado vencido no se guarda: se deduce de las fechas.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{estado\_sesion}.}
+\label{tab:estado_sesion}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_estado\_sesion} & \texttt{INT} & PK, identidad & Identificador del estado \\ \hline
+\texttt{codigo\_estado\_sesion} & \texttt{VARCHAR(20)} & UK, NN & Clave estable: ACTIVO, PAUSADO o ELIMINADO \\ \hline
+\texttt{Desc\_estado\_sesion} & \texttt{VARCHAR(255)} & NN & Descripción del estado \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{seguimiento\_sesion}}
+
+Enlace y código que genera un usuario para compartir su ubicación. Se crean juntos. Funciona con dos relojes distintos: la ventana de uso (10 minutos desde la emisión) y la duración del seguimiento una vez iniciado.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{seguimiento\_sesion}.}
+\label{tab:seguimiento_sesion}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_seguimiento\_sesion} & \texttt{UUID} & PK, DEFAULT gen\_random\_uuid() & Identificador del enlace o código \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & FK $\rightarrow$ \texttt{usuario}, NN, ON DELETE CASCADE & Usuario que comparte su ubicación \\ \hline
+\texttt{id\_estado\_sesion} & \texttt{INT} & FK $\rightarrow$ \texttt{estado\_sesion}, NN, ON DELETE RESTRICT & Estado del enlace o código \\ \hline
+\texttt{token\_enlace} & \texttt{VARCHAR(64)} & UK, NN & Identificador del enlace, con al menos 128 bits de entropía (RNF-18) \\ \hline
+\texttt{codigo\_seguimiento} & \texttt{CHAR(6)} & UK, NN & Código alfanumérico de seis caracteres (RN-18) \\ \hline
+\texttt{fecha\_inicio} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Momento de emisión \\ \hline
+\texttt{duracion\_seguimiento} & \texttt{INTERVAL} & NN, CHECK mayor que cero & Tiempo que dura el seguimiento una vez iniciado. Lo elige quien comparte (RN-19) \\ \hline
+\texttt{ventana\_expira\_en} & \texttt{TIMESTAMPTZ} & NN, CHECK mayor que \texttt{fecha\_inicio} & Fin de la ventana para usar el enlace o pedir con el código: emisión más 10 minutos (RN-17, RN-18) \\ \hline
+\texttt{enlace\_usado\_en} & \texttt{TIMESTAMPTZ} & NULL & Marca el uso único del enlace. NULL mientras no se use \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} El enlace es de un solo uso. El código puede ser solicitado por varias personas dentro de la ventana, y el seguido confirma cada solicitud.
+\normalsize
+\vspace{0.4cm}
+
+\textbf{\texttt{estado\_seguimiento}}
+
+Catálogo de estados de cada seguidor.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{estado\_seguimiento}.}
+\label{tab:estado_seguimiento}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_estado\_seguimiento} & \texttt{INT} & PK, identidad & Identificador del estado \\ \hline
+\texttt{codigo\_estado\_seg} & \texttt{VARCHAR(20)} & UK, NN & Clave estable: SOLICITADO, ACTIVO, RECHAZADO o FINALIZADO \\ \hline
+\texttt{Desc\_estado\_seg} & \texttt{VARCHAR(255)} & NN & Descripción del estado \\ \hline
+\end{tabular}
+\end{table}
+
+\textbf{\texttt{seguimiento}}
+
+Cada persona que usa un enlace o solicita un código. Resuelve la relación entre quien observa y el enlace o código.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Estructura de la tabla \texttt{seguimiento}.}
+\label{tab:seguimiento}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.19\textwidth}|p{0.16\textwidth}|p{0.26\textwidth}|p{0.27\textwidth}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Restricciones} & \textbf{Descripción} \\ \hline
+\texttt{ID\_seguimiento} & \texttt{UUID} & PK, DEFAULT gen\_random\_uuid() & Identificador del seguimiento \\ \hline
+\texttt{id\_usuario} & \texttt{UUID} & UK1, FK $\rightarrow$ \texttt{usuario}, NN, ON DELETE CASCADE & Quien observa (seguidor) \\ \hline
+\texttt{id\_seguimiento\_sesion} & \texttt{UUID} & UK1, FK $\rightarrow$ \texttt{seguimiento\_sesion}, NN, ON DELETE CASCADE & Enlace o código usado \\ \hline
+\texttt{id\_estado\_seguimiento} & \texttt{INT} & FK $\rightarrow$ \texttt{estado\_seguimiento}, NN, ON DELETE RESTRICT & Estado del seguidor \\ \hline
+\texttt{fecha\_agregado} & \texttt{TIMESTAMPTZ} & NN, DEFAULT CURRENT\_TIMESTAMP & Cuándo usó el enlace o envió la solicitud \\ \hline
+\texttt{fecha\_fin} & \texttt{TIMESTAMPTZ} & NULL & Fin del seguimiento: inicio más \texttt{duracion\_seguimiento}. NULL mientras esté SOLICITADO \\ \hline
+\texttt{fecha\_confirmacion} & \texttt{TIMESTAMPTZ} & NULL, sin valor por defecto & Cuándo el seguido confirmó la solicitud. NULL cuando se usó un enlace \\ \hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\footnotesize \textit{Nota:} Restricción única compuesta UK1: (\texttt{id\_usuario}, \texttt{id\_seguimiento\_sesion}). Con un enlace, el seguimiento nace ACTIVO. Con un código, nace SOLICITADO y pasa a ACTIVO o RECHAZADO cuando el seguido responde. Para quitar un seguimiento se marca FINALIZADO y no se borra la fila, de modo que el uso único del enlace siga registrado.
+\normalsize
+
+\subsubsection{Relaciones y reglas de eliminación}
+
+Todas las relaciones son de uno a muchos, salvo \texttt{auth\_users} con \texttt{usuario} y \texttt{usuario} con \texttt{ubicacion\_ev}, que son de uno a uno. El círculo del lado \texttt{usuario} (cero o uno) indica que la llave foránea admite NULL y que la fila sobrevive sin identificar a la persona.
+
+\begin{table}[H]
+\centering
+\caption{Relaciones y reglas de integridad referencial.}
+\label{tab:relaciones}
+\renewcommand{\arraystretch}{1.3}
+\makebox[\textwidth][c]{
+\scriptsize
+\begin{tabular}{|c|p{0.24\textwidth}|p{0.12\textwidth}|p{0.18\textwidth}|c|p{0.16\textwidth}|}
+\hline
+\textbf{Nº} & \textbf{Padre $\rightarrow$ hijo} & \textbf{Notación} & \textbf{Llave foránea} & \textbf{ON DELETE} & \textbf{Efecto} \\ \hline
+1 & \texttt{auth\_users} $\rightarrow$ \newline \texttt{auth\_identities} & uno a uno o muchos & \texttt{user\_id} & CASCADE & Las identidades se borran con la cuenta \\ \hline
+2 & \texttt{auth\_users} $\rightarrow$ \texttt{usuario} & uno a uno & \texttt{ID\_usuario} & CASCADE & El perfil se borra con la cuenta \\ \hline
+3 & \texttt{status\_cuenta} $\rightarrow$ \texttt{usuario} & uno a cero o muchos & \texttt{id\_status\_cuenta} & RESTRICT & No se borra un estado en uso \\ \hline
+4 & \texttt{usuario} $\rightarrow$ \newline \texttt{consentimiento\_privacidad} & uno a uno o muchos & \texttt{id\_usuario} & CASCADE & Las aceptaciones se borran con la cuenta \\ \hline
+5 & \texttt{aviso\_privacidad} $\rightarrow$ \newline \texttt{consentimiento\_privacidad} & uno a cero o muchos & \texttt{id\_aviso\_\allowbreak privacidad} & RESTRICT & No se borra un aviso ya aceptado \\ \hline
+6 & \texttt{usuario} $\rightarrow$ \newline \texttt{solic\_eliminacion} & cero o uno a cero o uno & \texttt{id\_usuario} & SET NULL & La solicitud queda como constancia anónima \\ \hline
+7 & \texttt{usuario} $\rightarrow$ \texttt{dispositivo} & uno a cero o muchos & \texttt{id\_usuario} & CASCADE & Los dispositivos se borran con la cuenta \\ \hline
+8 & \texttt{usuario} $\rightarrow$ \texttt{lugar\_favorito} & uno a cero o muchos & \texttt{id\_usuario} & CASCADE & Los lugares se borran con la cuenta \\ \hline
+9 & \texttt{categoria\_lugar} $\rightarrow$ \newline \texttt{lugar\_favorito} & uno a cero o muchos & \texttt{id\_categoria\_\allowbreak lugar} & RESTRICT & No se borra una categoría en uso \\ \hline
+10 & \texttt{categoria\_reporte} $\rightarrow$ \newline \texttt{tipo\_reporte} & uno a cero o muchos & \texttt{id\_categoria\_\allowbreak reporte} & RESTRICT & No se borra una categoría con tipos \\ \hline
+11 & \texttt{tipo\_reporte} $\rightarrow$ \newline \texttt{reporte\_user} & uno a cero o muchos & \texttt{id\_tipo\_reporte} & RESTRICT & No se borra un tipo con reportes \\ \hline
+12 & \texttt{usuario} $\rightarrow$ \texttt{reporte\_user} & cero o uno a cero o muchos & \texttt{id\_usuario} & SET NULL & El reporte se conserva anonimizado \\ \hline
+13 & \texttt{reporte\_user} $\rightarrow$ \newline \texttt{reporte\_val} & uno a cero o muchos & \texttt{id\_reporte\_user} & CASCADE & Los votos se borran con su reporte \\ \hline
+14 & \texttt{usuario} $\rightarrow$ \texttt{reporte\_val} & cero o uno a cero o muchos & \texttt{id\_usuario} & SET NULL & El voto se conserva anónimo \\ \hline
+15 & \texttt{usuario} $\rightarrow$ \texttt{navegacion} & uno a cero o muchos & \texttt{id\_usuario} & CASCADE & Las navegaciones se borran con la cuenta \\ \hline
+16 & \texttt{navegacion} $\rightarrow$ \texttt{evento\_nav} & uno a cero o muchos & \texttt{id\_navegacion} & CASCADE & Los eventos se borran con su navegación \\ \hline
+17 & \texttt{usuario} $\rightarrow$ \texttt{ubicacion\_ev} & uno a cero o uno & \texttt{ID\_usuario} & CASCADE & La ubicación se borra con la cuenta \\ \hline
+18 & \texttt{usuario} $\rightarrow$ \newline \texttt{seguimiento\_sesion} & uno a cero o muchos & \texttt{id\_usuario} & CASCADE & Los enlaces se borran con la cuenta \\ \hline
+19 & \texttt{estado\_sesion} $\rightarrow$ \newline \texttt{seguimiento\_sesion} & uno a cero o muchos & \texttt{id\_estado\_sesion} & RESTRICT & No se borra un estado en uso \\ \hline
+20 & \texttt{usuario} $\rightarrow$ \texttt{seguimiento} & uno a cero o muchos & \texttt{id\_usuario} & CASCADE & Los seguimientos del usuario se borran con la cuenta \\ \hline
+21 & \texttt{seguimiento\_sesion} $\rightarrow$ \newline \texttt{seguimiento} & uno a cero o muchos & \texttt{id\_seguimiento\_\allowbreak sesion} & CASCADE & Los seguimientos se borran con su enlace \\ \hline
+22 & \texttt{estado\_seguimiento} $\rightarrow$ \newline \texttt{seguimiento} & uno a cero o muchos & \texttt{id\_estado\_\allowbreak seguimiento} & RESTRICT & No se borra un estado en uso \\ \hline
+\end{tabular}
+}
+\end{table}
+
+Al eliminar una cuenta en \texttt{auth\_users}, la cadena de borrado elimina el perfil y todos sus datos personales: dispositivos, lugares, navegaciones, ubicación, enlaces, seguimientos y consentimientos. Los reportes, los votos y la solicitud de eliminación se conservan con \texttt{id\_usuario} en NULL (RN-23).
+
+No existe una llave foránea entre \texttt{seguimiento} o \texttt{seguimiento\_sesion} y \texttt{navegacion}. Quien observa llega a la navegación y a la ubicación del seguido por medio de \texttt{seguimiento\_sesion.id\_usuario}, y el acceso se controla con una función de seguridad de la base de datos.
+
+\subsubsection{Restricciones adicionales}
+
+Estas reglas no se ven en el diagrama y deben crearse en la base de datos.
+
+\subsubsection{Restricciones CHECK}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Restricciones CHECK de la base de datos.}
+\label{tab:restricciones_check}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.25\textwidth}|p{0.70\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Regla} \\ \hline
+\texttt{usuario} & \texttt{reputacion\_user} entre 0 y 5 \\ \hline
+\texttt{solic\_eliminacion} & \texttt{estado} en (PENDIENTE, EJECUTADA); \texttt{limite\_borrado} mayor que \texttt{fecha\_solic}; \texttt{ejecutada\_en} con valor solo si el estado es EJECUTADA \\ \hline
+\texttt{categoria\_reporte} & \texttt{duracion\_estado} mayor que cero \\ \hline
+\texttt{reporte\_user} & \texttt{estado\_report} en (PENDIENTE, VALIDADO, DESCARTADO, CADUCADO); \texttt{vigencia\_report} con valor solo en PENDIENTE y VALIDADO \\ \hline
+\texttt{reporte\_val} & \texttt{voto\_report} en (CONFIRMACION, DESMENTIDO) \\ \hline
+\texttt{navegacion} & \texttt{estado\_nav} en (EN\_CURSO, PAUSADA, FINALIZADA, CANCELADA); \texttt{nivel\_riesgo} en (BAJO, MEDIO, ALTO); \texttt{distancia\_m} y \texttt{tiempo\_estimado\_s} mayores o iguales a cero; \texttt{trazo\_nav} obligatorio mientras la navegación esté activa; \texttt{fin\_nav} con valor solo si está FINALIZADA o CANCELADA \\ \hline
+\texttt{evento\_nav} & \texttt{tipo\_evento} en (INICIO, DESVIO, LLEGADA) \\ \hline
+\texttt{seguimiento\_sesion} & \texttt{duracion\_seguimiento} mayor que cero; \texttt{ventana\_expira\_en} mayor que \texttt{fecha\_inicio} \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Índices}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Índices únicos parciales.}
+\label{tab:indices_parciales}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.25\textwidth}|p{0.70\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Regla} \\ \hline
+\texttt{navegacion} & Una sola navegación con estado EN\_CURSO o PAUSADA por \texttt{id\_usuario} \\ \hline
+\texttt{aviso\_privacidad} & Una sola fila con \texttt{activo\_aviso} en TRUE \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Índices de optimización de búsqueda.}
+\label{tab:indices_busqueda}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.50\textwidth}|p{0.45\textwidth}|}
+\hline
+\textbf{Tabla y campo} & \textbf{Motivo} \\ \hline
+\texttt{reporte\_user.ubic\_reporte} & Búsqueda de reportes cercanos \\ \hline
+\texttt{ubicacion\_ev.posicion\_ev} & Búsqueda de usuarios cercanos a un reporte \\ \hline
+\texttt{reporte\_user} (\texttt{id\_usuario}, \texttt{fecha\_regis\_hrs}) & Límite de reportes en 24 horas \\ \hline
+\texttt{reporte\_val.id\_reporte\_user} & Conteo de votos por reporte \\ \hline
+\texttt{seguimiento\_sesion.id\_usuario} & Listado de enlaces del usuario \\ \hline
+\texttt{seguimiento.id\_seguimiento\_sesion} & Seguidores de un enlace \\ \hline
+\texttt{evento\_nav} (\texttt{id\_navegacion}, \texttt{ID\_evento\_nav}) & Eventos recientes de una navegación \\ \hline
+\texttt{dispositivo.id\_usuario} & Dispositivos de un usuario \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Reglas que aplica el servidor}
+
+Estas reglas se implementan con funciones, procesos programados y políticas de seguridad (RLS), no con tablas.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Reglas de negocio a nivel servidor.}
+\label{tab:reglas_servidor}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.55\textwidth}|p{0.40\textwidth}|}
+\hline
+\textbf{Regla} & \textbf{Mecanismo} \\ \hline
+Umbral de confirmaciones según la reputación vigente del autor (RN-11) & Función de evaluación de votos \\ \hline
+Un voto por persona y ciclo; el autor no vota su reporte; radio de 1.5 km & Función de votación, con apoyo de la restricción UK1 de \texttt{reporte\_val} \\ \hline
+Caducidad de reportes y regreso de validado a pendiente (RN-09) & Proceso programado que revisa \texttt{vigencia\_report} \\ \hline
+Reputación modificada una sola vez por reporte (RN-10) & Función que consulta \texttt{reputacion\_aplicada} \\ \hline
+Consumo único del enlace & Actualización condicionada de \texttt{enlace\_usado\_en} \\ \hline
+Acceso del seguidor a \texttt{navegacion} y \texttt{ubicacion\_ev} & Función de seguridad que comprueba un seguimiento ACTIVO y vigente, y un enlace no pausado \\ \hline
+Alertas de reportes cercanos (RN-13) & Webhook de la base y función que consulta \texttt{ubicacion\_ev} y \texttt{dispositivo} \\ \hline
+Catálogos de solo lectura para los usuarios & Política RLS de lectura sin política de escritura \\ \hline
+Votos y seguimientos sin inserción directa & Sin política de inserción para los usuarios; solo las funciones insertan \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Datos iniciales de los catálogos}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Valores iniciales de catálogos generales.}
+\label{tab:datos_iniciales}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.30\textwidth}|p{0.65\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Valores} \\ \hline
+\texttt{status\_cuenta} & ACTIVA, SUSPENDIDA, ELIMINACION\_PENDIENTE (propuesta por confirmar) \\ \hline
+\texttt{estado\_sesion} & ACTIVO, PAUSADO, ELIMINADO \\ \hline
+\texttt{estado\_seguimiento} & SOLICITADO, ACTIVO, RECHAZADO, FINALIZADO \\ \hline
+\texttt{categoria\_lugar} & Por definir según la maqueta de lugares favoritos \\ \hline
+\texttt{aviso\_privacidad} & Versión 1.0, con \texttt{activo\_aviso} en TRUE \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{categoria\_reporte}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Valores iniciales de \texttt{categoria\_reporte}.}
+\label{tab:valores_cat_reporte}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.35\textwidth}|p{0.30\textwidth}|p{0.20\textwidth}|}
+\hline
+\textbf{\texttt{codigo\_categoria\_rep}} & \textbf{\texttt{nom\_categoria\_rep}} & \textbf{\texttt{duracion\_estado}} \\ \hline
+VIOLENCIA & Violencia & 3 días \\ \hline
+INCIVILIDAD & Incivilidad & 1 mes \\ \hline
+INFRAESTRUCTURA & Infraestructura & 1 año \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{tipo\_reporte}
+
+Asignación propuesta de los seis tipos a las tres categorías. Debe confirmarse, en especial el tipo Acoso. Los campos \texttt{codigo\_BD} y \texttt{clave\_icono} se definen junto con la BD espacial y la aplicación.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Asignación de categorías a \texttt{tipo\_reporte}.}
+\label{tab:valores_tipo_reporte}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{0.45\textwidth}|p{0.50\textwidth}|}
+\hline
+\textbf{\texttt{nombre\_tipo}} & \textbf{Categoría} \\ \hline
+Robo o asalto & VIOLENCIA \\ \hline
+Riña & VIOLENCIA \\ \hline
+Acoso & VIOLENCIA \\ \hline
+Iluminación deficiente & INCIVILIDAD \\ \hline
+Vía en mal estado & INCIVILIDAD \\ \hline
+Zona solitaria & INFRAESTRUCTURA \\ \hline
+\end{tabular}
+\end{table}
+
+

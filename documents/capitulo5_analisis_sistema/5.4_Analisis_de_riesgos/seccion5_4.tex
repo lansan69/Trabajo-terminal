@@ -38,23 +38,81 @@ Se eligió una escala de cinco niveles para distinguir entre riesgos de diferent
 \end{minipage}
 \end{table}
 
+
 \begin{table}[htbp]
-\centering
-\caption{Matriz de Valoración de Riesgos ($5 \times 5$)}
-\label{tab:matriz_calor_riesgos}
-\footnotesize
-\begin{tabular}{cc|c|c|c|c|c|}
+    \centering
+    \caption{Matriz de Valoración de Riesgos ($5 \times 5$)}
+    \label{tab:matriz_calor_riesgos}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.5}
+    \setlength{\tabcolsep}{5pt}
+
+    \begin{tabular}{|c|l|c|c|c|c|c|}
         \cline{3-7}
-        & & \multicolumn{5}{c|}{\cellcolor{blue!20}\textbf{CONSECUENCIA}} \\ \cline{3-7}
-        & & \textbf{\makecell{Insignificante\\1}} & \textbf{\makecell{Menor\\2}} & \textbf{\makecell{Moderado\\3}} & \textbf{\makecell{Peligroso\\4}} & \textbf{\makecell{Catastrófico\\5}} \\ \hline
-        \multicolumn{1}{|c|}{\multirow{5}{*}{\rotatebox{90}{\cellcolor{blue!20}\textbf{PROBABILIDAD}}}} 
-        & \textbf{Frecuente 5} & \cellcolor{riskYellow} 5 & \cellcolor{riskOrange} 10 & \cellcolor{riskRed} 15 & \cellcolor{riskRed} 20 & \cellcolor{riskRed} 25 \\ \cline{2-7} 
-        \multicolumn{1}{|c|}{} & \textbf{Probable 4}  & \cellcolor{riskGreen} 4  & \cellcolor{riskYellow} 8 & \cellcolor{riskOrange} 12 & \cellcolor{riskRed} 16 & \cellcolor{riskRed} 20 \\ \cline{2-7} 
-        \multicolumn{1}{|c|}{} & \textbf{Ocasional 3} & \cellcolor{riskGreen} 3  & \cellcolor{riskYellow} 6 & \cellcolor{riskYellow} 9 & \cellcolor{riskOrange} 12 & \cellcolor{riskRed} 15 \\ \cline{2-7} 
-        \multicolumn{1}{|c|}{} & \textbf{Posible 2}   & \cellcolor{riskGreen} 2  & \cellcolor{riskGreen} 4 & \cellcolor{riskYellow} 6 & \cellcolor{riskYellow} 8 & \cellcolor{riskOrange} 10 \\ \cline{2-7} 
-        \multicolumn{1}{|c|}{} & \textbf{Improbable 1}& \cellcolor{riskGreen} 1  & \cellcolor{riskGreen} 2 & \cellcolor{riskGreen} 3 & \cellcolor{riskGreen} 4 & \cellcolor{riskYellow} 5 \\ \hline
-        \end{tabular}
+        \multicolumn{2}{c|}{} &
+        \multicolumn{5}{c|}{\cellcolor{blue!20}\textbf{CONSECUENCIA}} \\
+        \cline{3-7}
+
+        \multicolumn{2}{c|}{} &
+        \textbf{\makecell{Insignificante\\1}} &
+        \textbf{\makecell{Menor\\2}} &
+        \textbf{\makecell{Moderado\\3}} &
+        \textbf{\makecell{Peligroso\\4}} &
+        \textbf{\makecell{Catastrófico\\5}} \\
+        \hline
+
+        % Fila 1
+        \cellcolor{blue!20}
+        & \textbf{Frecuente 5}
+        & \cellcolor{riskYellow} 5
+        & \cellcolor{riskOrange} 10
+        & \cellcolor{riskRed} 15
+        & \cellcolor{riskRed} 20
+        & \cellcolor{riskRed} 25 \\
+        \cline{2-7}
+
+        % Fila 2
+        \cellcolor{blue!20}
+        & \textbf{Probable 4}
+        & \cellcolor{riskGreen} 4
+        & \cellcolor{riskYellow} 8
+        & \cellcolor{riskOrange} 12
+        & \cellcolor{riskRed} 16
+        & \cellcolor{riskRed} 20 \\
+        \cline{2-7}
+
+        % Fila 3
+        \cellcolor{blue!20}
+        & \textbf{Ocasional 3}
+        & \cellcolor{riskGreen} 3
+        & \cellcolor{riskYellow} 6
+        & \cellcolor{riskYellow} 9
+        & \cellcolor{riskOrange} 12
+        & \cellcolor{riskRed} 15 \\
+        \cline{2-7}
+
+        % Fila 4
+        \cellcolor{blue!20}
+        & \textbf{Posible 2}
+        & \cellcolor{riskGreen} 2
+        & \cellcolor{riskGreen} 4
+        & \cellcolor{riskYellow} 6
+        & \cellcolor{riskYellow} 8
+        & \cellcolor{riskOrange} 10 \\
+        \cline{2-7}
+
+        % Fila 5: el multirow va AQUÍ, con -5, para dibujarse al final
+        \cellcolor{blue!20}\multirow{-5}{*}{\rotatebox[origin=c]{90}{\textbf{\scriptsize PROBABILIDAD}}}
+        & \textbf{Improbable 1}
+        & \cellcolor{riskGreen} 1
+        & \cellcolor{riskGreen} 2
+        & \cellcolor{riskGreen} 3
+        & \cellcolor{riskGreen} 4
+        & \cellcolor{riskYellow} 5 \\
+        \hline
+    \end{tabular}
 \end{table}
+
 
 
 Finalmente, en la tabla \ref{tab:matriz-riesgos-detallada} se presenta el análisis detallado de los riesgos identificados, junto con su evaluación y las medidas propuestas para atenderlos.
