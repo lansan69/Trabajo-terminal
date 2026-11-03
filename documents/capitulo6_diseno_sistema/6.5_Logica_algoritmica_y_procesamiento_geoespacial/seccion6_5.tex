@@ -23,6 +23,46 @@ Donde cada uno de los parámetros representa lo siguiente:
     \item $h(n)$: Es la función heurística. Representa una estimación del costo óptimo desde el nodo actual $n$ hasta el nodo objetivo. Para garantizar que el algoritmo encuentre la ruta más corta, esta heurística debe ser \textit{admisible}, es decir, nunca debe sobreestimar el costo real para llegar al destino.
 \end{itemize}
 
+Para el caso especifico del prototipo de aplicación, es necesario definir en esencia los parámetros de trabajo que utiliza A*, es decir, tenemos que desarrollar una propuesta para medir el valor de $g(n)$ y otra para medir el valor de $h(n)$.
+
+\subsubsection{La problematica del enrutamiento seguro}
+
+El prototipo de aplicación busca procesar las variables desarrollada en el capitulo \ref{cap:marco_metodologico}, en la sección \ref{sec:modelo_criminologico}, para que en conjunto formen el "nivel de riesgo" el cual se integra en la ponderación o pesos de las aristas para lograr hacerlo funcionar por medio de A* logrando la busqueda de caminos de equilibren entre distancia y seguridad. 
+
+La problematica de la integración de una variable como el "nivel de riesgo" es que es un dato completamente diferente a la ponderación esencial que se utiliza en problemas de ruteo basicos donde los pesos de las aristas se asocian con longitudes reales (por ejemplo metros). 
+
+En aplicaciones comerciales de navegación y ruteo, como Google Maps o Waze, los parámetros teóricos de la función de coste del algoritmo A* se traducen directamente en métricas geoespaciales y variables físicas del mundo real:
+
+\begin{itemize}
+    \item \textbf{Costo real acumulado $g(n)$:} Se asocia regularmente con el \textbf{tiempo de viaje real} o la \textbf{distancia física acumulada} a través de la red vial. En un sistema como Google Maps, este valor rara vez es una simple suma de metros; se calcula sumando el tráfico en tiempo real, las penalizaciones por giros, los tiempos de espera en semáforos y los límites de velocidad de las calles que conectan el origen con el nodo actual $n$.
+    
+    \item \textbf{Costo heurístico $h(n)$:} Se asocia clásicamente con la \textbf{distancia en línea recta} desde el nodo actual $n$ hasta el destino final. Para calcular esto sobre la superficie esférica de la Tierra, los sistemas de mapeo utilizan la \textit{fórmula del semiverseno} (Haversine) o la distancia Euclidiana proyectada. Si el algoritmo está optimizando tiempo en lugar de distancia, $h(n)$ se calcula obteniendo esta distancia en línea recta y dividiéndola entre la velocidad máxima posible de la red, garantizando así que la heurística sea \textit{admisible} (es decir, asume el mejor escenario posible y nunca sobrestima el tiempo real que tomará llegar).
+\end{itemize}
+
+En resumen, la combinación directa de riesgo con distancia es matemáticamente incorrecta ya que estamos trabajando variables diferentes. La comparación directa resulta en la combinación de una variable cuantitativa (longitud) con una variable cualitativa (riesgo) que resulta en un proceso incorrecto ya no es posible trabajar estas dos variables de forma conjunta debido a que son de diferentes tipos. Es aquí cuando entra el proceso de "normalización" para re-adaptar una variable de elección y adecuarla al tipo de la otra variable de comparación de forma que ambas tengan un mismo tipo para poderlas trabajar sin problemas analíticos y matemáticos.
+
+\subsection{Propuesta inicial de parámetros en la función de coste de A*}
+
+Para la implementación del sistema de ruteo peatonal, se adapta la función de coste clásica del algoritmo de búsqueda A*, integrando la variable de seguridad de forma matemática. 
+
+La propuesta central de este trabajo radica en la modificación del costo real del tramo, $g(n)$, el cual abandona la medición estrictamente física para incorporar una penalización basada en el nivel de peligro, modelada de la siguiente manera:
+
+\begin{equation}
+    g(n) = \text{distancia} \times (1 + \lambda \cdot \text{riesgo})
+    \label{eq:gn_riesgo}
+\end{equation}
+
+Los componentes de esta modificación funcional se definen a continuación:
+
+\begin{itemize}
+    \item \textbf{$\lambda$ (Lambda):} Actúa como un coeficiente de ponderación o factor de ajuste. Permite calibrar el peso relativo que el sistema le otorgará a la seguridad frente a la distancia física pura.
+    \item \textbf{riesgo:} Es la variable generalizada que cuantifica y agrupa la evaluación previa de factores criminológicos y urbanos negativos (e.g., ausencia de iluminación, reportes de asaltos, infraestructura deficiente).
+    \item \textbf{Factor de castigo $(1 + \lambda \cdot \text{riesgo})$:} Funciona como un multiplicador matemático. Si el riesgo en un tramo es nulo (cero), el costo de la arista equivale únicamente a su longitud física (multiplicado por 1). Conforme el índice de riesgo aumenta, el multiplicador se eleva, provocando que el algoritmo perciba dicho tramo como una distancia significativamente "más larga" o costosa de recorrer.
+\end{itemize}
+
+\vspace{0.5cm}
+\noindent \textbf{Justificación del modelo propuesto} \\
+Esta formulación sirve como una base metodológica sólida debido a que permite un \textbf{equilibrio dinámico} en el cálculo de la ruta óptima. El algoritmo no bloquea ni restringe el paso por calles catalogadas como inseguras; simplemente disminuye su viabilidad matemática. Gracias a esto, el sistema es capaz de evaluar de forma global si la alternativa segura (que podría implicar un desvío considerable en términos de tiempo y distancia) justifica el esfuerzo peatonal, o si un camino directo con un nivel de riesgo marginal sigue representando la opción más eficiente.
 
 \subsection{Diseño del algoritmo de asignación de costos}
 

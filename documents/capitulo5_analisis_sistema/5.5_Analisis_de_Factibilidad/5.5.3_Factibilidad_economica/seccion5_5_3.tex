@@ -64,8 +64,8 @@ Para el desarrollo móvil se emplea el \textit{framework} Flutter (Dart). La obt
 
 \textbf{3. APIs de Preprocesamiento de Datos (Costo Base)}
 \begin{itemize}
-    \item \textbf{Google Street View Static API:} Se obtendrán máximo tres imágenes por cada segmento de calle, generando 10,500 solicitudes. La API ofrece 10,000 mensuales gratuitas. Las 500 solicitudes facturables (a \$7.00 USD por cada 1,000 extra) generan un costo conservador de \$3.50 USD (\$62.88 MXN) \cite{google_maps_pricing}.
-    \item \textbf{Qwen3.7-Flash:} El análisis de imágenes consume $\approx$2,000 tokens de entrada (\$0.03 USD/M) y 500 de salida (\$0.13 USD/M) por imagen. Las 10,500 imágenes requieren 21M tokens de entrada y 5.25M de salida, con un costo total de \$1.31 USD (\$23.58 MXN) \cite{qwen_pricing}.
+    \item \textbf{Google Street View Static API:} Se obtendrán máximo tres imágenes por cada segmento de calle, generando 30,084 solicitudes. La API ofrece 10,000 mensuales gratuitas. Las 20,084 solicitudes facturables (a \$7.00 USD por cada 1,000 extra) generan un costo de \$140.59 USD (\$2,525.94 MXN) \cite{google_maps_pricing}.
+    \item \textbf{Qwen3.7-Flash:} El análisis de imágenes consume $\approx$2,000 tokens de entrada (\$0.03 USD/M) y 500 de salida (\$0.13 USD/M) por imagen. Las 30,084 imágenes requieren $\approx$60.17M tokens de entrada y 15.04M tokens de salida, con un costo total de \$3.76 USD (\$67.56 MXN) \cite{qwen_pricing}.
 \end{itemize}
 
 \textbf{4. Servicios Externos de Operación (Capa Gratuita)}
@@ -92,13 +92,13 @@ Adicionalmente, se incluyen servicios por suscripción mensual, contemplando las
         1 & Honor Magic6 Lite 5G (Dispositivo Android de pruebas) & \$ 4,500.00 \\ \hline
         \multicolumn{3}{|l|}{\textit{Software y APIs (Ecosistema general e iterativo)}} \\ \hline
         1 & Ecosistema general: Flutter, Supabase Base, OSM, Git, OpenFreeMap, Geoapify, Resend, FCM, GitHub Pack & \$ 0.00 \\ \hline
-        \multicolumn{3}{|l|}{\textit{APIs de preprocesamiento (Para 10,500 imágenes)}} \\ \hline
-        10,500 & \textit{Google Street View Static API} (500 solicitudes excedentes) & \$ 62.88 \\ \hline
-        10,500 & \textit{Qwen3.7-Flash} (Análisis de imágenes, costo total por tokens E/S) & \$ 23.58 \\ \hline
+        \multicolumn{3}{|l|}{\textit{APIs de preprocesamiento (Para 30,084 imágenes)}} \\ \hline
+        30,084 & \textit{Google Street View Static API} (20,084 solicitudes excedentes) & \$ 2,525.94 \\ \hline
+        30,084 & \textit{Qwen3.7-Flash} (Análisis de imágenes, costo total por tokens E/S) & \$ 67.56 \\ \hline
         \multicolumn{3}{|l|}{\textit{Suscripciones Mensuales (10 Meses)}} \\ \hline
         10 & Overleaf (Suscripción mensual de \$131.00 MXN) & \$ 1,310.00 \\ \hline
         10 & Udemy (Suscripción mensual de \$209.00 MXN) & \$ 2,090.00 \\ \hline
-        \multicolumn{2}{|r|}{\textbf{Total de Recursos Tecnológicos Base}} & \textbf{\$ 43,486.46} \\ \hline
+        \multicolumn{2}{|r|}{\textbf{Total de Recursos Tecnológicos Base}} & \textbf{\$ 45,993.50} \\ \hline
     \end{tabular}
 \end{table}
 
@@ -145,7 +145,7 @@ Para la realización del proyecto se contemplan los insumos básicos asociados a
 
 \subsubsection{Flujo de pago y viabilidad financiera}
 
-El costo total de desarrollo del proyecto se consolida en la Tabla \ref{tab:flujo_pago}, ascendiendo a \textbf{\$628,998.11 MXN}. Esta cifra resulta de sumar el valor de los recursos humanos, tecnológicos y materiales, más un margen de prevención de riesgos (imprevistos) del 10\% calculado sobre dicho subtotal (\$57,181.65 MXN). 
+El costo total de desarrollo del proyecto se consolida en la Tabla \ref{tab:flujo_pago}, ascendiendo a \textbf{\$631,755.85 MXN}. Esta cifra resulta de sumar el valor de los recursos humanos, tecnológicos y materiales, más un margen de prevención de riesgos (imprevistos) del 10\% calculado sobre dicho subtotal (\$57,432.35 MXN). 
 
 Con base en este análisis cuantitativo, el proyecto es \textbf{económicamente viable}. A pesar de que el valor de mercado del desarrollo supera el medio millón de pesos, el equipo de Trabajo Terminal cuenta con la capacidad técnica humana instalada, el hardware físico requerido y los subsidios operativos de las plataformas en la nube (capas gratuitas). Esto permite construir el prototipo de manera sustentable, sin requerir un financiamiento externo inicial, pero manteniendo un registro monetario exacto de su valor real de producción en la industria.
 
@@ -157,10 +157,10 @@ Con base en este análisis cuantitativo, el proyecto es \textbf{económicamente 
         \hline
         \textbf{Concepto de Inversión} & \textbf{Costo} \\ \hline
         Recursos Humanos  & \$ 517,330.00 \\ \hline
-        Recursos Tecnológicos (Hardware, APIs y Suscripciones) & \$ 43,486.46 \\ \hline
+        Recursos Tecnológicos (Hardware, APIs y Suscripciones) & \$ 45,993.50 \\ \hline
         Recursos Materiales (Servicios operativos base) & \$ 11,000.00 \\ \hline
-        \textbf{Subtotal de Desarrollo} & \textbf{\$ 571,816.46} \\ \hline
-        Margen de Imprevistos (10\%) & \$ 57,181.65 \\ \hline
-        \textbf{Costo Total del Proyecto} & \textbf{\$ 628,998.11} \\ \hline
+        \textbf{Subtotal de Desarrollo} & \textbf{\$ 574,323.50} \\ \hline
+        Margen de Imprevistos (10\%) & \$ 57,432.35 \\ \hline
+        \textbf{Costo Total del Proyecto} & \textbf{\$ 631,755.85} \\ \hline
     \end{tabular}
 \end{table}
