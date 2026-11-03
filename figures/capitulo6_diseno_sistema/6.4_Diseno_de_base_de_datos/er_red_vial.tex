@@ -3,8 +3,9 @@
 % ---------------------------------------------------------
 % Estilos y macros: setup/settings.tex, sección G4.
 % punto son los nodos del grafo y calle sus aristas (segmentos de una vía
-% de OSM); pgRouting toma id_origen e id_destino como source y target.
-% calle.riesgo es el riesgo normalizado del tramo, de 0 a 1 (RN-03).
+% de OSM); id_origen e id_destino son el origen y el destino de la arista.
+% calle.geometria es el trazo del tramo que dibuja la aplicación y
+% calle.riesgo, el riesgo normalizado del tramo, de 0 a 1 (RN-03).
 % emergencia no se relaciona con otras tablas.
 % =========================================================
 \begin{tikzpicture}
@@ -25,11 +26,13 @@
     \erFK{id\_via BIGINT NULL}
     \erFK{id\_origen UUID NULL}
     \erFK{id\_destino UUID NULL}
+    \erAt{geometria GEOGRAPHY(LINESTRING, 4326)}
+    \erSigue{NOT NULL}
     \erAt{distancia\_metros FLOAT NULL}
     \erAt{un\_sentido BOOLEAN NULL}
     \erAt{riesgo FLOAT NULL}
   }
-  \erTabla{punto}{0,-8.8}{punto}{
+  \erTabla{punto}{0,-9.6}{punto}{
     \erPK{id\_punto UUID DEFAULT gen\_random\_uuid()}
     \erLinea
     \erAt{id\_osm BIGINT NULL}

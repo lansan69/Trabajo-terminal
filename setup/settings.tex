@@ -55,6 +55,8 @@
 \usepackage{float}              % Opción [H]; ya no se usa en el cuerpo, se conserva por compatibilidad
 \usepackage[section]{placeins}  % Las figuras y tablas [htbp] no pasan a la sección siguiente
 \usepackage{caption}            % Personalización de leyendas (captions)
+\usepackage{subcaption}         % Subfiguras (a), (b)...: pantallas de la interfaz en 6.6
+\captionsetup[sub]{font=footnotesize}
 \usepackage{lscape}             % landscape: gira el contenido, no la página (el número de
                                 % página queda abajo, como en sidewaysfigure). Solo la tabla
                                 % larga de 5.4. No usar pdflscape: voltea toda la página.
@@ -244,19 +246,21 @@
 % ---------------------------------------------------------
 % E. PANTALLAS DE LA INTERFAZ                    (6.6 Diseño de interfaces de usuario)
 % ---------------------------------------------------------
-% \pantallaUI{archivo}{Leyenda}{etiqueta}
+% \pantallaUI{archivo}{Leyenda}
 %
-% Captura de una pantalla móvil (360 x 800) con su propia leyenda y
-% número de figura. Se colocan tres por renglón dentro de un entorno
-% figure, separadas con \hfill. "archivo" es el nombre del PNG dentro de
+% Captura de una pantalla móvil como subfigura: (a), (b), (c)... Cada
+% figure agrupa hasta seis pantallas de un mismo flujo, tres por renglón,
+% separadas con \hspace{0.04\linewidth}% y con \bigskip entre renglones.
+% "archivo" es la ruta del JPEG dentro de
 % figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/
-\newcommand{\pantallaUI}[3]{%
-  \begin{minipage}[t]{0.28\linewidth}
+% (modo_claro/ o modo_oscuro/). Las imágenes se exportan de Figma al doble
+% de resolución y se reducen a 540 x 1200.
+\newcommand{\pantallaUI}[2]{%
+  \begin{subfigure}[t]{0.28\linewidth}
     \centering
     \includegraphics[width=\linewidth]{figures/capitulo6_diseno_sistema/6.6_Diseno_de_interfaces_de_usuario/#1}
     \caption{#2}
-    \label{#3}
-  \end{minipage}%
+  \end{subfigure}%
 }
 
 
