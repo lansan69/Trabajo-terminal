@@ -112,7 +112,7 @@
     node[etiquetaLado, anchor=south] at (appIzq -| huecoIzq) {Obtiene token\\de Google};
 
   \draw[c4relacion] (authIzq) -- (authIzq -| google.east)
-    node[etiquetaLado, anchor=south] at (authIzq -| huecoIzq) {Verifica/\\agrega token};
+    node[etiquetaLado, anchor=south] at (authIzq -| huecoIzq) {Verifica \\token de:};
 
   % Sale del borde izquierdo de la caja para dejar libre el texto de Auth -> BD
   \draw[c4relacion] ([xshift=-1.9cm]auth.south) |- (email.east)

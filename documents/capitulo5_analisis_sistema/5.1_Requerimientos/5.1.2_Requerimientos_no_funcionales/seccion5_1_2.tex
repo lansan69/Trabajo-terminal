@@ -9,7 +9,7 @@
 \hline
 \textbf{ID} & \textbf{Requisito} \\ \hline
 \endhead
-RNF-01 & Dados el mismo origen, destino, criterio de selección, franja horaria y la misma versión identificada del grafo de riesgo según RN-10, el sistema debe devolver la misma ruta en el 100\% de las solicitudes. Toda respuesta de cálculo debe incluir el identificador de la versión del grafo empleada. \\ \hline
+RNF-01 & Dados el mismo origen, destino, criterio de selección, franja horaria y la misma versión identificada del grafo de riesgo según RN-14, el sistema debe devolver la misma ruta en el 100\% de las solicitudes. Toda respuesta de cálculo debe incluir el identificador de la versión del grafo empleada. \\ \hline
 RNF-02 & Ante fallos de conexión a internet, de señal GPS o de los servicios de mapas, el sistema no debe cerrarse ni dejar de responder; debe informar la condición conforme a RNF-10 y mantener disponibles las funciones que no dependan del servicio afectado. \\ \hline
 RNF-03 & El sistema debe conservar el estado de la navegación en curso cuando la aplicación pase a segundo plano, incluida la interrupción por una llamada telefónica, y debe restaurarlo al volver a primer plano. \\ \hline
 \end{longtable}
@@ -42,8 +42,8 @@ RNF-05 & El sistema debe responder a los gestos de desplazamiento y acercamiento
 \endhead
 RNF-06 & El sistema debe permitir alcanzar, desde la pantalla principal y en un máximo de tres toques, las funciones de búsqueda de origen y destino, selección de ruta, registro de reportes y botón de emergencia. \\ \hline
 RNF-07 & Los controles de navegación en curso deben ubicarse dentro del tercio inferior de la pantalla, de modo que puedan accionarse con una sola mano mientras el usuario camina. \\ \hline
-RNF-08 & Cada categoría del catálogo de RN-06 debe representarse mediante un icono propio, empleado de forma idéntica en el mapa, en la leyenda, en el formulario de reporte y en el detalle de la ruta. \\ \hline
-RNF-09 & El nivel de riesgo definido en RN-04 debe comunicarse mediante la combinación de un indicador visual y una etiqueta textual (bajo, medio o alto), sin depender únicamente del color ni exponer los valores numéricos internos del modelo. \\ \hline
+RNF-08 & Cada categoría de reporte definida en RN-07 debe representarse mediante un icono propio, empleado de forma idéntica en el mapa, en la leyenda, en el formulario de reporte y en el detalle de la ruta. \\ \hline
+RNF-09 & El nivel de riesgo obtenido conforme a RN-03 debe comunicarse mediante la combinación de un indicador visual y una etiqueta textual (bajo, medio o alto), sin depender únicamente del color ni exponer los valores numéricos internos del modelo. \\ \hline
 RNF-10 & Ante cualquier error o estado de excepción, el sistema debe mostrar un mensaje que describa en lenguaje no técnico lo ocurrido y, cuando exista, la acción concreta que el usuario puede realizar para resolverlo. \\ \hline
 RNF-11 & La aplicación debe emplear un mismo sistema de diseño, entendido como una paleta de colores, una familia tipográfica, un conjunto de iconos y una ubicación de los controles principales comunes a todas las pantallas. \\ \hline
 RNF-12 & Los elementos interactivos deben tener un área táctil mínima de 48 dp por lado. \\ \hline

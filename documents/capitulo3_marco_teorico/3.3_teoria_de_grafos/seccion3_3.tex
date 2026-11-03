@@ -79,15 +79,20 @@ Por el contrario, un grafo no conexo presenta una fragmentación en su arquitect
 
 \subsubsection{Elección y Justificación del tipo de grafo adecuado a la problemática presente}
 
-Como se pudo apreciar hay bastantes tipos de grafos a tomar en cuenta sin embargo podemos decir con seguridad que lo más adecuado al problema es un grafo ponderado no dirigido con características del grafo simple, conexo y el cíclico. Al estar trabajando dentro de una demarcación territorial clasificada como localidad donde hay desplazamiento de vehículos e individuos constantemente, lo ideal es que los transcursos como calles o avenidas (aristas en el caso del grafo) estén sujetas a cierto peso debido a que esta información resulta útil para el calculo de rutas en la aplicación, en cuanto a la dirección realmente no es importante pues en la mayoría de transcursos el desplazamiento o traslado es bidireccional.
+Como se pudo apreciar hay bastantes tipos de grafos a tomar en cuenta sin embargo podemos decir con seguridad que lo más adecuado al problema es un grafo ponderado no dirigido con las siguientes características: es multigrafo, conexo y el cíclico. Al estar trabajando dentro de una demarcación territorial clasificada como localidad donde hay desplazamiento de vehículos e individuos constantemente, lo ideal es que los transcursos como calles o avenidas (aristas en el caso del grafo) estén sujetas a cierto peso debido a que esta información resulta útil para el calculo de rutas en la aplicación, en cuanto a la dirección realmente no es importante pues en la mayoría de transcursos el desplazamiento o traslado es bidireccional.
 
-Cabe mencionar que en su mayoría la extensión territorial se rige por principios de un grafo simple ya que existe por lo menos un camino que conecte las múltiples ubicaciones o nodos del grafo. 
+Se considera un grafo de tipo multifrago ya que en la realidad pueden existir mas de una arista entre 2 vértices, como por ejemplo caminos paralelos. Es muy poco común que en el modelado de una red vial, el grafo resulte completamente simple ya que la mayoría de las veces se presenta mas de un solo camino para llegar de un punta A (origen) a un punto B (destino). 
 
-En cuanto al hecho de mantenerlo conexo es en relación a que en la localidad en la que el proyecto se esta desarrollando no se tienen zonas apartadas sin posible acceso, al contrario, todas las locaciones tiene un camino para trasladarse de un punto de origen a un punto de destino lo que evita caer en un grafo inconexo, ademas de que ser prácticamente imposible mapear un camino o ruta hacia nodos inaccesibles en caso de trabajar con zonas que se representen mediante grafos no conexos. También se integrarían elementos de un grafo cíclico ya que podemos retornar por múltiples caminos al nodo o locación de origen por ejemplo podemos volver a un punto de partida dando la vuelta a una manzana. 
+En su mayoría la extensión territorial se rige por principios de un grafo conexo ya que existe por lo menos un camino que conecte las múltiples ubicaciones o nodos del grafo. 
+
+Mantener el grafo conexo es en relación a que en la localidad en la que el proyecto se esta desarrollando no se tienen zonas apartadas sin posible acceso, al contrario, todas las locaciones tiene un camino para trasladarse de un punto de origen a un punto de destino lo que evita caer en un grafo no-conexo, ademas de que ser prácticamente imposible mapear un camino o ruta hacia nodos inaccesibles en caso de trabajar con zonas que se representen mediante grafos no-conexos. También se integrarían elementos de un grafo cíclico ya que podemos retornar por múltiples caminos al nodo o locación de origen por ejemplo podemos volver a un punto de partida dando la vuelta a una manzana. 
+
 
 \newpage
 
 \subsection{Análisis de algoritmos de optimización en grafos}
+
+Una vez definida la forma en que se representará la red vial mediante un grafo, es necesario determinar cómo se calcularán las rutas entre un punto de origen y uno de destino. Para ello, se analizan distintos algoritmos de búsqueda, considerando su funcionamiento, eficiencia y capacidad para tomar en cuenta tanto la distancia como el riesgo asociado a cada tramo de calle.
 
 \textbf{Algoritmos para problemas del camino más corto} \\
 \label{AgSPP}

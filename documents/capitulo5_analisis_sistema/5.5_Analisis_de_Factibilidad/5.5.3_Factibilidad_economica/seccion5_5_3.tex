@@ -1,182 +1,166 @@
 A continuación se presenta el análisis de costos asociados al desarrollo del prototipo de aplicación móvil. Los costos de recursos humanos se calculan con base en tarifas de mercado vigentes para cada rol, con el fin de dimensionar el valor económico del trabajo invertido. Por otra parte, los recursos tecnológicos sí representan egresos reales derivados del uso de servicios externos necesarios para el preprocesamiento de datos del sistema. Todos los costos se expresan en pesos mexicanos (MXN) y se acompañan de la fuente y fecha de consulta correspondiente.
 
+%-----------------------------
+%Recursos humanos
+%----------------------------
+
 \subsubsection{Recursos humanos}
 
-Para la realización del proyecto se contempla la participación del equipo de trabajo terminal, compuesto por tres integrantes que colaboran de manera conjunta en todas las etapas del desarrollo, especializándose respectivamente en el diseño y construcción de la base de datos y la lógica algorítmica, el desarrollo de la aplicación móvil, y el análisis y tratamiento de los datos geoespaciales y delictivos. Dado que el proyecto se desarrolla bajo la metodología Scrumban, las funciones de coordinación del equipo son rotativas entre sus integrantes y se ejercen dentro del mismo horario de trabajo individual, por lo que no representan un costo adicional de recursos humanos.
+Para la realización del proyecto se contempla la participación del equipo de trabajo terminal, compuesto por tres integrantes que colaboran de manera conjunta en todas las etapas del desarrollo. Se asume un esquema de trabajo profesional de tiempo completo durante el periodo efectivo de desarrollo del proyecto, comprendido entre mediados de agosto de 2026 y mediados de mayo de 2027, lo que representa una duración estricta de \textbf{10 meses continuos}.
 
-
-%Se considera una dedicación de 2 horas diarias por integrante a lo largo del periodo 
-%efectivo de desarrollo del proyecto, comprendido entre el 24 de agosto de 2026 y mediados de mayo del 2027 (aproximadamente 9 meses) conforme al cronograma de actividades. De acuerdo con el Calendario Escolar 2026-2027 del Instituto Politécnico Nacional \cite{ipn_calendario2026}, el cálculo de días hábiles efectivos se obtiene de la siguiente manera:
-
-
-
-Se considera una dedicación de 4 horas diarias por integrante a lo largo del periodo 
-efectivo de desarrollo del proyecto, comprendido entre el 16 de agosto de 2026 e inicios de junio del 2027 (aproximadamente 10 meses) conforme al cronograma de actividades. De acuerdo con el Calendario Escolar 2026-2027 del Instituto Politécnico Nacional \cite{ipn_calendario2026}, el cálculo de días hábiles efectivos se obtiene de la siguiente manera:
-
-% \begin{align*}
-% \text{Días hábiles totales (24 ago. 2026 -- 15 may. 2027)} &= 190 \\
-% (-)\ \text{Días festivos (descanso obligatorio y acuerdo sindical)} &= 12 \\
-% (-)\ \text{Periodos vacacionales (dic.--ene. y mar.--abr.)} &= 22 \\
-% \hline
-% \text{Días hábiles efectivos} &= 156
-% \end{align*}
-
-% \[
-% 156 \text{ días} \times 2 \text{ horas/día} = 312 \text{ horas efectivas por integrante}
-% \]
-
-
-\begin{align*}
-\text{Días hábiles totales (16 ago. 2026 -- 7 jun. 2027)} &= 211 \\
-(-)\ \text{Días festivos (descanso obligatorio y acuerdo sindical)} &= 12 \\
-(-)\ \text{Periodos vacacionales (dic.--ene. y mar.--abr.)} &= 19 \\
-\hline
-\text{Días hábiles efectivos} &= 180
-\end{align*}
-
-\[
-180 \text{ días} \times 4 \text{ horas/día} = 720 \text{ horas efectivas por integrante}
-\]
-
-
-La Tabla~\ref{tab:sueldos_mercado} presenta el sueldo mensual promedio en México para cada rol del equipo, obtenido de fuentes de empleo consultado el 6 de octubre del 2026.
+Para dimensionar el valor económico del trabajo invertido, los costos de recursos humanos se calculan con base en tabuladores de mercado para perfiles de nivel intermedio (\textit{mid-level}). La Tabla \ref{tab:sueldos_mercado} presenta el sueldo mensual promedio en México asignado a cada rol comercial del equipo.
 
 \begin{table}[htbp]
     \centering
-    \caption[Sueldo mensual promedio por rol]{Sueldo mensual promedio por rol, según datos de mercado}
+    \caption{Sueldo mensual por perfil técnico, según datos de mercado. Elaboración Propia.}
     \label{tab:sueldos_mercado}
-    \begin{tabular}{|l|l|c|}
+    \begin{tabularx}{\textwidth}{|X|c|}
         \hline
-        \textbf{Cargo} & \textbf{Fuente} & \textbf{Sueldo mensual promedio} \\ \hline
-        Backend Developer & Indeed México \cite{indeed_backend_developer} & \$ 19,210.00 \\ \hline
-        Analista de Datos & Indeed México \cite{indeed_analistas_datos} & \$ 15,221.00 \\ \hline
-        Desarrollador Móvil & Indeed México \cite{indeed_android_developer} & \$ 17,302.00 \\ \hline
-    \end{tabular}%
+        \textbf{Perfil Técnico Comercial} & \textbf{Sueldo mensual} \\ \hline
+        Analista de Datos \cite{indeed_analistas_datos} & \$ 15,221.00 \\ \hline
+        \textit{Backend Developer} \cite{indeed_backend_developer} & \$ 19,210.00 \\ \hline
+        Desarrollador Móvil \cite{indeed_android_developer} & \$ 17,302.00 \\ \hline
+        \multicolumn{1}{|r|}{\textbf{Costo de Nómina Mensual del Equipo}} & \textbf{\$ 51,733.00} \\ \hline
+    \end{tabularx}
 \end{table}
 
-El costo por hora de cada rol se obtiene dividiendo el sueldo mensual promedio entre 160 horas mensuales, correspondientes a una jornada estándar de 8 horas diarias durante 20 días hábiles al mes. Este costo por hora se multiplica por las 720 horas efectivas estimadas por integrante, obteniendo el costo total de recursos humanos mostrado en la Tabla~\ref{tab:recursos_humanos}.
+El costo total de mano de obra se obtiene multiplicando el sueldo mensual de la nómina del equipo por los 10 meses de desarrollo del proyecto. Este cálculo directo, proyectado en la Tabla \ref{tab:recursos_humanos}, resulta en un costo superior al medio millón de pesos para la totalidad del Trabajo Terminal.
 
 \begin{table}[htbp]
     \centering
-    \caption[Recursos humanos necesarios para realizar el proyecto]{Recursos humanos necesarios para realizar el proyecto}
+    \caption{Costo total de recursos humanos para el desarrollo del proyecto (10 meses). Elaboración Propia.}
     \label{tab:recursos_humanos}
-    \begin{tabular}{|l|c|c|c|}
+    \begin{tabularx}{\textwidth}{|X|c|c|c|}
         \hline
-        \textbf{Cargo} & \textbf{Horas estimadas} & \textbf{Costo/hora} & \textbf{Costo total} \\ \hline
-        Backend Developer & 720 & \$ 120.06 & \$ 86,443.20 \\ \hline
-        Analista de Datos & 720 & \$ 95.13 & \$ 68,493.60 \\ \hline
-        Desarrollador Móvil & 720 & \$ 108.14 & \$ 77,860.80 \\ \hline
-        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 232,797.60} \\ \hline
-    \end{tabular}%
-    \nota{Elaboración propia.}
+        \textbf{Perfil Técnico Comercial} & \textbf{Meses} & \textbf{Costo Mensual} & \textbf{Costo Total} \\ \hline
+        Analista de Datos & 10 & \$ 15,221.00 & \$ 152,210.00 \\ \hline
+        \textit{Backend Developer} & 10 & \$ 19,210.00 & \$ 192,100.00 \\ \hline
+        Desarrollador Móvil & 10 & \$ 17,302.00 & \$ 173,020.00 \\ \hline
+        \multicolumn{3}{|r|}{\textbf{Costo Total de Mano de Obra}} & \textbf{\$ 517,330.00} \\ \hline
+    \end{tabularx}
+    
 \end{table}
 
+%-----------------------------
+%Recursos tecnologicos
+%----------------------------
+%-----------------------------
+%Recursos tecnologicos
+%----------------------------
 \subsubsection{Recursos tecnológicos}
 
-Para la realización del proyecto se contempla el uso de los siguientes recursos de hardware, software y servicios en la nube. El equipo de cómputo empleado es propiedad de los integrantes del equipo, por lo que no representa un costo de adquisición adicional para el proyecto. El consumo eléctrico y de internet asociado a su uso durante el desarrollo se contabiliza por separado en la sección de Recursos materiales. Para el desarrollo de la aplicación móvil se emplea el framework Flutter (Dart), mientras que para la gestión de la base de datos y el motor de ruteo geoespacial se utiliza Supabase (PostgreSQL con las extensiones PostGIS y pgRouting), justificado técnicamente en la sección~\ref{sec:factibilidad_tecnica}. Asimismo la obtención de la red vial se auxilia en OpenStreetMap (OSM) bajo licencia ODbL operando de forma gratuita sin generar costos. 
+Para la realización del proyecto se contempla el uso de recursos de hardware, software y servicios en la nube. Todo el dimensionamiento se calcula para cubrir el periodo de 10 meses de desarrollo, con un tipo de cambio FIX estimado de \$17.9670 MXN por dólar estadounidense \cite{banxico_fix}.
 
-El plan gratuito de Supabase ofrece 500 MB de base de datos, 1 GB de almacenamiento de archivos (con un máximo de 50 MB por archivo), 5 GB de transferencia de datos mensual, 500{,}000 invocaciones mensuales de Edge Functions y solicitudes de API ilimitadas \cite{supabase_pricing}. El polígono de estudio delimitado en la Figura~\ref{fig:mapa_zona_estudio} abarca una superficie de 26.31 km\textsuperscript{2} y su red vial comprende aproximadamente 3{,}500 segmentos de calle. Considerando un peso promedio de 1 a 3 KB por segmento, el volumen estimado de la base de datos se ubica entre 3.5 y 10.5 MB, muy por debajo del límite mencionado, por lo que se opta por el plan gratuito.
+\vspace{1mm}
 
-Para el preprocesamiento de la información se emplea la Street View Static API de Google Maps Platform, mediante la cual se obtendrán como máximo tres imágenes por cada segmento de calle, es decir, a lo mucho 10{,}500 solicitudes. Esta API ofrece una cuota gratuita de 10{,}000 solicitudes mensuales y cobra \$7.00 USD por cada 1{,}000 solicitudes adicionales \cite{google_maps_pricing}, por lo que, si todas las solicitudes se realizan en un mismo mes, se generarían 500 solicitudes facturables, equivalentes a \$3.50 USD (\$62.88 MXN). Este costo desaparece si las solicitudes se distribuyen en dos meses, pero se conserva en el presupuesto como escenario conservador. Posteriormente, las imágenes se analizan con el modelo Qwen3.7-Flash \cite{qwen_pricing}, cuyo costo para solicitudes de hasta 32{,}000 tokens es de \$0.03 USD por millón de tokens de entrada y \$0.13 USD por millón de tokens de salida. Considerando un consumo aproximado de 2{,}000 tokens de entrada y 500 de salida por imagen, el análisis de las 10{,}500 imágenes requiere 21 millones de tokens de entrada y 5.25 millones de salida, con un costo total de \$1.31 USD (\$23.58 MXN). Durante la operación de la aplicación, los cuatro servicios externos seleccionados en la sección~\ref{sec:factibilidad_tecnica} se cubren con planes gratuitos. El mapa base se dibuja con el paquete de código abierto \texttt{maplibre\_gl}, con teselas de OpenFreeMap sin límite de uso \cite{openfreemap} y con teselas propias del área de servicio alojadas en Supabase Storage. La búsqueda de lugares utiliza Geoapify, con 3{,}000 créditos diarios gratuitos \cite{geoapify_pricing}, y Photon como respaldo sin costo \cite{photon}. El correo de verificación se envía con Resend, que incluye 3{,}000 correos mensuales gratuitos \cite{resend_pricing}, y las notificaciones \textit{push} se envían con Firebase Cloud Messaging, que no tiene costo \cite{firebase_pricing}. El único requisito adicional es un dominio propio para el envío de correos, que puede obtenerse sin costo durante el primer año mediante el GitHub Student Developer Pack \cite{namecom_student}; como el periodo de desarrollo es de diez meses, su renovación no se incluye en el presupuesto. Los montos expresados en dólares estadounidenses se convirtieron a pesos mexicanos con el tipo de cambio FIX publicado por el Banco de México el 6 de octubre de 2026, equivalente a \$17.9670 MXN por dólar \cite{banxico_fix}.
+\textbf{1. Hardware Comercial} 
+El desarrollo y las pruebas exigen capital físico comercial. El presupuesto desglosa la infraestructura base en tres equipos de cómputo portátiles específicos valuados a precio de mercado actual: una \textit{Lenovo IdeaPad Flex 5 Gen 8 (AMD)} \cite{lenovo_flex5}, una\textit{ Lenovo IdeaPad Slim 3i (Intel)} \cite{lenovo_slim3i} y una\textit{ ASUS Vivobook 14 (X1404)} \cite{asus_vivobook}. Asimismo, aunque para la validación de los sensores (GPS) únicamente se requiere un dispositivo estándar con sistema operativo Android, se integra al presupuesto el valor comercial del equipo inteligente con el que se cuenta para dichas pruebas físicas: un\textit{ Honor Magic6 Lite 5G} \cite{telcel_honor}.
 
-Adicionalmente, el equipo utiliza dos servicios por suscripción mensual durante el desarrollo del proyecto: Overleaf, para la redacción del documento en LATEX, y Udemy, para la capacitación técnica de los integrantes. Considerando una duración de diez meses, el costo de estos servicios se desglosa en la Tabla~\ref{tab:servicios_adicionales}.
+\textbf{2. Software, Base de Datos y Ruteo (Capa Gratuita)}
+Para el desarrollo móvil se emplea el \textit{framework} Flutter (Dart). La obtención de la red vial se auxilia en OpenStreetMap (OSM) bajo licencia ODbL sin costo \cite{osm_legal_pricing}. La gestión de datos y ruteo geoespacial (PostgreSQL, PostGIS, pgRouting) utiliza Supabase:
+\begin{itemize}
+    \item \textbf{Justificación de cuota:} El plan gratuito ofrece 500 MB de base de datos \cite{supabase_pricing}. El polígono de estudio (26.31 km\textsuperscript{2}) comprende $\approx$3,500 segmentos de calle. Con un peso de 1 a 3 KB por segmento, el volumen estimado se ubica entre 3.5 y 10.5 MB, garantizando su viabilidad dentro del límite sin generar costo.
+\end{itemize}
 
-El proyecto contempla como entregable un prototipo funcional de la aplicación móvil, cuya conclusión no depende de su publicación en una tienda de aplicaciones. No obstante, de presentarse la oportunidad, el prototipo podrá publicarse en Google Play Store, lo que requiere un pago único de registro de desarrollador de \$25.00 USD (\$449.18 MXN) \cite{google_play_console}. Al tratarse de un gasto opcional, no se incluye en el total del presupuesto.
+\textbf{3. APIs de Preprocesamiento de Datos (Costo Base)}
+\begin{itemize}
+    \item \textbf{Google Street View Static API:} Se obtendrán máximo tres imágenes por cada segmento de calle, generando 10,500 solicitudes. La API ofrece 10,000 mensuales gratuitas. Las 500 solicitudes facturables (a \$7.00 USD por cada 1,000 extra) generan un costo conservador de \$3.50 USD (\$62.88 MXN) \cite{google_maps_pricing}.
+    \item \textbf{Qwen3.7-Flash:} El análisis de imágenes consume $\approx$2,000 tokens de entrada (\$0.03 USD/M) y 500 de salida (\$0.13 USD/M) por imagen. Las 10,500 imágenes requieren 21M tokens de entrada y 5.25M de salida, con un costo total de \$1.31 USD (\$23.58 MXN) \cite{qwen_pricing}.
+\end{itemize}
 
-Si el uso del prototipo llegara a superar los planes gratuitos, el único gasto obligatorio sería el plan Pro de Supabase, desde \$25.00 USD mensuales (\$449.18 MXN) \cite{supabase_pricing}. En el caso extremo de rebasar al mismo tiempo las cuotas de Supabase, Resend y Geoapify, el primer escalón de pago sumaría \$104.00 USD mensuales (\$1,868.57 MXN) \cite{supabase_pricing,resend_pricing,geoapify_pricing}, mientras que OpenFreeMap, Photon y Firebase Cloud Messaging se mantienen sin costo. Este escenario no se espera con el volumen de un prototipo académico, por lo que tampoco se incluye en el total.
+\textbf{4. Servicios Externos de Operación (Capa Gratuita)}
+Durante la operación del prototipo, se integran herramientas sin costo mensual: 
+\begin{itemize}
+    \item \textbf{Mapas y Búsqueda:} \texttt{maplibre\_gl} con teselas de OpenFreeMap (sin límite de uso) y Geoapify con 3,000 créditos diarios gratuitos (Photon como respaldo).
+    \item \textbf{Notificaciones y Correo:} Firebase Cloud Messaging (FCM) sin costo \cite{firebase_pricing} y Resend con 3,000 correos mensuales \cite{resend_pricing}. El dominio propio para envío se obtiene gratuitamente el primer año con GitHub Student Developer Pack \cite{namecom_student}.
+\end{itemize}
+
+Adicionalmente, se incluyen servicios por suscripción mensual, contemplando las herramientas de apoyo operativo Overleaf \cite{overleaf_pricing} y Udemy \cite{udemy_pricing}, multiplicados por los 10 meses de desarrollo, consolidando los costos en la Tabla \ref{tab:recursos_tecnologicos}.
 
 \begin{table}[htbp]
     \centering
-    \caption[Recursos tecnológicos necesarios para realizar el proyecto]{Recursos tecnológicos necesarios para realizar el proyecto}
+    \footnotesize
+    \caption{Recursos tecnológicos base requeridos para el desarrollo (10 meses)}
     \label{tab:recursos_tecnologicos}
-    \begin{tabularx}{\textwidth}{|c|X|r|}
+    \begin{tabular}{|c|p{0.55\textwidth}|r|}
         \hline
-        \textbf{Cantidad} & \textbf{Descripción} & \textbf{Costo} \\ \hline
-        \multicolumn{3}{|l|}{\textit{Hardware}} \\ \hline
-        3 & Equipo de cómputo propio del equipo & \$ 0.00 \\ \hline
-        \multicolumn{3}{|l|}{\textit{Software y servicios en la nube}} \\ \hline
-        1 & Flutter / Dart (código abierto) & \$ 0.00 \\ \hline
-        1 & Supabase -- plan gratuito (PostgreSQL, PostGIS, pgRouting) & \$ 0.00 \\ \hline
-        1 & OpenStreetMap (OSM) -- datos abiertos (Licencia ODbL, dentro de la cuota gratuita) & \$ 0.00 \\ \hline
-        1 & Git / GitHub (plan gratuito) & \$ 0.00 \\ \hline
-        1 & Google Meet (plan gratuito) & \$ 0.00 \\ \hline
-        1 & Notion (plan estudiante, gratuito) & \$ 0.00 \\ \hline
-        \multicolumn{3}{|l|}{\textit{APIs de preprocesamiento (10{,}500 imágenes: 3{,}500 segmentos $\times$ 3)}} \\ \hline
-        10{,}500 & Google Street View Static API (10{,}000 gratuitas; 500 a \$7.00 USD/1{,}000) & \$ 62.88 \\ \hline
-        10{,}500 & Qwen3.7-Flash, análisis de imágenes (21 M tokens de entrada y 5.25 M de salida) & \$ 23.58 \\ \hline
-        \multicolumn{3}{|l|}{\textit{Servicios externos de operación de la aplicación}} \\ \hline
-        1 & \texttt{maplibre\_gl} con teselas de OpenFreeMap y teselas propias en Supabase Storage & \$ 0.00 \\ \hline
-        1 & Geoapify, búsqueda de lugares (3{,}000 créditos diarios gratuitos), con Photon de respaldo & \$ 0.00 \\ \hline
-        1 & Resend, correo de verificación (3{,}000 correos mensuales gratuitos) & \$ 0.00 \\ \hline
-        1 & Firebase Cloud Messaging, notificaciones \textit{push} & \$ 0.00 \\ \hline
-        1 & Dominio propio para el correo (primer año gratuito con GitHub Student Developer Pack) & \$ 0.00 \\ \hline
-        \multicolumn{3}{|l|}{\textit{Opcional (no incluido en el total)}} \\ \hline
-        1 & Registro de desarrollador Google Play (pago único) & \$ 449.18 \\ \hline
-        \multicolumn{2}{|r|}{\textbf{Total}} & \textbf{\$ 86.46} \\ \hline
-    \end{tabularx}
-    \nota{Elaboración propia.}
+        \textbf{Cant.} & \textbf{Descripción} & \textbf{Costo Total} \\ \hline
+        \multicolumn{3}{|l|}{\textit{Hardware Comercial}} \\ \hline
+        1 & Lenovo IdeaPad Flex 5 Gen 8 (14", AMD) & \$ 12,000.00 \\ \hline
+        1 & Lenovo IdeaPad Slim 3i (15", Intel) & \$ 14,000.00 \\ \hline
+        1 & ASUS Vivobook 14 (X1404) (Equipo de desarrollo) & \$ 9,500.00 \\ \hline
+        1 & Honor Magic6 Lite 5G (Dispositivo Android de pruebas) & \$ 4,500.00 \\ \hline
+        \multicolumn{3}{|l|}{\textit{Software y APIs (Ecosistema general e iterativo)}} \\ \hline
+        1 & Ecosistema general: Flutter, Supabase Base, OSM, Git, OpenFreeMap, Geoapify, Resend, FCM, GitHub Pack & \$ 0.00 \\ \hline
+        \multicolumn{3}{|l|}{\textit{APIs de preprocesamiento (Para 10,500 imágenes)}} \\ \hline
+        10,500 & \textit{Google Street View Static API} (500 solicitudes excedentes) & \$ 62.88 \\ \hline
+        10,500 & \textit{Qwen3.7-Flash} (Análisis de imágenes, costo total por tokens E/S) & \$ 23.58 \\ \hline
+        \multicolumn{3}{|l|}{\textit{Suscripciones Mensuales (10 Meses)}} \\ \hline
+        10 & Overleaf (Suscripción mensual de \$131.00 MXN) & \$ 1,310.00 \\ \hline
+        10 & Udemy (Suscripción mensual de \$209.00 MXN) & \$ 2,090.00 \\ \hline
+        \multicolumn{2}{|r|}{\textbf{Total de Recursos Tecnológicos Base}} & \textbf{\$ 43,486.46} \\ \hline
+    \end{tabular}
 \end{table}
+
+\textbf{5. Escenarios de Escalamiento Operativo (Costos Opcionales)}
+Si el uso del prototipo superara los planes gratuitos al entrar a un entorno masivo o de publicación, se contemplan costos opcionales que no se incluyen en el presupuesto inicial del desarrollo:
+\begin{itemize}
+    \item \textbf{Publicación:} Registro único de desarrollador en Google Play Store por \$25.00 USD (\$449.18 MXN) \cite{google_play_console}.
+    \item \textbf{Escalamiento Integral de Servicios:} De rebasar simultáneamente las cuotas gratuitas de las APIs críticas, el primer escalón de pago sumaría \$104.00 USD mensuales (\$1,868.57 MXN). Esto comprende la actualización al plan \textit{Pro} de Supabase (\$25.00 USD) \cite{supabase_pricing}, el plan \textit{API 10} de Geoapify (\$59.00 USD) \cite{geoapify_pricing} y el plan \textit{Pro} de Resend (\$20.00 USD) \cite{resend_pricing}. OpenFreeMap y FCM se mantienen sin costo al no poseer cuotas limitantes.
+\end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption[Servicios adicionales por suscripción mensual]{Servicios adicionales por suscripción mensual}
-    \label{tab:servicios_adicionales}
-    \begin{tabular}{|c|l|c|c|}
+    \caption{Costos opcionales de escalamiento masivo y producción}
+    \label{tab:costos_opcionales}
+    \begin{tabular}{|p{0.7\textwidth}|r|}
         \hline
-        \textbf{Meses} & \textbf{Descripción} & \textbf{Costo mensual} & \textbf{Costo total} \\ \hline
-        10 & Overleaf (suscripción mensual) & \$ 131.00 & \$ 1,310.00 \\ \hline
-        10 & Udemy (suscripción mensual) & \$ 209.00 & \$ 2,090.00 \\ \hline
-        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 3,400.00} \\ \hline
-    \end{tabular}%
-    \nota{Elaboración propia.}
+        \textbf{Descripción del Escenario de Escalamiento} & \textbf{Costo} \\ \hline
+        Registro de desarrollador en \textit{Google Play Store} (Pago único) \cite{google_play_console} & \$ 449.18 \\ \hline
+        Escalamiento Integral de Servicios (Supabase \textit{Pro}, Geoapify \textit{API 10} y Resend \textit{Pro}) \cite{supabase_pricing, geoapify_pricing, resend_pricing} & \$ 1,868.57 \\ \hline
+        \multicolumn{1}{|r|}{\textbf{Impacto Económico del Escalamiento Inicial}} & \textbf{\$ 2,317.75} \\ \hline
+    \end{tabular}
 \end{table}
+
+%-----------------------------
+%Recursos materiales
+%----------------------------
 
 \subsubsection{Recursos materiales}
 
-Para la realización del proyecto se contemplan los siguientes recursos materiales asociados a la operación básica del equipo de trabajo. El costo de la energía eléctrica se estima a partir del consumo de los equipos de cómputo durante las horas efectivas de trabajo. Considerando las 720 horas efectivas por integrante calculadas en la sección de recursos humanos, y una potencia aproximada de 65 W por equipo, el consumo se obtiene de la siguiente manera:
-
-\begin{align*}
-\text{Horas de uso} &= 720 \text{ h} \times 3 \text{ integrantes} = 2{,}160 \text{ h} \\
-\text{Consumo} &= 2{,}160 \text{ h} \times 0.065 \text{ kW} = 140.4 \text{ kWh} \approx 140 \text{ kWh}
-\end{align*}
-
-Dicho consumo se valora con la cuota del consumo excedente de la Tarifa 1 de la Comisión Federal de Electricidad para octubre de 2026, equivalente a \$4.054 por kilowatt-hora \cite{cfe_tarifa1}, considerada como valor conservador. Respecto al servicio de internet, cada integrante cuenta con un paquete residencial de 100 Mbps con costo mensual de \$390.00 \cite{totalplay_paquetes}, el cual se contabiliza durante los 10 meses de desarrollo del proyecto.
+Para la realización del proyecto se contemplan los insumos básicos asociados a la operación del equipo de trabajo. Se estima un gasto promedio de \$500.00 MXN mensuales por concepto de energía eléctrica, tomando como referencia el consumo de equipos de cómputo dentro del esquema de la Tarifa 1 de la Comisión Federal de Electricidad (CFE) \cite{cfe_tarifa1}. Para la conectividad, se contempla un servicio de internet de banda ancha (150 Mbps) con una cuota mensual promedio de \$600.00 MXN, con base en tabuladores de paquetes de Totalplay \cite{totalplay_paquetes}. Al proyectar estos servicios básicos a lo largo de los 10 meses de desarrollo, se obtiene un costo de \$11,000.00 MXN, como se muestra en la Tabla \ref{tab:recursos_materiales}.
 
 \begin{table}[htbp]
     \centering
-    \caption[Recursos materiales necesarios para realizar el proyecto]{Recursos materiales necesarios para realizar el proyecto}
+    \caption{Recursos materiales estandarizados para la operación del proyecto (10 meses)}
     \label{tab:recursos_materiales}
-    \begin{tabularx}{\textwidth}{|c|X|r|r|}
+    \begin{tabular}{|p{0.45\textwidth}|c|r|r|}
         \hline
-        \textbf{Cantidad} & \textbf{Descripción} & \textbf{Costo} & \textbf{Total} \\ \hline
-        140 & Energía eléctrica, Tarifa 1 CFE (kWh) & \$ 4.054 & \$ 567.56 \\ \hline
-        30 & Internet residencial 100 Mbps (3 integrantes $\times$ 10 meses) & \$ 390.00 & \$ 11,700.00 \\ \hline
-        \multicolumn{3}{|r|}{\textbf{Total}} & \textbf{\$ 12,267.56} \\ \hline
-    \end{tabularx}
-    \nota{Elaboración propia.}
-\end{table}
-
-\subsubsection{Flujo de pago}
-
-El costo total estimado del proyecto se resume en la Tabla~\ref{tab:flujo_pago} y asciende a \$273,406.78 MXN, que resulta de sumar los recursos humanos, tecnológicos y materiales (\$248,551.62 MXN) y un 10\% de imprevistos calculado sobre dicho subtotal (\$24,855.16 MXN). No se considera el pago opcional de registro en Google Play Store. De este monto, \$232,797.60 corresponden al valor de mercado del trabajo del equipo, el cual, al ser realizado directamente por los integrantes del trabajo terminal sin una relación de contratación formal, no representa un desembolso. De igual forma, los recursos materiales (energía eléctrica e internet) corresponden a servicios que los integrantes ya tienen contratados, por lo que se contabilizan para dimensionar el costo real del proyecto sin implicar un gasto adicional. En consecuencia, el egreso efectivo se limita a los recursos tecnológicos, por un monto de \$3,486.46 MXN, equivalente a aproximadamente \$1,162.15 MXN por integrante a lo largo de los diez meses de desarrollo (\$116.22 MXN mensuales).
-
-Con base en lo anterior, el proyecto se considera económicamente viable: el gasto efectivo es reducido y proviene principalmente de suscripciones mensuales y, en menor medida, de servicios de preprocesamiento de uso único, mientras que el resto de los costos corresponde a trabajo y recursos que el equipo ya posee o tiene contratados.
-
-\begin{table}[htbp]
-    \centering
-    \caption[Resumen de costos totales del proyecto]{Resumen de costos totales del proyecto}
-    \label{tab:flujo_pago}
-    \begin{tabular}{|l|c|}
-        \hline
-        \textbf{Recursos} & \textbf{Costo} \\ \hline
-        Recursos Humanos & \$ 232,797.60 \\ \hline
-        Recursos Tecnológicos & \$ 3,486.46 \\ \hline
-        Recursos Materiales & \$ 12,267.56 \\ \hline
-        Subtotal & \$ 248,551.62 \\ \hline
-        Imprevistos (10\%) & \$ 24,855.16 \\ \hline
-        \textbf{Total} & \textbf{\$ 273,406.78} \\ \hline
+        \textbf{Descripción del Servicio} & \textbf{Meses} & \textbf{Costo Mensual} & \textbf{Costo Total} \\ \hline
+        Energía eléctrica estandarizada, Tarifa 1 (CFE) & 10 & \$ 500.00 & \$ 5,000.00 \\ \hline
+        Internet de banda ancha 150 Mbps (Totalplay) & 10 & \$ 600.00 & \$ 6,000.00 \\ \hline
+        \multicolumn{3}{|r|}{\textbf{Total de Recursos Materiales}} & \textbf{\$ 11,000.00} \\ \hline
     \end{tabular}
-    \nota{Elaboración propia.}
 \end{table}
 
+\subsubsection{Flujo de pago y viabilidad financiera}
 
+El costo total de desarrollo del proyecto se consolida en la Tabla \ref{tab:flujo_pago}, ascendiendo a \textbf{\$628,998.11 MXN}. Esta cifra resulta de sumar el valor de los recursos humanos, tecnológicos y materiales, más un margen de prevención de riesgos (imprevistos) del 10\% calculado sobre dicho subtotal (\$57,181.65 MXN). 
+
+Con base en este análisis cuantitativo, el proyecto es \textbf{económicamente viable}. A pesar de que el valor de mercado del desarrollo supera el medio millón de pesos, el equipo de Trabajo Terminal cuenta con la capacidad técnica humana instalada, el hardware físico requerido y los subsidios operativos de las plataformas en la nube (capas gratuitas). Esto permite construir el prototipo de manera sustentable, sin requerir un financiamiento externo inicial, pero manteniendo un registro monetario exacto de su valor real de producción en la industria.
+
+\begin{table}[H]
+    \centering
+    \caption{Resumen del presupuesto total del proyecto (Costo de Desarrollo)}
+    \label{tab:flujo_pago}
+    \begin{tabular}{|p{0.6\textwidth}|r|}
+        \hline
+        \textbf{Concepto de Inversión} & \textbf{Costo} \\ \hline
+        Recursos Humanos  & \$ 517,330.00 \\ \hline
+        Recursos Tecnológicos (Hardware, APIs y Suscripciones) & \$ 43,486.46 \\ \hline
+        Recursos Materiales (Servicios operativos base) & \$ 11,000.00 \\ \hline
+        \textbf{Subtotal de Desarrollo} & \textbf{\$ 571,816.46} \\ \hline
+        Margen de Imprevistos (10\%) & \$ 57,181.65 \\ \hline
+        \textbf{Costo Total del Proyecto} & \textbf{\$ 628,998.11} \\ \hline
+    \end{tabular}
+\end{table}

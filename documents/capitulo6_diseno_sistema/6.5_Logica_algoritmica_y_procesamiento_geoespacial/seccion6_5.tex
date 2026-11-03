@@ -3,6 +3,26 @@
 % El \section{} de esta sección está en el chapter.tex del capítulo;
 % sus referencias van en seccion6_5.bib (misma carpeta).
 % =========================================================
+En el desarrollo del capitulo \ref{cap:marco_teorico}, sección \ref{sec:teoria_grafos} se explicó a detalle el funcionamiento de los principales algoritmos de enrutamiento disponibles para la resolución del problema presente en el trabajo terminal concluyendo que los algoritmos más adecuados para funcionar con la aplicación y sus necesidades son Dijkstra y A* (A estrella). 
+
+El funcionamiento del prototipo de aplicación se apoya principalmente en A* ya que es el algoritmo destinado a trabajar el proceso de enrutamiento junto con la integración de un "nivel de riesgo" por arista. A* es un algoritmo de búsqueda informada, es decir, utiliza conocimiento adicional específico del problema —llamado heurística— para guiar y priorizar la exploración de estados \cite{gfg_informed_search}. A diferencia de Dijkstra, A* mejora la búsqueda añadiendo el uso de heurística para evitar la expansión de la búsqueda en todas las direcciones por igual y optar por seguir el camino que probablemente lo lleve a la mejor solución.
+
+A* encuentra el camino mas corto mediante la combinación de la distancia recorrida \textbf{g(n)} hasta el punto actual y la estimación de la distancia restante desde el punto actual a la meta o destino \textbf{h(n)}. El funcionamiento del algoritmo utiliza como base la siguiente función de coste: 
+
+\begin{equation}
+    f(n) = g(n) + h(n)
+    \label{eq:a_star}
+\end{equation}
+
+Donde cada uno de los parámetros representa lo siguiente:
+
+\begin{itemize}
+    \item $n$: Es el nodo actual o estado que el algoritmo está evaluando dentro del grafo espacial.
+    \item $f(n)$: Representa el costo total estimado de la ruta más eficiente desde el nodo origen hasta el nodo destino, condicionado a pasar por el nodo $n$.
+    \item $g(n)$: Es el costo real acumulado del camino desde el nodo de inicio hasta el nodo actual $n$. En el contexto de la red peatonal, este valor suma las penalizaciones por distancia y el nivel de inseguridad de las aristas ya recorridas.
+    \item $h(n)$: Es la función heurística. Representa una estimación del costo óptimo desde el nodo actual $n$ hasta el nodo objetivo. Para garantizar que el algoritmo encuentre la ruta más corta, esta heurística debe ser \textit{admisible}, es decir, nunca debe sobreestimar el costo real para llegar al destino.
+\end{itemize}
+
 
 \subsection{Diseño del algoritmo de asignación de costos}
 

@@ -1,4 +1,3 @@
-
 Las siguientes reglas expresan políticas del dominio del problema. Son
 independientes de la tecnología con que se implemente el sistema y
 condicionan a uno o más requerimientos: un cambio en cualquiera de ellas
@@ -16,11 +15,11 @@ arquitectura de la solución.
 \hline
 \textbf{ID} & \textbf{Regla} \\ \hline
 \endhead
-RN-01 & El área de servicio del sistema es el polígono conformado por las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero. El origen, el destino y la totalidad del trazo de cualquier ruta calculada deben estar contenidos dentro de ese polígono. \\ \hline
-RN-02 & El sistema ofrece exactamente tres criterios de enrutamiento: \textit{segura}, que minimiza el riesgo acumulado del trayecto; \textit{rápida}, que minimiza la distancia peatonal; y \textit{balanceada}, que optimiza el compromiso entre ambos sujeto al límite de desvío de RN-03. \\ \hline
-RN-03 & La longitud de la ruta balanceada no debe exceder en más de 30\% la longitud de la ruta rápida para el mismo par origen--destino. Si ninguna alternativa distinta de la ruta rápida satisface esa condición, la ruta balanceada coincide con la ruta segura. \\ \hline
-RN-04 & El riesgo de cada tramo vial se obtiene de la ecuación de riesgo descrita en el marco metodológico, que combina las variables ambientales con la contribución de los reportes ciudadanos limitada por RN-09, y se expresa como un valor normalizado en el intervalo $[0,1]$. \\ \hline
-RN-05 & El riesgo de cada tramo se pondera según la franja horaria de la consulta. Las franjas consideradas son la nocturna, de 19:00 a 6:00 horas, y la diurna, de 6:01 a 18:59 horas, en hora local de la Ciudad de México. \\ \hline
+RN-01 & El servicio solo cubre las Zonas Territoriales 6, 7 y 8 de GAM; origen, destino y toda la ruta deben quedar dentro. \\ \hline
+RN-02 & El sistema ofrece exactamente tres criterios de ruta: segura (menor riesgo), rápida (menor distancia) y balanceada (compromiso entre ambas). \\ \hline 
+RN-03 & El riesgo de cada tramo vial se obtiene de la ecuación de riesgo descrita en el marco metodológico, que combina las variables de criminología ambiental con la contribución de los reportes ciudadanos. \\ \hline
+RN-04 & El riesgo de cada tramo se pondera según la franja horaria de la consulta. Las franjas consideradas son la nocturna, de 19:00 a 6:00 horas, y la diurna, de 6:01 a 18:59 horas, en hora local de la Ciudad de México. \\ \hline
+RN-05 & Una ruta es recálculada en caso de que el usuario se desvíe de ésta por más de 50 metros. \\ \hline
 \end{longtable}
 
 \subsection*{Datos de riesgo y reportes ciudadanos}
@@ -35,19 +34,27 @@ RN-05 & El riesgo de cada tramo se pondera según la franja horaria de la consul
 \textbf{ID} & \textbf{Regla} \\ \hline
 \endhead
 RN-06 & El catálogo de categorías de condición de riesgo es único para toda la aplicación y está conformado por las variables resultantes del análisis de las variables propuestas en el marco metodológico. \\ \hline
-RN-07 & Todo reporte ciudadano se registra inicialmente en estado \textit{pendiente}. Cada usuario tiene una reputación de 0 a 5 estrellas, que inicia en 2.5 estrellas; aumenta 0.5 estrellas por cada reporte suyo que resulte validado y disminuye 0.5 estrellas por cada reporte suyo que resulte descartado, sin rebasar los límites de 0 y 5 estrellas. La cantidad de confirmaciones de usuarios distintos al autor necesarias para validar un reporte depende de la reputación del autor: 3 confirmaciones si es menor a 4 estrellas, 2 si es de 4 o 4.5 estrellas y 1 si es de 5 estrellas. Cada usuario puede confirmar o desmentir un mismo reporte una sola vez. Independientemente de la reputación del autor, un reporte pasa a estado \textit{descartado} al acumular 3 desmentidos de usuarios distintos al autor. Los reportes que no alcancen ninguno de estos umbrales dentro de su tiempo límite pasarán automáticamente a estado \textit{caducado}, siendo descartados del sistema sin restar estrellas a la reputación de su autor. Únicamente los reportes validados modificarán los pesos del grafo de riesgo. \\ \hline
-
-RN-08 & El tiempo límite de un reporte (tanto su periodo de gracia para ser validado, como el tiempo que mantendrá su efecto en el grafo una vez aprobado) y la frecuencia de notificaciones enviadas a usuarios cercanos para solicitar su confirmación, se definen por su categoría: \textbf{1) Violencia:} vigencia de 3 días con notificaciones diarias. \textbf{2) Incivilidad / Condiciones:} vigencia de 1 mes con notificaciones semanales. \textbf{3) Infraestructura:} vigencia indefinida con notificaciones mensuales. Al concluir el tiempo límite, los reportes validados perderán vigencia y dejarán de afectar los pesos de la ruta. \\ \hline
-RN-09 & La contribución de los reportes ciudadanos al riesgo de un tramo no puede modificar en más de 50\% el valor obtenido del preprocesamiento de variables ambientales e incidencia oficial. \\ \hline
-RN-10 & El grafo base de riesgo se recalcula a partir del proceso de preprocesamiento con una periodicidad de un año. Cada recálculo produce una versión identificada del grafo, referida por RNF-01. \\ \hline
-RN-11 & El catálogo de puntos de ayuda oficiales es administrado por el responsable del sistema. Los usuarios de la aplicación no pueden crear, modificar ni eliminar registros de este catálogo. \\ \hline
-RN-12 & Solo los usuarios con cuenta verificada pueden registrar, confirmar o desmentir reportes. Un usuario no puede registrar más de 10 reportes en un periodo de 24 horas. \\ \hline
+RN-07 & Todo reporte pertenece a una de tres categorías:
+\begin{enumerate}
+    \item \textbf{Violencia}: delitos violentos, incluidos los cometidos contra la propiedad.
+    \item  \textbf{Incivilidad}: Condiciones dinámicas de la calle, como grafitis, basura, luminarias y ventanas rotas.
+    \item  \textbf{Infraestructura}: Características físicas del entorno que generan aislamiento o falta de vigilancia natural, como callejones cerrados y lugares aislados. 
+\end{enumerate}
+\\ \hline
+RN-08 & Un reporte en estado pendiente aporta al riesgo del tramo el 20\% de la contribución que tendría una vez validado, incluso cuando regresa a ese estado desde el estado validado. Al validarse aporta el 100\%; al ser descartado o caducar deja de aportar. \\ \hline
+RN-09 & El tiempo que un reporte permanece en cada uno de los estados pendiente y validado está determinado por su categoría: violencia, tres días; incivilidad, un mes; e infraestructura, un año. Al concluir ese plazo, un reporte pendiente pasa a estado caducado, y un reporte validado regresa a estado pendiente para verificar si el incidente persiste. \\ \hline
+RN-10 & Cada usuario cuenta con una reputación que va de 0 a 5 estrellas, inicia en 2.5, aumenta 0.5 por cada reporte suyo que resulte validado y disminuye 0.5 por cada reporte suyo que resulte descartado, sin rebasar esos límites. La reputación se modifica una sola vez por reporte, aunque este regrese a estado pendiente y se verifique de nuevo. Un reporte caducado no modifica la reputación. \\ \hline
+RN-11 & Un reporte se valida con 3 confirmaciones si la reputación que tenga el autor en ese momento es menor a 3 estrellas, con 2 si es de 3 a 4.5 estrellas y con 1 si es de 5 estrellas. Un reporte se descarta al acumular 3 desmentidos, independientemente de la reputación del autor. Las confirmaciones y los desmentidos deben provenir de usuarios distintos al autor. Cada usuario puede confirmar o desmentir un mismo reporte una sola vez mientras este permanece en estado pendiente; cuando un reporte validado regresa a estado pendiente, el conteo de confirmaciones y desmentidos se reinicia y los usuarios pueden votar de nuevo. \\ \hline
+RN-12 & Solo pueden confirmar o desmentir un reporte pendiente los usuarios que se encuentren a un radio máximo de 1 km del incidente reportado. \\ \hline
+RN-13 & El sistema notifica a los usuarios que se encuentren a un radio máximo de 1 km del incidente reportado, distintos del autor, cuando se registra un reporte nuevo y cuando un reporte validado regresa a estado pendiente, para solicitar su confirmación o desmentido. \\ \hline
+RN-14 & El grafo base de riesgo se recalcula a partir del proceso de preprocesamiento con una periodicidad de un año, incorporando en el cálculo los reportes pendientes y validados vigentes en ese momento. Cada recálculo produce una versión identificada del grafo. \\ \hline
+RN-15 & El catálogo de puntos de ayuda oficiales es administrado por el responsable del sistema. Los usuarios de la aplicación no pueden crear, modificar ni eliminar registros de este catálogo. \\ \hline
 \end{longtable}
 
-\subsection*{Cuenta, enlaces y datos personales}
+\subsection*{Monitoreo}
 
 \begin{longtable}{|K|Q|}
-\caption{Reglas del negocio: cuenta, enlaces y datos personales}\label{tab:rn-cuenta-enlaces} \\
+\caption{Reglas del negocio: Monitoreo}\label{tab:rn-monitoreo} \\
 \hline
 \textbf{ID} & \textbf{Regla} \\ \hline
 \endfirsthead
@@ -55,13 +62,31 @@ RN-12 & Solo los usuarios con cuenta verificada pueden registrar, confirmar o de
 \hline
 \textbf{ID} & \textbf{Regla} \\ \hline
 \endhead
-RN-13 & Un enlace de seguimiento es válido únicamente durante la duración determinada por el usuario que lo creo. \\ \hline
-RN-14 & Los enlaces de verificación de correo y de restablecimiento de contraseña son de un solo uso y expiran a los 10 minutos de su emisión. \\ \hline
-RN-15 & Al eliminar una cuenta, todos los datos personales asociados a ella deberán eliminarse en un plazo máximo de 7 días. Los reportes realizados por la cuenta podrán conservarse únicamente de forma anonimizada, eliminando cualquier información que permita identificar al usuario, con el fin de utilizarlos para la retroalimentación y mejora del sistema. \\ \hline
-RN-16 & La ubicación del usuario se utiliza exclusivamente para el cálculo de rutas, la navegación, el registro y la confirmación de reportes, las alertas de reportes cercanos y el enlace de seguimiento. No se cede a terceros sin consentimiento expreso del usuario. El tratamiento se rige por el aviso de privacidad, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares. \\ \hline
-RN-17 & La verificación del correo electrónico es condición previa para el uso de cualquier función de la aplicación distinta del registro, la verificación del correo y el reenvío de su enlace, el inicio de sesión, la recuperación de contraseña, la consulta y aceptación del aviso de privacidad. Las cuentas registradas mediante Google no requieren esta verificación. \\ \hline
-RN-18 & Parámetros operativos del sistema: radio de proximidad para notificaciones de nuevos reportes, 1.5 kilómetros; radio de confirmación dentro del cual un usuario puede confirmar o desmentir reportes pendientes, 500 metros; umbral de desvío que dispara el recálculo de la ruta, 50 metros; velocidad de caminata para estimar el tiempo de recorrido, 4.5 km/h. Todos son configurables sin necesidad de publicar una nueva versión de la aplicación. \\ \hline
+RN-16 & Un usuario puede compartir su ubicación en tiempo real y sus sesiones de navegación con otros usuarios mediante un enlace o un código de seguimiento. \\ \hline
+RN-17 & Un enlace de seguimiento es de un solo uso, expira a los 10 minutos de su emisión y no requiere confirmación del usuario seguido al momento de utilizarse. \\ \hline
+RN-18 & Un código de seguimiento consta de seis caracteres alfanuméricos y permite a un usuario solicitar el seguimiento de otro. El seguimiento solo inicia cuando el usuario seguido confirma la solicitud. \\ \hline
+RN-19 & El usuario seguido determina la duración de cada seguimiento y puede finalizarlo o revocar el acceso en cualquier momento. \\ \hline
+RN-20 & El seguidor es notificado cuando el usuario seguido inicia una navegación, se desvía de su ruta y llega a su destino. \\ \hline
+RN-21 & El usuario seguido es notificado cada vez que un seguidor consulta su ubicación. \\ \hline
 \end{longtable}
+
+\subsection*{Cuenta y datos personales}
+
+\begin{longtable}{|K|Q|}
+\caption{Reglas del negocio: Cuenta y datos personales}\label{tab:rn-monitoreo} \\
+\hline
+\textbf{ID} & \textbf{Regla} \\ \hline
+\endfirsthead
+\multicolumn{2}{c}{\bfseries Continuación de la Tabla \thetable} \\
+\hline
+\textbf{ID} & \textbf{Regla} \\ \hline
+\endhead
+RN-22 & Los enlaces de verificación de correo y de restablecimiento de contraseña son de un solo uso y expiran a los 10 minutos de su emisión. \\ \hline
+RN-23 & Al eliminar una cuenta, todos los datos personales asociados a ella deberán eliminarse en un plazo máximo de 7 días. Los reportes realizados por la cuenta podrán conservarse únicamente de forma anonimizada, eliminando cualquier información que permita identificar al usuario, con el fin de utilizarlos para la retroalimentación y mejora del sistema. \\ \hline
+RN-24 & La ubicación del usuario se utiliza exclusivamente para el cálculo de rutas, la navegación, el registro, la confirmación y el desmentido de reportes, las notificaciones de reportes cercanos y el seguimiento compartido con otros usuarios. No se cede a terceros sin consentimiento expreso del usuario. Su tratamiento se rige por el aviso de privacidad, el cual el usuario debe aceptar al registrarse, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares. \\ \hline
+RN-25 & La verificación del correo electrónico es condición previa para el uso de cualquier función de la aplicación distinta del registro, la verificación del correo y el reenvío de su enlace, el inicio de sesión, la recuperación de contraseña, la consulta y aceptación del aviso de privacidad. Las cuentas registradas mediante Google no requieren esta verificación. \\ \hline
+\end{longtable}
+
 
 \subsection*{Seguridad personal}
 
@@ -74,5 +99,5 @@ RN-18 & Parámetros operativos del sistema: radio de proximidad para notificacio
 \hline
 \textbf{ID} & \textbf{Regla} \\ \hline
 \endhead
-RN-19 & La llamada iniciada desde el botón de emergencia se dirige al número único de atención a emergencias 911. \\ \hline
+RN-26 & La llamada iniciada desde el botón de emergencia se dirige al número único de atención a emergencias 911. \\ \hline
 \end{longtable}

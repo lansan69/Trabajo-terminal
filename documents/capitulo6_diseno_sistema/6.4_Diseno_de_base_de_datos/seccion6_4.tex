@@ -10,7 +10,7 @@
 
 \subsection{Modelo entidad-relación}
 
-La base de datos del sistema se implementa en PostgreSQL sobre Supabase. La figura \ref{fig:er_general} presenta la vista general del modelo entidad-relación, con sus 25 tablas y sus relaciones en notación pata de gallo, y las figuras \ref{fig:er_usuarios} a \ref{fig:er_navegacion} detallan los atributos de cada módulo. Las tablas con cabecera gris pertenecen al esquema \texttt{auth}, administrado por Supabase Auth, y las que solo muestran su nombre se detallan en otra figura.
+La base de datos del sistema se implementa en PostgreSQL sobre Supabase. La figura \ref{fig:er_general} presenta la vista general del modelo entidad-relación, con sus 25 tablas y sus relaciones en notación pata de gallo, y las figuras \ref{fig:er_usuarios} a \ref{fig:er_navegacion} detallan los atributos de cada módulo. Las tablas con cabecera gris pertenecen al esquema \texttt{auth}, administrado por Supabase Auth, y las que solo muestran su nombre se detallan en otra figura. El diccionario de datos de la sección \ref{sec:diccionario_datos} describe cada campo.
 
 \begin{sidewaysfigure}
     \centering
@@ -54,9 +54,15 @@ La base de datos del sistema se implementa en PostgreSQL sobre Supabase. La figu
     \label{fig:er_navegacion}
 \end{sidewaysfigure}
 
+
+\clearpage
+\input{documents/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/seccion6_4_diccionario_de_datos}
+
 \subsection{Estructura y persistencia de la red de grafos}
 
-La figura \ref{fig:er_red_vial} muestra las tablas de la red vial: \texttt{punto} almacena los nodos del grafo y \texttt{calle} sus aristas, cada una con su longitud y su riesgo normalizado entre 0 y 1 (RN-04), mientras que \texttt{emergencia} guarda el número de atención de cada corporación por zona.
+En este apartado se define el como se organiza lógicamente los datos que forman la red implementada para el prototipo de aplicación y de qué forma se guardan en un sistema de almacenamiento. 
+
+La figura \ref{fig:er_red_vial} muestra las tablas de la red vial: \texttt{punto} almacena los nodos del grafo y \texttt{calle} sus aristas, cada una con su longitud y su riesgo normalizado entre 0 y 1, obtenido con la ecuación de riesgo (RN-03), mientras que \texttt{emergencia} guarda el número de atención de cada corporación por zona.
 
 \begin{figure}[htbp]
     \centering
@@ -64,3 +70,357 @@ La figura \ref{fig:er_red_vial} muestra las tablas de la red vial: \texttt{punto
     \caption{Modelo entidad-relación: red vial y emergencias}
     \label{fig:er_red_vial}
 \end{figure}
+
+\subsubsection{Definición conceptual del grafo (La ''Estructura'')}
+
+Anteriormente se definió la estructura conceptual del tipo de grafo que el prototipo de aplicación pretende implementar,  dentro del marco teórico, capitulo \ref{cap:marco_teorico}. En resumen el grafo que la aplicación trabaja se caracteriza por ser un grafo con propiedades de tipo ponderado, no dirigido, multigrafo, conexo y cíclico. La justificación del porque la elección de este tipo de grafo se encuentra dentro del apartado \textbf{Elección y Justificación del tipo de grafo adecuado a la problemática presente} la cual se encuentra en la sección \ref{sec:teoria_grafos}.  
+
+A diferencia de los grafos dirigidos habituales para aplicaciones viales donde se tienen en cuenta diferentes métodos de transporte como lo son vehículos terrestres automotores y por lo tanto se toma en cuenta la dirección de los tramos, para este caso en particular una de las principales propiedades cambia por completo al cambiar a un grafo no dirigido debido a que el prototipo esta orientado para uso peatonal por lo cual se toma en cuenta que en su mayoría un peatón puede transitar una calle, banqueta o tramo por ambas direcciones. 
+
+Dentro de la teoría analizada acerca de los grafos en el marco teórico, se explica el porque de las demás cualidades del grafo, sin embargo no se definen los elementos que lo conforman formalmente. 
+
+El grafo esencialmente se compone de dos elementos básicos: los nodos o vértices y las aristas. Con base a cada elemento del grafo se debe referenciar a que elemento real de la representación vial y geográfica corresponde. 
+
+\begin{itemize}
+    \item\textbf{Vértices}: Los vértices del grafo corresponden a las intersecciones viales y esquinas que forman el espacio geográfico de análisis. El cruce de dos o más calles, andadores o callejones forman los vértices de grado mayor a 2, donde el algoritmo tiene múltiples aristas (tramos viales) para evaluar y elegir el siguiente paso dentro del procesa de generación y evaluación de rutas. 
+
+    Los puntos de cruce peatonal específicos, es decir, ubicaciones donde un peatón puede cruzar una avenida principal de forma legal o física, incluyendo los inicios y finales de puentes peatonales o pasos a desnivel que estén catalogados como transitables por los peatones, también forman parte de los vértices del grafo. Cabe mencionar que también entran en consideración los nodos terminales que se forman en callejones sin salida o puntos limite de corte con la delimitación del área de estudio, es decir, vértices que se tocan con el limite del polígono (Zonas GAM 6, 7 y 8).
+
+     
+\end{itemize}
+
+\textbf{Aristas}: Las aristas del grafo corresponden a los tramos viales que representan la infraestructura física transitable que conecta exactamente a dos vértices dentro de la zona de análisis. 
+
+Las aristas conforman los ''enlaces'' por los que el algoritmo de búsqueda puede desplazar al peatón de un punto a otro. A diferencia de los mapas vehiculares, un mapa peatonal es más detallado y permisivo ya que no toma en cuenta los carriles para automóviles. 
+
+Dentro de la cartografía que se procesara, los elementos físicos que se extraen y se consideran como aristas en la red de grafos son: 
+
+\begin{itemize}
+    \item\textbf{Aceras y Banquetas}: Funciona como elemento principal de la red y representan los margenes de las calles pavimentadas destinadas al flujo peatonal.
+    
+    \item\textbf{Andadores y vías peatonales exclusivas}: Camino dentro de parques, plazas, deportivos o callejones cerrados al tránsito vehicular. 
+    
+    \item\textbf{Cruces Peatonales}: Representan el cruce transversal de una calle vehicular como por ejemplo los cruces de cebra. 
+
+    \item\textbf{Infraestructura a desnivel}: Aristas espaciales que permiten cruzar avenidas principales o vías del tren. En la base de datos, estos mantienen su conectividad lógica sin cruzarse con las calles vehiculares que pasan por debajo o por encima.
+    
+    \item\textbf{Escaleras públicas}: Acensos o decensos que conectan diferentes niveles de terreno. 
+    
+    \item\textbf{Calles de tránsito mixto o terrecería}: Vías donde no hay una acera delimitada, pero que son legal y físicamente transitables por los habitantes.
+\end{itemize}
+
+Cabe mencionar que todos elementos considerados como aristas dentro del modelo del grafo entran en el preprocesamiento del modelo donde para garantizar la viabilidad del ruteo peatonal, el reconocimiento de aristas pasa por un proceso de configuración de perfiles de transito al momento de hacer la importación topológica. Dado que las herramientas de geoprocesamiento están orientadas por defecto a transito vehicular, el proceso de extracción para el proyecto requiere de reglas de filtrado semántico para preservar exclusivamente la infraestructura peatonal y respetar la selección de aristas conforme al tipo de elementos geográficos correspondientes antes mencionados: cruces de zebra, calles, escaleras publicas, etc.
+
+Cada tramo transitable catalogado como arista lleva consigo el valor de longitud y ''el nivel de riesgo'' los cuales funcionan en conjunto para el proceso de ponderación. 
+
+En la tabla \ref{tab:caracteristicas_aristas} se muestran las características principales de las aristas del grafo necesarias para que el prototipo de aplicación funcione adecuadamente: 
+
+\begin{table}[H]
+\centering
+\small
+\caption{Características técnicas de las aristas en la red de grafos peatonal}
+\label{tab:caracteristicas_aristas}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{0.30\textwidth}|p{0.60\textwidth}|}
+\hline
+\textbf{Característica} & \textbf{Descripción} \\
+\hline
+\textbf{Comportamiento No Dirigido (Bidireccionalidad)} & Los automóviles deben respetar el sentido de circulación de una calle , pero un peatón generalmente puede caminar en ambos sentidos de una banqueta o andador. Por lo tanto se define que a arista permite un flujo de transito bidireccional con el mismo costo base de un punto A hacia un punto B y viceversa.\\
+\hline
+\textbf{Portadoras de Pesos (Costos Multicriterio)} &  Cada arista guarda en sus atributos la distancia física (para la ruta rápida) y el índice de riesgo dinámico (construido por el grupo de variables de riesgo definidas en el capitulo \ref{cap:marco_metodologico}, sección \ref{sec:modelo_criminologico}). \\
+\hline
+\textbf{Representación Geométrica (LineString)} & Mientras que los vértices son puntos abstractos, las aristas contienen el trazo físico (la forma de la calle con sus curvas). Esto se almacena mediante tipos de datos geométricos que posteriormente la aplicación móvil consumirá para dibujar la línea de ruta sugerida sobre el mapa base de Google Maps. \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Fuente, extracción y construcción del grafo, la topología y su segmentación.}
+
+El modelado base del grafo siguiendo los criterios mencionados en la \textbf{''Definición conceptual del grafo''} se realizo por medio del software \textbf{Quantum QGIS}, el cual es un Sistema de Información Geográfica (SIG) de código abierto y gratuito. En conjunto con QGIS se integra el uso de \textbf{OpenStreetMap} (OSM) para extraer toda la cartografía base necesaria sobre la cual se modelaron las condiciones del grafo y los requerimientos para la segmentación y delimitación del área de análisis. 
+
+El área de estudio propuesta para el prototipo de aplicación se aprecia por completo en la figura: \ref{fig:mapa_zona_estudio}. Toda el área comprendida en la imagen funciona como la base para construir la estructura del grafo por medio de las herramientas disponibles en QGIS. 
+
+A continuación en la figura \ref{fig:red_peatonal_gam} se muestra el área de estudio con el modelo base del grafo compuesto por su estructura principal: nodos y vértices que lo conforman.  
+
+\begin{figure}[p]
+    \centering
+    \vspace*{-1.5cm} 
+    \makebox[\textwidth][c]{%
+        \includegraphics[height=0.97\textheight, keepaspectratio]{figures/capitulo6_diseno_sistema/6.5_Logica_algoritmica_y_procesamiento_geoespacial/Grafo_def_gam_def.png}%
+    }
+    \caption{Grafo de la red peatonal simplificada en las Zonas 6, 7 y 8 de la Alcaldía Gustavo A. Madero.}
+    \label{fig:red_peatonal_gam}
+\end{figure}
+
+El modelo base mostrado en la figura \ref{fig:red_peatonal_gam} muestra la estructura esencial que conforma el grafo de conexiones entre aristas y vértices. Dentro de la propia imagen se puede apreciar la delimitación de la zona correspondiente a las zonas GAM 6, 7 y 8 las cuales en conjunto abarcan un territorio de aproximadamente 26.31 km² (cifra obtenida por medio del software QGIS).
+
+El modelado de la red requirió del múltiples procesos de tratamiento, filtrado y selección para obtener los datos necesarios para cumplir con las especificaciones del prototipo de aplicación de ruteo seguro. La elaboración de dichos procesos arrojo una serie de datos e información útil para procedimientos como lo es el preprocesamiento. 
+
+\subsubsection{Desarrollo del modelo base del grafo de la red peatonal (Requisitos iniciales)}
+
+La cartografía base se obtuvo directamente de OpenStreetMap. A través de la capa de información obtenida de OSM se logra visualizar el mapa base con los elementos esenciales y la información de un mapa de red mundial sobre el cual se aplicaron los filtros para obtener el grafo base. La información obtenida por la capa de la base de datos de OSM proporciona las geometrías reales (puntos, lineas y polígonos) junto con sus atributos (nombres, tipos de vía, etc.) para poder editarlas y hacer los análisis espaciales correspondientes a las especificaciones de la aplicación de trabajo terminal. 
+
+Acceder a los datos de OSM en formato GIS en QGIS es posible a través del complemento QuickOSM \cite{gandhi_qgis_osm}. Para la delimitación de las zonas GAM 6, 7 y 8 sobre la cartografía de OSM se requirió de la utilización de un archivo oficial de datos geoespaciales que contenga la recopilación de todas las alcaldías de la Ciudad de México y sus respectivas colonias. El archivo shp ( formato de datos geoespaciales de tipo vectorial) se obtuvo del \textbf{Portal de Datos Abiertos de la CDMX}, bajo el nombre de \textbf{Colonias del IECM - 2019} \cite{adip_colonias_cdmx}. La información proporcionada en el archivo shp se utilizó para delimitar las zonas GAM. La delimitación e identificación de las colonias comprendidas en las Zonas Territoriales 6, 7 y 8 se realizó con base en el desglose oficial publicado por la Alcaldía Gustavo A. Madero \cite{gam_territoriales_2023}.
+
+Las longitudes y áreas se midieron en el sistema EPSG:32614 (UTM zona 14N), que expresa las distancias en metros y es el adecuado para la Ciudad de México. Los datos destinados a la base de datos se almacenan en EPSG:4326, el sistema del GPS, y la distinción evita trabajar con grados al medir.
+
+\subsubsection{Tratamientos en la zona de estudio para obtener el grafo de la red peatonal}
+
+Primero se delimita la zona de análisis y la segmentación correspondiente para trabajar solo con los segmentos-caminos (calles, avenidas, cruces, aceras, trazos) que están dentro del polígono de estudio. 
+
+Una vez obtenida la extensión de territorio delimitada y con sus respectivos elementos, se aplicaron los filtros de selección para elegir los tramos que se consideran \textbf{aristas}. QGIS permite filtrar elementos mediante expresiones de código que sirven para seleccionar objetos específicos los cuales posteriormente pueden ser procesados con algún otra herramienta. La expresión que se utilizo para filtrar los segmentos del grafo es la siguiente: 
+
+Para la depuración de la red peatonal, se aplicó la siguiente expresión de filtrado lógico sobre la tabla de atributos, garantizando la exclusión de infraestructura exclusivamente vehicular y conservando los pasos peatonales válidos:
+
+\begin{lstlisting}[caption={Expresión SQL de filtrado para la red peatonal en QGIS.}, label={lst:filtro_peatonal}]
+(
+  COALESCE("bridge", '') IN ('', 'no')
+  OR COALESCE("highway", '') IN ('footway', 'pedestrian', 'steps', 'path')
+  OR COALESCE("foot", '') = 'designated'
+)
+
+AND COALESCE("highway", '') NOT IN (
+  'raceway', 'construction', 'proposed', 'abandoned',
+  'motorway', 'motorway_link', 'busway', 'bus_guideway',
+  'services', 'rest_area'
+)
+
+AND COALESCE("motorroad", '') != 'yes'
+
+AND COALESCE("service", '') NOT IN ('driveway', 'drive-through')
+
+AND COALESCE("foot", '') NOT IN ('no', 'private', 'use_sidepath')
+AND COALESCE("sidewalk", '') NOT IN ('no', 'none')
+AND (
+  COALESCE("access", '') NOT IN ('no', 'private', 'emergency')
+  OR COALESCE("foot", '') IN ('yes', 'permissive', 'designated')
+)
+\end{lstlisting}
+
+El funcionamiento clave radica en el uso de la palabra reservada \textbf{COALESCE}. La función COALESCE actúa como un salvavidas contra los valores nulos (NULL). Su trabajo principal es leer una lista de elementos y devolver el primer valor que sí exista (que no sea nulo).
+
+En la expresión de filtrado, se utiliza repetidamente con esta estructura: COALESCE("campo", '').
+
+Funciona exactamente así:
+\begin{itemize}
+    \item 2. Lee el primer valor: Revisa qué hay dentro del campo (por ejemplo, el campo "bridge"). Si el segmento de calle dice 'yes' o 'no', devuelve ese texto.
+    
+    \item 1. Aplica el plan de respaldo: Si el campo está completamente vacío (es decir, es un valor NULL), se salta al segundo argumento y devuelve una cadena de texto vacía ''.
+\end{itemize}
+
+Se usa COALESCE para convertir los valores NULL de OSM en cadenas vacías (''). Esto evita que el motor de base de datos falle al filtrar y elimine calles normales por accidente. La expresión se estructura por bloques de filtro en el siguiente orden: 
+
+\begin{lstlisting}[caption={Bloque 1 -Filtro Anti-Puentes Vehiculares}, label={lst:filtro_anti_puentes_vec}]
+( COALESCE("bridge", '') IN ('', 'no')
+  OR COALESCE("highway", '') IN ('footway', 'pedestrian', 'steps', 'path')
+  OR COALESCE("foot", '') = 'designated' )
+\end{lstlisting}
+
+Bloque 1: Conserva las vías a nivel de suelo (bridge nulo o 'no') y la infraestructura diseñada exclusivamente para caminar (highway clasificado como 'footway', 'pedestrian', 'steps', 'path', o con 'foot'='designated'). Descarta los puentes generales que no cuentan con estas etiquetas peatonales.
+
+\begin{lstlisting}[caption={Bloque 2- Exclusión de vías no caminables, peligrosas o inactivas}, label={lst:filtro_vias_caminables}]
+AND COALESCE("highway", '') NOT IN (
+  'raceway', 'construction', 'proposed', 'abandoned',
+  'motorway', 'motorway_link', 'busway', 'bus_guideway',
+  'services', 'rest_area'
+)
+\end{lstlisting}
+
+Bloque 2: Descarta tramos fantasmas, en obra o cerrados ('construction', 'proposed', 'abandoned'), infraestructura automotriz de alta velocidad ('motorway', 'motorway\_link', 'raceway'), carriles exclusivos de transporte público \linebreak ('busway', 'bus\_guideway') y áreas de descanso carretero ('services', 'rest\_area').
+
+\begin{lstlisting}[caption={Bloque 3- Exclusión de autovías rápidas}, label={lst:filtro_autoviar_rap}]
+AND COALESCE("motorroad", '') != 'yes'
+\end{lstlisting}
+
+Bloque 3 : Descarta vías o avenidas principales de acceso controlado que tienen una restricción legal expresa para el tránsito peatonal ('motorroad' = 'yes').
+
+\begin{lstlisting}[caption={Bloque 4- Limpieza de estacionamientos y cocheras}, label={lst:filtro_estacionamientos_cocheras}]
+AND COALESCE("service", '') NOT IN ('driveway', 'drive-through')
+\end{lstlisting}
+
+Bloque 4: Descarta subdivisiones de vías de servicio destinadas a vehículos particulares, específicamente las rampas de acceso a estacionamientos residenciales ('driveway') y los carriles de autoservicio/comida rápida ('drive-through').
+
+\begin{lstlisting}[caption={Bloque 5- Filtros de seguridad, banquetas y permisos peatonales}, label={lst:filtro_seguridad_banquetas_permpeaton}]
+AND COALESCE("foot", '') NOT IN ('no', 'private', 'use_sidepath')
+AND COALESCE("sidewalk", '') NOT IN ('no', 'none')
+\end{lstlisting}
+
+Bloque 5: Descarta las calles que declaran explícitamente no contar con aceras ('sidewalk' en 'no' o 'none'). Asimismo, elimina los tramos donde el paso a pie está estrictamente prohibido o es privado ('foot' en 'no' o 'private'), y las vías donde el peatón no puede caminar por el arroyo vehicular porque está obligado a usar un camino paralelo ('foot' = 'use\_sidepath').
+
+\begin{lstlisting}[caption={Bloque 6- Excepciones de Acceso General contra Acceso Peatonal}, label={lst:filtro_acces_gen_peaton}]
+AND (
+  COALESCE("access", '') NOT IN ('no', 'private', 'emergency')
+  OR COALESCE("foot", '') IN ('yes', 'permissive', 'designated')
+)
+\end{lstlisting}
+
+Bloque 6: Descarta áreas o vías con restricción general de acceso para el público ('access' en 'no', 'private' o 'emergency'). Sin embargo, considera y rescata como excepción aquellas áreas restringidas que sí cuentan con un permiso explícito a favor de los peatones ('foot' en 'yes', 'permissive' o 'designated').
+
+En la tabla \ref{tab:filtro_osm} se resumen los elementos afectados en el filtro señalando cuales son los segmentos que se conservan para generar el grafo, aristas y vértices. 
+
+\clearpage
+\begin{table}[htbp]
+\centering
+\caption{Resumen de la lógica de filtrado de elementos de OpenStreetMap para la red peatonal.}
+\label{tab:filtro_osm}
+\footnotesize 
+\renewcommand{\arraystretch}{1.1} 
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|p{3.2cm}|p{2.2cm}|p{3.2cm}|p{3.4cm}|}
+\hline
+\textbf{Bloque} & \textbf{Etiqueta} & \textbf{Se excluye} & \textbf{Excepción: se conserva si} & \textbf{Elementos afectados} & \textbf{Motivo} \\ \hline
+1 & \texttt{bridge} & Valor distinto de vacío o \texttt{no} & \texttt{highway} es \texttt{footway}, \texttt{pedestrian}, \texttt{steps} o \texttt{path}, o \texttt{foot} es \texttt{designated} & \textbf{Se descartan} puentes vehiculares. \textbf{Se conservan} puentes peatonales. & Se descartan por ser de uso exclusivo vehicular; se conservan los diseñados para peatones para mantener la conectividad segura de la red. \\ \hline
+2 & \texttt{highway} & \texttt{raceway}, \texttt{construction}, \texttt{proposed}, \texttt{abandoned}, \texttt{motorway}, \newline \texttt{motorway\_link}, \texttt{busway}, \newline \texttt{bus\_guideway}, \texttt{services}, \texttt{rest\_area} & Ninguna & \textbf{Se descartan} autopistas, pistas, obras, vías abandonadas, carriles de autobús y áreas de servicio. & Se descartan porque son zonas de peligro mortal para peatones, infraestructura intransitable o tramos que físicamente no existen. \\ \hline
+3 & \texttt{motorroad} & \texttt{yes} & Ninguna & \textbf{Se descartan} vías o avenidas de uso exclusivo para vehículos motorizados. & Se descartan porque tienen prohibición y restricción legal expresa para el paso a pie. \\ \hline
+4 & \texttt{service} & \texttt{driveway}, \newline \texttt{drive-through} & Ninguna & \textbf{Se descartan} cocheras residenciales y carriles de autoservicio de comida/bancos. & Se descartan para evitar que el algoritmo trace atajos invadiendo estacionamientos o propiedad privada. \\ \hline
+5 & \texttt{foot} & \texttt{no}, \texttt{private}, \texttt{use\_sidepath} & Ninguna & \textbf{Se descartan} vías con paso a pie prohibido, accesos privados o calles que obligan a usar camino lateral. & Se descartan para respetar restricciones explícitas de seguridad o de propiedad para el peatón. \\ \hline
+6 & \texttt{sidewalk} & \texttt{no}, \texttt{none} & Ninguna & \textbf{Se descartan} calles que declaran explícitamente no contar con aceras. & Se descartan para garantizar que las rutas generadas discurran por caminos con infraestructura física dedicada y segura. \\ \hline
+7 & \texttt{access} & \texttt{no}, \texttt{private}, \texttt{emergency} & \texttt{foot} es \texttt{yes}, \texttt{permissive} o \texttt{designated} & \textbf{Se descartan} vías con acceso general restringido. \textbf{Se conservan} aquellas con permiso peatonal explícito. & Se descartan por ser zonas cerradas al público en general, pero se rescatan las excepciones que sí toleran el libre tránsito peatonal. \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\subsubsection{Aristas}
+
+Las vías o segmentos de OSM suelen cruzar varias esquinas ya que contemplan el tamaño completo de un tramo, por ejemplo las avenidas abarcan varios cruces con múltiples calles. En cambio una arista del grafo no necesariamente debe recorre múltiples cruces, en realidad debe conectar dos vértices de acuerdo a la teoría de grafos vista en la sección \ref{sec:teoria_grafos}. Por ello fue necesario partir cada vía en cada punto donde otra vía la cruza o la toca. 
+
+El procedimiento fue: 
+\begin{itemize}
+    \item 1. Se unieron todas las líneas en una sola entidad. Esta operación las parte en cada intersección, incluidas las esquinas en T, donde una calle termina sobre otra.
+
+    \item 2. Se separó el resultado en entidades individuales. Cada una es un tramo entre dos puntos de decisión.
+    
+    \item 3. Se eliminaron las geometrías duplicadas exactas, que corresponden a vías dibujadas dos veces por error de captura y no a calles distintas.
+    
+    \item 4. Se descartaron los fragmentos de menos de 0.5 m, que son artefactos del cálculo de intersecciones.
+\end{itemize}
+
+Posteriormente para la construcción de los vértices la elección se hizo a partir de las intersecciones y no en cada vértice de la geometría. Dividir en cada vértice habría generado un segmento por cada curva de la calle, miles de segmentos falsos que no representan un punto donde el peatón pueda decidir. 
+
+Se omitieron los nodos intermedios por curvatura. Esos puntos son vértices de la forma de la línea y se conservan dentro de la geometría de cada arista, que es la que la aplicación dibuja sobre el mapa. Contarlos habría inflado el número de vértices sin representar intersecciones ni decisiones de ruta.
+Para cada punto se calculó el grado, es decir, el número de extremos de arista que coinciden en él. El grado permite clasificar los puntos:
+
+Los puntos de grado 2 aparecen porque OpenStreetMap divide a veces una calle en varias vías, por ejemplo cuando cambia el nombre o el tipo de pavimento. No son vértices en el sentido del capítulo \ref{cap:marco_teorico}, ya que los nodos intermedios no se consideran. Si $n_2$ es el número de puntos de grado 2, las fórmulas para obtener el conteo real resultan en las siguientes:
+
+\begin{itemize}
+    \item Vértices finales = vértices brutos $- n_2$ 
+    \item Aristas finales = aristas $- n_2$
+\end{itemize}
+
+Un lazo aislado tiene un solo punto de grado 2 que no es un vértice falso, por lo que esos casos se restan de $n_2$  antes del cálculo.
+
+\subsubsection{Lazos y aristas paralelas}
+
+No se eliminaron los lazos ni las aristas paralelas. El grafo se definió como un multigrafo, que admite ambas cosas. Las aristas paralelas corresponden a alternativas físicas reales entre las mismas esquinas, como las dos calzadas de una avenida con camellón, o una calle y un andador que unen los mismos puntos. Los lazos corresponden a cerradas circulares y retornos. Eliminarlos habría borrado infraestructura transitable. Ambos se contaron como datos descriptivos del grafo en la tabla \ref{tab:resultados_red}. 
+
+\subsubsection{Verificaciones}
+
+En la tabla \ref{tab:verificacion_red} se documentan los procesos utilizados para verificar el procesamiento adecuado del modelo del grafo y sus elementos o información anexa. 
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Métodos y resultados de verificación de la red topológica.}
+\label{tab:verificacion_red}
+\renewcommand{\arraystretch}{1.3} 
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4cm}|p{8cm}|p{4cm}|}
+\hline
+\textbf{Verificación} & \textbf{Método} & \textbf{Resultado} \\ \hline
+Partición en esquinas & Simbología categorizada por el identificador de cada arista, para ver que el color cambia en cada esquina & 10028 aristas resultantes en total \\ \hline
+Grado de los vértices & Etiquetado del grado: 4 en un cruce de cuatro calles, 3 en una T y 1 en un callejón sin salida & 1271 vértices de grado 1, 66 de grado 2, 4197 de grado 3, 1467 de grado 4, 22 de grado 5 y 6 de grado 6.   \\ \hline
+Conectividad & Área de servicio desde un punto, con un costo mayor al tamaño del área & 9975 aristas alcanzadas de 10028 componentes \\ \hline
+Relación aristas y vértices & Cociente entre ambos & 1.43 relación promedio de aristas y vértices. Valor obtenido mediante la ecuación \eqref{eq:relacion_aristas_vertices} \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+Para el calculo de los grados de cada vértice en el modelo del grafo se agrego un campo que añadiera el valor del grado con base en la expresión \ref{lst:grado_vertices}: 
+
+\begin{lstlisting}[caption={Expresión en la calculadora de campos de QGIS para el cálculo del grado de conectividad de los vértices.}, label={lst:grado_vertices}]
+count($id, group_by:=geom_to_wkt($geometry, 2))
+\end{lstlisting}
+
+La expresión calcula el grado de conectividad de cada nodo analizando la coincidencia espacial de sus coordenadas mediante tres componentes principales:
+
+\begin{itemize}
+    \item \texttt{geom\_to\_wkt(\$geometry, 2)}: Convierte la geometría puntual a texto plano bajo el formato \textit{Well-Known Text} (ej. \texttt{POINT(X Y)}), redondeando las coordenadas a 2 decimales para corregir discrepancias de precisión flotante en los extremos de las aristas.
+    \item \texttt{group\_by:=...}: Agrupa todos los elementos de la capa que comparten exactamente la misma representación de texto espacial (misma ubicación geográfica).
+    \item \texttt{count(\$id, ...)}: Cuenta la cantidad de identificadores numéricos (\texttt{\$id}) que convergen dentro de cada grupo. El total obtenido corresponde al \textbf{grado del vértice} (1 para callejones sin salida, 2 para nodos intermedios de paso y 3 o más para intersecciones).
+\end{itemize}
+
+Para el valor de conectividad se realizo la prueba de área de servicio mediante la herramienta de QGIS de nombre ''Área de servicio (desde punto)'' utilizando la capa con la recopilación de todas las aristas del grafo ya filtradas y seleccionando un punto-nodo céntrico dentro de la zona de análisis. Esta herramienta arrojo como resultado una capa con la selección de 9975 tramos de red que son alcanzables desde el punto de selección elegido.
+
+La relación de aristas y vértices se refleja en el valor B = 1.43 el cual representa el \textbf{Índice Beta de Conectividad Topológica} de la red. Indica que en el polígono analizado existen, en promedio, 1.43 aristas (tramos de calle caminables) por cada vértice (nodo o intersección)
+
+\begin{equation}
+\label{eq:relacion_aristas_vertices}
+    \beta = \frac{\text{Aristas}}{\text{Vértices}} = \frac{10028}{7029} \approx 1.42666 \approx 1.43
+\end{equation}  \\ \hline
+
+
+\subsubsection{Resultados}
+
+En la tabla \ref{tab:resultados_red} se muestran todos los datos finales obtenidos del desarrollo y procesamiento en QGIS para la obtención del modelo base del grafo de la red peatonal. 
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Resultados generales del procesamiento de la red.}
+\label{tab:resultados_red}
+\renewcommand{\arraystretch}{1.3} 
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Dato} & \textbf{Valor} \\ \hline
+Área de estudio & 26.311 km$^2$ \\ \hline
+Vías de OpenStreetMap sin filtrar & 5572 \\ \hline
+Longitud sin filtrar & 703.267 km (26.7 km por km$^2$) \\ \hline
+Vías tras el filtrado & 4878 \\ \hline
+Longitud tras el filtrado & 617.977 km (23.5 km por km$^2$) \\ \hline
+Aristas antes del ajuste & 11316 \\ \hline
+Aristas tras el ajuste & 10028 \\ \hline
+Vértices brutos & 7029  \\ \hline
+Vértices de grado 2 (n$_2$) & 66 \\ \hline
+\textbf{Aristas finales} & 10028 - 66 = 9962 \\ \hline
+\textbf{Vértices finales} & 7029 - 66 = 6963 \\ \hline
+Lazos & 53 \\ \hline
+Lazos aislados & 4 \\ \hline
+Aristas aisladas & 53 \\ \hline
+Relación aristas y vértices & 1.42 \\ \hline
+\end{tabular}
+
+\end{table}
+
+Las \textbf{longitudes} se obtuvieron mediante el cálculo automatizado de la distancia geométrica proyectada de cada segmento de línea en QGIS (\texttt{\$length}), sumando la extensión total acumulada convertida a kilómetros. Por su parte, los \textbf{lazos} se identificaron mediante la evaluación topológica de las aristas cuyo nodo de origen y nodo de destino coinciden exactamente en las mismas coordenadas geográficas. La expresión de filtro para los lazos se encuentra en el bloque de código \ref{lst:grafo_lazos} 
+
+\begin{lstlisting}[caption={Expresión de filtro para el conteo de lazos dentro del grafo de red peatonal.}, label={lst:grafo_lazos}]
+x(start_point($geometry)) = x(end_point($geometry)) 
+AND 
+y(start_point($geometry)) = y(end_point($geometry))
+\end{lstlisting}
+
+La expresión \ref{lst:grafo_lazos} evalúa si una arista constituye un \textbf{lazo} (autociclo o \textit{self-loop}) dentro del grafo, verificando si su punto inicial y su punto final comparten exactamente la misma ubicación geográfica a través de tres componentes:
+
+\begin{itemize}
+    \item \texttt{start\_point(\$geometry)} y \texttt{end\_point(\$geometry)}: Extraen los nodos geométricos extremos (origen y destino) de cada segmento de línea.
+    \item \texttt{x(...)} e \texttt{y(...)}: Obtienen las coordenadas cartesianas independientes ($X, Y$) de ambos vértices.
+    \item Operador \texttt{AND}: Condiciona la selección a la coincidencia simultánea de ambas coordenadas ($X_{\text{inicio}} = X_{\text{fin}} \land Y_{\text{inicio}} = Y_{\text{fin}}$). Si se cumple la condición, el segmento nace y muere en el mismo punto sin aportar conectividad a la red peatonal.
+\end{itemize}
+
+\subsection{Limitaciones}
+
+\begin{itemize}
+    \item La red depende de la completitud de OpenStreetMap. Las calles no mapeadas no aparecen en el grafo.
+    \item Una avenida con camellón se representa con dos líneas paralelas. Se contaron como dos aristas porque son dos calzadas reales.
+    \item El polígono es una unión de colonias. Las calles que coinciden con el límite pueden incluirse o excluirse de forma distinta a como lo haría una capa oficial de las zonas. 
+    \item La red corresponde a la descarga del archivo shp \textbf{Colonias del IECM - 2019} obtenido de la fuente \cite{adip_colonias_cdmx}. Al actualizarse OpenStreetMap, el grafo debe regenerarse y versionarse.
+    \item Este procedimiento no asigna identificadores estables a las aristas. [Indicar cómo se resolverá en la base de datos espacial.]
+\end{itemize}
+
+Se identificó la presencia de un efecto de borde (\textit{edge effect}) en los límites administrativos del polígono, donde algunas vías transversales perdieron continuidad topológica al ser segmentadas por la máscara de recorte. Dado que estos cortes ocurren en la periferia extrema de la zona de estudio, se asumen como una limitación del modelo espacial que no compromete la integridad del ruteo en el núcleo de las Zonas Territoriales 6, 7 y 8.
+
+Para mitigar esta desarticulación en los bordes, se aplicó un procedimiento de ensamblado manual sobre aquellas aristas y vértices que excedían o quedaban interrumpidos por un margen mínimo respecto al perímetro. Este problema surgió debido a la intersección geométrica rígida entre los segmentos de OpenStreetMap y el polígono delimitador, lo que provocaba que algunas vías continuas se cortaran por diferencias imperceptibles de distancia. La solución consistió en realizar un ajuste topológico manual mediante herramientas de autoedición (\textit{snapping}), reconectando únicamente los elementos perimetrales inmediatos que cortaban por muy poca diferencia la línea de frontera, preservando así la cohesión de los nodos limítrofes sin distorsionar el área de estudio.
+
+\subsubsection{Diferencias del modelo real del grafo (Obtenido en QGIS) respecto al modelo teórico (Planteado en el marco teórico).}
+
+Dentro del marco teórico en la sección \ref{sec:teoria_grafos} se definió que el grafo a utilizar tendría las siguientes propiedades: no dirigido, ponderado, multigrafo, conexo y cíclico. Pese a que la consideración inicial en el marco teórico es acertada, hay diferencias mínimas respecto al modelo construido por medio de QGIS. La diferencia principal es que el grafo no es completamente conexo ya que al realizar el análisis del área de servicio se pudo notar que hay aristas o lazos a los cuales es teóricamente inaccesible llegar por medio de alguna otra arista en el grafo por lo que podríamos decir que tiene pocos elementos propios de un grafo no conexo. Pese a esta observación, la mayoría de todo el grafo es completamente conexo ya que de un total de 10028 aristas, solo 53 son inaccesibles teóricamente con base a los procedimientos de verificación en la construcción del modelo base del grafo para la red peatonal.
