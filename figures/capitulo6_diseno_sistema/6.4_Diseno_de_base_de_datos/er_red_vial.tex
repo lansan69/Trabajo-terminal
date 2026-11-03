@@ -1,0 +1,54 @@
+% =========================================================
+% Diagrama entidad-relación: Red vial y emergencias  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% punto son los nodos del grafo y calle sus aristas (segmentos de una vía
+% de OSM); pgRouting toma id_origen e id_destino como source y target.
+% calle.riesgo es el riesgo normalizado del tramo, de 0 a 1 (RN-04).
+% emergencia no se relaciona con otras tablas.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erTabla{via}{-1.35,0}{via}{
+    \erPK{id\_via BIGINT}
+    \erLinea
+    \erAt{nombre VARCHAR NULL}
+    \erAt{tipo VARCHAR NULL}
+    \erAt{velocidad\_max INT NULL}
+    \erAt{superficie VARCHAR NULL}
+    \erAt{elevacion FLOAT NULL}
+  }
+  \erTabla{calle}{0,-4.2}{calle}{
+    \erPK{id\_calle UUID DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_via BIGINT NULL}
+    \erFK{id\_origen UUID NULL}
+    \erFK{id\_destino UUID NULL}
+    \erAt{distancia\_metros FLOAT NULL}
+    \erAt{un\_sentido BOOLEAN NULL}
+    \erAt{riesgo FLOAT NULL}
+  }
+  \erTabla{punto}{0,-8.8}{punto}{
+    \erPK{id\_punto UUID DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erAt{id\_osm BIGINT NULL}
+    \erAt{latitud DECIMAL(9,7) NULL}
+    \erAt{longitud DECIMAL(10,7) NULL}
+  }
+  \erTabla{emergencia}{6.0,0}{emergencia}{
+    \erPK{id\_emergencia UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erAt{poligono GEOGRAPHY(POLYGON, 4326)}
+    \erSigue{NOT NULL}
+    \erAt{numero VARCHAR(20) NOT NULL}
+    \erAt{corporacion VARCHAR(100) NULL}
+  }
+
+  % ---------------- Relaciones ----------------
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (via.south |- calle.north) -- node[erVerbo, right=5pt] {se divide en} (via.south);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (calle.south -| -1.6,0) -- node[erVerbo, left=5pt] {inicia en} (punto.north -| -1.6,0);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (calle.south -| 1.6,0) -- node[erVerbo, right=5pt] {termina en} (punto.north -| 1.6,0);
+
+\end{tikzpicture}

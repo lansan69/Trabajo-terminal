@@ -1,0 +1,64 @@
+% =========================================================
+% Diagrama entidad-relación: Normatividad y lugares favoritos  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% usuario se detalla en er_usuarios.tex: aquí solo aparece su nombre.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erTabla{aviso}{4.215,0}{aviso\_privacidad}{
+    \erPK{id\_aviso\_privacidad SERIAL}
+    \erLinea
+    \erUK{version VARCHAR(20) NOT NULL UNIQUE}
+    \erAt{contenido TEXT NOT NULL}
+    \erAt{fecha\_alta TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{fecha\_baja TIMESTAMPTZ NULL}
+    \erAt{activo BOOLEAN NOT NULL DEFAULT FALSE}
+  }
+  \erTabla{avisousr}{4.215,-4.6}{aviso\_privacidad\_usuario}{
+    \erPKFK{id\_usuario UUID NOT NULL}
+    \erPKFK{id\_aviso\_privacidad INT NOT NULL}
+    \erLinea
+    \erAt{fecha\_aceptado TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+  }
+  \erTabla{manual}{4.215,-8.7}{manual}{
+    \erPK{id\_manual SERIAL}
+    \erLinea
+    \erUK{version VARCHAR(20) NOT NULL UNIQUE}
+    \erAt{archivo\_url TEXT NOT NULL}
+    \erAt{fecha\_alta TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{fecha\_baja TIMESTAMPTZ NULL}
+    \erAt{activo BOOLEAN NOT NULL DEFAULT TRUE}
+  }
+  \erTabla{catlugar}{19.75,0}{categoria\_lugar}{
+    \erPK{id\_categoria SERIAL}
+    \erLinea
+    \erUK{codigo\_lugar VARCHAR(20) NOT NULL UNIQUE}
+    \erAt{nombre\_categoria VARCHAR(50) NOT NULL}
+    \erAt{icono\_lugar TEXT NOT NULL}
+  }
+  \erTabla{favorito}{19.75,-3.5}{favorito}{
+    \erPK{id\_favorito UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_usuario UUID NOT NULL}
+    \erFK{id\_categoria INT NOT NULL}
+    \erAt{nombre VARCHAR(100) NOT NULL}
+    \erAt{ubicacion GEOGRAPHY(POINT, 4326) NOT NULL}
+    \erAt{fecha\_creacion TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{activo BOOLEAN NOT NULL DEFAULT TRUE}
+  }
+  \erCaja{usuario}{11.89,-6.0}{usuario}
+
+  % ---------------- Relaciones ----------------
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (avisousr.north) -- node[erVerbo, right=5pt] {se acepta en} (aviso.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (avisousr.east |- usuario) -- node[erVerbo, above=4pt] {acepta} (usuario.west);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (favorito.west |- usuario) -- node[erVerbo, above=4pt] {guarda} (usuario.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (favorito.north) -- node[erVerbo, right=5pt] {clasifica} (catlugar.south);
+
+\end{tikzpicture}

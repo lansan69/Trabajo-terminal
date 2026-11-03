@@ -1,0 +1,73 @@
+% =========================================================
+% Diagrama entidad-relación: Usuarios, autenticación y dispositivos  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% auth.users y auth.identities las gestiona Supabase Auth (cabecera gris).
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erTabla[erAuth]{ident}{2.76,0}{auth.identities}{
+    \erPK{id UUID}
+    \erLinea
+    \erFK{user\_id UUID NOT NULL}
+    \erAt{provider TEXT NOT NULL}
+  }
+  \erTabla[erAuth]{authusers}{10.66,0}{auth.users}{
+    \erPK{id UUID}
+    \erLinea
+    \erAt{email VARCHAR(255) NULL}
+    \erAt{email\_confirmed\_at TIMESTAMPTZ NULL}
+    \erAt{encrypted\_password VARCHAR(255) NULL}
+  }
+  \erTabla{estado}{19.5,0}{estado\_cuenta}{
+    \erPK{id\_estado\_cuenta SERIAL}
+    \erLinea
+    \erUK{tipo\_estado VARCHAR(50) NOT NULL UNIQUE}
+  }
+  \erTabla{usuario}{10.66,-3.3}{usuario}{
+    \erPKFK{id\_usuario UUID}
+    \erLinea
+    \erFK{id\_estado\_cuenta INT NOT NULL}
+    \erAt{nombre VARCHAR(100) NOT NULL}
+    \erAt{apellidos VARCHAR(100) NOT NULL}
+    \erAt{foto TEXT NULL}
+    \erAt{reputacion NUMERIC(5,2) NOT NULL}
+    \erSigue{DEFAULT 1.00}
+    \erAt{fecha\_registro TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+  }
+  \erTabla{dispositivo}{4.21,-9.0}{dispositivo}{
+    \erPK{id\_dispositivo UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_usuario UUID NOT NULL}
+    \erUK{token\_fcm TEXT NOT NULL UNIQUE}
+    \erAt{alertas\_activas BOOLEAN NOT NULL}
+    \erSigue{DEFAULT TRUE}
+    \erAt{fecha\_registro TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{fecha\_actualizacion TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+  }
+  \erTabla{solic}{14.1,-9.0}{solic\_eliminacion}{
+    \erPK{id\_solic\_eliminacion UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFKUK{id\_usuario UUID NULL UNIQUE}
+    \erAt{fecha\_solic TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{limite\_borrado TIMESTAMPTZ NOT NULL}
+    \erAt{ejecutada\_en TIMESTAMPTZ NULL}
+    \erAt{estado VARCHAR(20) NOT NULL}
+    \erSigue{DEFAULT \erQ{PENDIENTE}}
+  }
+
+  % ---------------- Relaciones ----------------
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (ident.east |- 0,-1) -- node[erVerbo, above=4pt] {tiene} (authusers.west |- 0,-1);
+  \draw[erRelacion, {erCeroUno}-{erUno}] (usuario.north) -- node[erVerbo, right=5pt] {corresponde a} (authusers.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (usuario.east |- 0,-4.6) -| node[erVerbo, pos=0.3, above=4pt] {clasifica} (estado.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (dispositivo.north -| 7.5,0) -- node[erVerbo, right=5pt] {registra} (usuario.south -| 7.5,0);
+  \draw[erRelacion, {erCeroUno}-{erCeroUno}] (solic.north -| 13.5,0) -- node[erVerbo, right=5pt] {solicita} (usuario.south -| 13.5,0);
+
+\end{tikzpicture}

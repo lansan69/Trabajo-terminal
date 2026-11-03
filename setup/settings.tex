@@ -103,12 +103,14 @@
 % 6. DIAGRAMAS                                   (6.1 Arquitectura del sistema)
 % ---------------------------------------------------------
 % TikZ carga xcolor, por eso va después de xcolor[table] (sección 5).
-\usepackage{tikz}               % Diagramas C4 dibujados en LaTeX: 6.1
+\usepackage{tikz}               % Diagramas dibujados en LaTeX: C4 (6.1), casos de uso (6.2),
+                                % secuencia (6.3) y entidad-relación (6.4)
 \usetikzlibrary{
     positioning,                % below=... of ...
     calc,                       % Coordenadas calculadas ($(a)+(0,1)$)
     arrows.meta,                % Puntas de flecha Stealth
     shapes.geometric,           % Cilindro de la base de datos
+    shapes.multipart,           % Tablas de los diagramas entidad-relación (6.4): cabecera + atributos
     fit,                        % Límite punteado alrededor de los contenedores
     backgrounds,                % Dibujar el límite y algunas flechas detrás de las cajas
     babel                       % Evita el choque de babel (spanish) con < y > en TikZ
@@ -527,6 +529,152 @@
     \foreach \sdP in \sdLista {\ifx\sdP\empty\else \draw[sdLineaVida] (\sdP-base) -- (\sdP |- 0,\sdY);\fi}
   \end{pgfonlayer}%
   \gdef\sdLista{}}
+
+
+% ---------------------------------------------------------
+% G4. DIAGRAMAS ENTIDAD-RELACIÓN                 (6.4 Diseño de base de datos)
+% ---------------------------------------------------------
+% Notación pata de gallo. Cada tabla lleva el nombre en la cabecera y, debajo,
+% una columna de llaves (PK, FK, UK) y los atributos como
+% "nombre TIPO NOT NULL DEFAULT ..."; la PK va subrayada y separada del
+% resto por una línea. Colores de los diagramas C4: azul para las tablas del
+% sistema y gris para las de Supabase Auth.
+%
+% \erTabla[opciones]{id}{x,y}{nombre}{filas}
+%   (x,y) es el centro del borde superior; [opciones] se agregan al nodo
+%   (por ejemplo erAuth para la cabecera gris o anchor=north west).
+%   Filas: \erPK, \erPKFK, \erFK, \erFKUK, \erUK, \erAt (una por atributo)
+%   y \erLinea después de las PK. Si una definición es muy larga, su parte
+%   DEFAULT ... sigue en el renglón de abajo con \erSigue (\erSiguePK en la PK).
+% \erEnum[opciones]{id}{x,y}{nombre}{VALOR1 \\ VALOR2 \\ ...}   tipo enumerado
+% \erCaja[opciones]{id}{x,y}{nombre}
+%   Solo el nombre: vista general y tablas que se detallan en otra figura.
+% Relaciones: \draw[erRelacion, {erCeroMuchos}-{erUno}] (hija) -- (padre);
+%   Puntas: erUno (uno y solo uno), erCeroUno (cero o uno),
+%           erMuchos (uno o muchos), erCeroMuchos (cero o muchos).
+%   Verbo sobre la línea: node[erVerbo, ...] {texto}
+\newlength{\erLlave}\setlength{\erLlave}{1.25cm} % ancho de la columna de llaves (cabe «PK, FK»)
+\newlength{\erSep}\setlength{\erSep}{3pt}        % \tabcolsep dentro de las tablas
+
+\tikzset{
+  erBase/.style={
+    rectangle split, rectangle split parts=2, rectangle split part align={center, left},
+    draw=c4ContenedorBorde, line width=0.6pt, inner xsep=0pt, inner ysep=2pt,
+    anchor=north, font=\scriptsize
+  },
+  erTabla/.style={erBase, rectangle split part fill={c4Contenedor, white}},
+  erAuth/.style={draw=c4ExternoBorde, rectangle split part fill={c4Externo, white}},
+  erEnum/.style={
+    rectangle, draw=c4Relacion, dashed, line width=0.6pt, fill=white, inner sep=0pt,
+    anchor=north, font=\scriptsize
+  },
+  erCaja/.style={
+    rectangle, fill=c4Contenedor, draw=c4ContenedorBorde, line width=0.6pt,
+    text=white, font=\footnotesize\bfseries, minimum width=2.9cm, minimum height=0.6cm,
+    inner xsep=5pt, inner ysep=2pt
+  },
+  erCajaAuth/.style={fill=c4Externo, draw=c4ExternoBorde},
+  erRelacion/.style={draw=c4Relacion, line width=0.7pt},
+  erVerbo/.style={font=\scriptsize, fill=white, inner sep=1.5pt, text=black!85, align=center}
+}
+
+% Filas de una tabla (van dentro de \erTabla). La llave va en una caja de
+% ancho fijo para que «PK, FK» no se parta y la línea vertical caiga siempre
+% en el mismo lugar.
+\newcommand{\erK}[1]{\makebox[\erLlave]{\textbf{#1}}}
+\newcommand{\erPK}[1]{\erK{PK} & \underline{#1} \\}
+\newcommand{\erPKFK}[1]{\erK{PK, FK} & \underline{#1} \\}
+\newcommand{\erFK}[1]{\erK{FK} & #1 \\}
+\newcommand{\erFKUK}[1]{\erK{FK, UK} & #1 \\}
+\newcommand{\erUK}[1]{\erK{UK} & #1 \\}
+\newcommand{\erAt}[1]{ & #1 \\}
+\newcommand{\erSigue}[1]{ & \hspace{1.2em}#1 \\}
+\newcommand{\erSiguePK}[1]{ & \hspace{1.2em}\underline{#1} \\}
+\newcommand{\erLinea}{\hline}
+\newcommand{\erQ}[1]{\textquotesingle#1\textquotesingle}  % literal SQL: 'PENDIENTE'
+
+\newcommand{\erTabla}[5][]{%
+  \node[erTabla, #1] (#2) at (#3) {%
+    \hspace*{6pt}\textcolor{white}{\footnotesize\bfseries #4}\hspace*{6pt}%
+    \nodepart{two}%
+    \setlength{\tabcolsep}{\erSep}\renewcommand{\arraystretch}{1.12}%
+    \setlength{\arrayrulewidth}{0.6pt}\arrayrulecolor{c4ContenedorBorde!70}%
+    \begin{tabular}{@{\hspace{\erSep}}l@{\hspace{2\erSep}}l@{\hspace{2\erSep}}}
+      #5
+    \end{tabular}};
+  % Línea vertical que separa la columna de llaves
+  \draw[c4ContenedorBorde!70, line width=0.6pt]
+    ($(#2.one split west)+(\erLlave+2\erSep,0)$) -- ($(#2.south west)+(\erLlave+2\erSep,0)$);}
+
+\newcommand{\erEnum}[5][]{%
+  \node[erEnum, #1] (#2) at (#3) {%
+    \setlength{\tabcolsep}{6pt}\renewcommand{\arraystretch}{1.12}%
+    \setlength{\arrayrulewidth}{0.6pt}\arrayrulecolor{c4Relacion}%
+    \begin{tabular}{l}
+      \multicolumn{1}{>{\columncolor{black!7}}c}{\footnotesize\guillemotleft enumeración\guillemotright}\\[-1pt]
+      \multicolumn{1}{>{\columncolor{black!7}}c}{\footnotesize\bfseries #4}\\
+      \hline
+      #5
+    \end{tabular}};}
+
+\newcommand{\erCaja}[4][]{\node[erCaja, #1] (#2) at (#3) {#4};}
+
+% Puntas pata de gallo. La punta queda en el borde de la tabla y la línea
+% llega hasta él (la línea es el trazo central de la pata de gallo).
+\pgfdeclarearrow{
+  name = erUno,
+  setup code = {
+    \pgfarrowssettipend{0pt}\pgfarrowssetlineend{0pt}\pgfarrowssetbackend{-9pt}
+    \pgfarrowshullpoint{0pt}{4.5pt}\pgfarrowshullpoint{0pt}{-4.5pt}
+    \pgfarrowshullpoint{-9pt}{4.5pt}\pgfarrowshullpoint{-9pt}{-4.5pt}},
+  drawing code = {
+    \pgfsetdash{}{0pt}\pgfsetbuttcap
+    \pgfpathmoveto{\pgfqpoint{-4pt}{4.5pt}}\pgfpathlineto{\pgfqpoint{-4pt}{-4.5pt}}
+    \pgfpathmoveto{\pgfqpoint{-7.5pt}{4.5pt}}\pgfpathlineto{\pgfqpoint{-7.5pt}{-4.5pt}}
+    \pgfusepathqstroke}
+}
+\pgfdeclarearrow{
+  name = erCeroUno,
+  setup code = {
+    \pgfarrowssettipend{0pt}\pgfarrowssetlineend{0pt}\pgfarrowssetbackend{-13pt}
+    \pgfarrowshullpoint{0pt}{4.5pt}\pgfarrowshullpoint{0pt}{-4.5pt}
+    \pgfarrowshullpoint{-13pt}{4.5pt}\pgfarrowshullpoint{-13pt}{-4.5pt}},
+  drawing code = {
+    \pgfsetdash{}{0pt}\pgfsetbuttcap
+    \pgfpathmoveto{\pgfqpoint{-4pt}{4.5pt}}\pgfpathlineto{\pgfqpoint{-4pt}{-4.5pt}}
+    \pgfusepathqstroke
+    \pgfsetfillcolor{white}
+    \pgfpathcircle{\pgfqpoint{-10pt}{0pt}}{2.7pt}
+    \pgfusepathqfillstroke}
+}
+\pgfdeclarearrow{
+  name = erMuchos,
+  setup code = {
+    \pgfarrowssettipend{0pt}\pgfarrowssetlineend{0pt}\pgfarrowssetbackend{-12pt}
+    \pgfarrowshullpoint{0pt}{4.5pt}\pgfarrowshullpoint{0pt}{-4.5pt}
+    \pgfarrowshullpoint{-12pt}{4.5pt}\pgfarrowshullpoint{-12pt}{-4.5pt}},
+  drawing code = {
+    \pgfsetdash{}{0pt}\pgfsetbuttcap
+    \pgfpathmoveto{\pgfqpoint{0pt}{4.5pt}}\pgfpathlineto{\pgfqpoint{-8pt}{0pt}}
+    \pgfpathlineto{\pgfqpoint{0pt}{-4.5pt}}
+    \pgfpathmoveto{\pgfqpoint{-11pt}{4.5pt}}\pgfpathlineto{\pgfqpoint{-11pt}{-4.5pt}}
+    \pgfusepathqstroke}
+}
+\pgfdeclarearrow{
+  name = erCeroMuchos,
+  setup code = {
+    \pgfarrowssettipend{0pt}\pgfarrowssetlineend{0pt}\pgfarrowssetbackend{-16pt}
+    \pgfarrowshullpoint{0pt}{4.5pt}\pgfarrowshullpoint{0pt}{-4.5pt}
+    \pgfarrowshullpoint{-16pt}{4.5pt}\pgfarrowshullpoint{-16pt}{-4.5pt}},
+  drawing code = {
+    \pgfsetdash{}{0pt}\pgfsetbuttcap
+    \pgfpathmoveto{\pgfqpoint{0pt}{4.5pt}}\pgfpathlineto{\pgfqpoint{-8pt}{0pt}}
+    \pgfpathlineto{\pgfqpoint{0pt}{-4.5pt}}
+    \pgfusepathqstroke
+    \pgfsetfillcolor{white}
+    \pgfpathcircle{\pgfqpoint{-11.5pt}{0pt}}{2.7pt}
+    \pgfusepathqfillstroke}
+}
 
 
 % ---------------------------------------------------------

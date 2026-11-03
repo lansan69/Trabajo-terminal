@@ -1,0 +1,87 @@
+% =========================================================
+% Diagrama entidad-relación: vista general  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% Solo los nombres de las 25 tablas y sus relaciones; los atributos se
+% detallan en una figura por módulo (er_usuarios, er_normatividad_favoritos,
+% er_seguimiento, er_reportes, er_navegacion y er_red_vial).
+% Arriba: normatividad y favoritos. Izquierda: cuentas. Derecha: seguimiento.
+% Abajo: reportes, navegación y red vial. manual y emergencia no tienen
+% relaciones.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erCaja[minimum width=3.6cm, minimum height=3.8cm]{usuario}{11.5,-5.2}{usuario}
+
+  % Normatividad y favoritos
+  \erCaja{manual}{1.8,0}{manual}
+  \erCaja{aviso}{8.6,0}{aviso\_privacidad}
+  \erCaja{avisousr}{8.6,-1.8}{aviso\_privacidad\_usuario}
+  \erCaja{favorito}{13.6,-1.8}{favorito}
+  \erCaja{catlugar}{19.0,-1.8}{categoria\_lugar}
+
+  % Cuentas
+  \erCaja{solic}{6.0,-3.7}{solic\_eliminacion}
+  \erCaja[erCajaAuth]{authusers}{6.0,-4.7}{auth.users}
+  \erCaja[erCajaAuth]{ident}{1.6,-4.7}{auth.identities}
+  \erCaja{estado}{6.0,-5.7}{estado\_cuenta}
+  \erCaja{dispositivo}{6.0,-6.7}{dispositivo}
+
+  % Ubicación y seguimiento
+  \erCaja{ubicacion}{16.8,-3.7}{ubicacion}
+  \erCaja{enlace}{21.6,-3.7}{enlace}
+  \erCaja{seguimiento}{21.6,-5.7}{seguimiento}
+  \erCaja{estadoseg}{21.6,-7.7}{estado\_seguimiento}
+
+  % Reportes
+  \erCaja{catreporte}{1.8,-9.0}{categoria\_reporte}
+  \erCaja{reporte}{6.6,-9.0}{reporte}
+  \erCaja{valoracion}{11.5,-10.6}{valoracion}
+
+  % Navegación, red vial y emergencias
+  \erCaja{navegacion}{16.4,-9.0}{navegacion}
+  \erCaja{desglose}{21.6,-9.0}{desglose}
+  \erCaja{evento}{16.4,-10.8}{evento\_nav}
+  \erCaja{calle}{21.6,-10.8}{calle}
+  \erCaja{via}{16.4,-12.6}{via}
+  \erCaja{punto}{22.4,-12.6}{punto}
+  \erCaja{emergencia}{1.8,-12.6}{emergencia}
+
+  % ---------------- Relaciones ----------------
+  % Cuentas
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (ident.east) -- (authusers.west);
+  \draw[erRelacion, {erCeroUno}-{erUno}] (usuario.west |- authusers) -- (authusers.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (usuario.west |- estado) -- (estado.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (dispositivo.east) -- (usuario.west |- dispositivo);
+  \draw[erRelacion, {erCeroUno}-{erCeroUno}] (solic.east) -- (usuario.west |- solic);
+
+  % Normatividad y favoritos
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (avisousr.south -| 10.4,0) -- (usuario.north -| 10.4,0);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (avisousr.north) -- (aviso.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (favorito.south -| 12.7,0) -- (usuario.north -| 12.7,0);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (favorito.east) -- (catlugar.west);
+
+  % Ubicación y seguimiento
+  \draw[erRelacion, {erCeroUno}-{erUno}] (ubicacion.west) -- (usuario.east |- ubicacion);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (enlace.west) -- (ubicacion.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (seguimiento.north) -- (enlace.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (seguimiento.west) -- (usuario.east |- seguimiento);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (seguimiento.south) -- (estadoseg.north);
+
+  % Reportes
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (reporte.east) -| (usuario.south -| 10.3,0);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (reporte.west) -- (catreporte.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (valoracion.west) -| (reporte.south);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (valoracion.north) -- (usuario.south -| valoracion.north);
+
+  % Navegación y red vial
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (navegacion.west) -| (usuario.south -| 12.7,0);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (desglose.west) -- (navegacion.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (desglose.south) -- (calle.north);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (evento.north) -- (navegacion.south);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (calle.south -| 20.5,0) |- (via.east);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (calle.south -| 21.3,0) -- (punto.north -| 21.3,0);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (calle.south -| 22.6,0) -- (punto.north -| 22.6,0);
+
+\end{tikzpicture}

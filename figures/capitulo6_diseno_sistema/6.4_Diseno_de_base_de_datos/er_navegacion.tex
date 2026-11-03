@@ -1,0 +1,60 @@
+% =========================================================
+% Diagrama entidad-relación: Navegación  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% usuario y calle se detallan en er_usuarios.tex y er_red_vial.tex: aquí
+% solo aparece su nombre.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erTabla{navegacion}{9.775,0}{navegacion}{
+    \erPK{id\_navegacion UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_usuario UUID NOT NULL}
+    \erAt{origen GEOGRAPHY(POINT, 4326) NOT NULL}
+    \erAt{destino GEOGRAPHY(POINT, 4326) NOT NULL}
+    \erAt{estado\_nav estado\_navegacion NOT NULL}
+    \erSigue{DEFAULT \erQ{EN\_CURSO}}
+    \erAt{distancia\_m NUMERIC(10,2) NOT NULL}
+    \erAt{tiempo\_estimado\_s INT NOT NULL}
+    \erAt{nivel\_riesgo NUMERIC(5,2) NOT NULL}
+    \erAt{franja\_horaria VARCHAR(30) NOT NULL}
+    \erAt{inicio\_nav TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{fin\_nav TIMESTAMPTZ NULL}
+    \erAt{calificacion INT NULL}
+    \erAt{comentario TEXT NULL}
+  }
+  \erTabla{desglose}{19.945,0}{desglose}{
+    \erPK{id\_desglose UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_navegacion UUID NOT NULL}
+    \erFK{id\_calle UUID NOT NULL}
+    \erAt{secuencia INT NOT NULL}
+    \erLinea
+    \erUK{UNIQUE (id\_navegacion, secuencia)}
+  }
+  \erTabla{evento}{9.775,-8.0}{evento\_nav}{
+    \erPK{id\_evento\_nav SERIAL}
+    \erLinea
+    \erFK{id\_navegacion UUID NOT NULL}
+    \erAt{tipo\_evento tipo\_evento\_nav NOT NULL}
+    \erAt{ubicacion GEOGRAPHY(POINT, 4326) NULL}
+    \erAt{ocurrido\_en TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+  }
+  \erEnum{estadonav}{2.4,-4.0}{estado\_navegacion}{EN\_CURSO \\ FINALIZADA \\ CANCELADA}
+  \erEnum{tipoevento}{17.6,-8.0}{tipo\_evento\_nav}{DESVIO \\ ALERTA\_PANICO \\ RECALCULO}
+  \erCaja{usuario}{1.46,-1.5}{usuario}
+  \erCaja{calle}{19.945,-4.6}{calle}
+
+  % ---------------- Relaciones ----------------
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (navegacion.west |- usuario) -- node[erVerbo, above=4pt] {realiza} (usuario.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (desglose.west |- usuario) -- node[erVerbo, above=4pt] {se compone de} (navegacion.east |- usuario);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (desglose.south) -- node[erVerbo, right=5pt] {recorre} (calle.north);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (evento.north) -- node[erVerbo, right=5pt] {registra} (navegacion.south);
+
+\end{tikzpicture}

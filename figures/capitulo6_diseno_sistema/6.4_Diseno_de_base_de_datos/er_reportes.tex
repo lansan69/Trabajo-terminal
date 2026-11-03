@@ -1,0 +1,68 @@
+% =========================================================
+% Diagrama entidad-relación: Reportes comunitarios  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% usuario se detalla en er_usuarios.tex: aquí solo aparece su nombre.
+% reporte.id_usuario y valoracion.id_usuario admiten NULL (ON DELETE SET NULL).
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erTabla{categoria}{4.17,0}{categoria\_reporte}{
+    \erPK{id\_categoria\_reporte SERIAL}
+    \erLinea
+    \erUK{codigo\_categoria VARCHAR(50)}
+    \erSigue{NOT NULL UNIQUE}
+    \erUK{nombre\_categoria VARCHAR(100)}
+    \erSigue{NOT NULL UNIQUE}
+    \erAt{duracion\_estado INTERVAL NOT NULL}
+    \erAt{clave\_icono TEXT NOT NULL}
+    \erAt{activo BOOLEAN NOT NULL DEFAULT TRUE}
+    \erAt{descripcion TEXT NULL}
+  }
+  \erTabla{reporte}{14.74,0}{reporte}{
+    \erPK{id\_reporte UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_usuario UUID NULL}
+    \erFK{id\_categoria\_reporte INT NOT NULL}
+    \erAt{ubicacion GEOGRAPHY(POINT, 4326) NOT NULL}
+    \erAt{descripcion TEXT NULL}
+    \erAt{estado estado\_reporte NOT NULL}
+    \erSigue{DEFAULT \erQ{PENDIENTE}}
+    \erAt{confirmaciones INT NOT NULL DEFAULT 1}
+    \erAt{rechazos INT NOT NULL DEFAULT 0}
+    \erAt{fecha\_alta TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{fecha\_expiracion TIMESTAMPTZ NOT NULL}
+    \erAt{expiracion\_aplicada BOOLEAN NOT NULL}
+    \erSigue{DEFAULT FALSE}
+    \erAt{ciclo INT NOT NULL DEFAULT 1}
+    \erAt{reputacion\_aplicada BOOLEAN NOT NULL}
+    \erSigue{DEFAULT FALSE}
+    \erAt{validaciones\_necesarias INT NOT NULL}
+    \erSigue{DEFAULT 3}
+  }
+  \erTabla{valoracion}{4.17,-5.4}{valoracion}{
+    \erPK{id\_valoracion UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_usuario UUID NULL}
+    \erFK{id\_reporte UUID NOT NULL}
+    \erAt{ciclo INT NOT NULL DEFAULT 1}
+    \erAt{voto\_tipo INT NOT NULL}
+    \erAt{fecha\_alta TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erLinea
+    \erUK{UNIQUE (id\_usuario, id\_reporte, ciclo)}
+  }
+  \erEnum{estadoreporte}{21.6,-9.9}{estado\_reporte}{PENDIENTE \\ VALIDADO \\ RECHAZADO \\ EXPIRADO}
+  \erCaja{usuario}{22.6,-3.0}{usuario}
+
+  % ---------------- Relaciones ----------------
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (reporte.west |- 0,-2) -- node[erVerbo, above=4pt] {clasifica} (categoria.east |- 0,-2);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (reporte.east |- usuario) -- node[erVerbo, above=4pt] {registra} (usuario.west);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (valoracion.east |- 0,-7) -- node[erVerbo, above=4pt] {recibe} (reporte.west |- 0,-7);
+  \draw[erRelacion, {erCeroMuchos}-{erCeroUno}] (valoracion.east |- 0,-9) -| node[erVerbo, pos=0.15, below=4pt] {emite} (usuario.south);
+
+\end{tikzpicture}

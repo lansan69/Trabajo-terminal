@@ -4,20 +4,63 @@
 % sus referencias van en seccion6_4.bib (misma carpeta).
 % =========================================================
 
+% Los diagramas están dibujados en TikZ (no son imágenes): un archivo por
+% figura en figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_*.tex.
+% Estilos y macros en setup/settings.tex, sección G4.
+
 \subsection{Modelo entidad-relación}
 
-La Figura~\ref{fig:er_db_usuarios} muestra
-el modelo de la base de datos \texttt{db\_usuarios\_app}.
+La base de datos del sistema se implementa en PostgreSQL sobre Supabase. La figura \ref{fig:er_general} presenta la vista general del modelo entidad-relación, con sus 25 tablas y sus relaciones en notación pata de gallo, y las figuras \ref{fig:er_usuarios} a \ref{fig:er_navegacion} detallan los atributos de cada módulo. Las tablas con cabecera gris pertenecen al esquema \texttt{auth}, administrado por Supabase Auth, y las que solo muestran su nombre se detallan en otra figura.
 
 \begin{sidewaysfigure}
     \centering
-    \includegraphics[width=\textheight, height=\dimexpr\textwidth-1.5cm\relax,
-                     keepaspectratio]{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/BD_E-R_prototipo.png}
-    \caption{Modelo entidad-relación de la base de datos \texttt{db\_usuarios\_app}}
-    \label{fig:er_db_usuarios}
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_general}
+    \caption{Modelo entidad-relación: vista general de la base de datos}
+    \label{fig:er_general}
 \end{sidewaysfigure}
 
+\begin{sidewaysfigure}
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_usuarios}
+    \caption{Modelo entidad-relación: usuarios, autenticación y dispositivos}
+    \label{fig:er_usuarios}
+\end{sidewaysfigure}
 
+\begin{sidewaysfigure}
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_normatividad_favoritos}
+    \caption{Modelo entidad-relación: normatividad y lugares favoritos}
+    \label{fig:er_normatividad}
+\end{sidewaysfigure}
 
+\begin{sidewaysfigure}
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_seguimiento}
+    \caption{Modelo entidad-relación: ubicación y seguimiento}
+    \label{fig:er_seguimiento}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_reportes}
+    \caption{Modelo entidad-relación: reportes comunitarios}
+    \label{fig:er_reportes}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_navegacion}
+    \caption{Modelo entidad-relación: navegación}
+    \label{fig:er_navegacion}
+\end{sidewaysfigure}
 
 \subsection{Estructura y persistencia de la red de grafos}
+
+La figura \ref{fig:er_red_vial} muestra las tablas de la red vial: \texttt{punto} almacena los nodos del grafo y \texttt{calle} sus aristas, cada una con su longitud y su riesgo normalizado entre 0 y 1 (RN-04), mientras que \texttt{emergencia} guarda el número de atención de cada corporación por zona.
+
+\begin{figure}[htbp]
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.4_Diseno_de_base_de_datos/er_red_vial}
+    \caption{Modelo entidad-relación: red vial y emergencias}
+    \label{fig:er_red_vial}
+\end{figure}

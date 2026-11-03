@@ -1,0 +1,65 @@
+% =========================================================
+% Diagrama entidad-relación: Ubicación y seguimiento  (6.4)
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G4.
+% usuario se detalla en er_usuarios.tex: aquí solo aparece su nombre.
+% enlace.id_ubicacion apunta a ubicacion.id_usuario.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Tablas ----------------
+  \erTabla{ubicacion}{9.12,0}{ubicacion}{
+    \erPKFK{id\_usuario UUID}
+    \erLinea
+    \erAt{ubicacion GEOGRAPHY(POINT, 4326) NOT NULL}
+    \erAt{actualizada\_en TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+  }
+  \erTabla{enlace}{9.12,-3.65}{enlace}{
+    \erPK{id\_enlace UUID DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_ubicacion UUID NOT NULL}
+    \erAt{nombre VARCHAR(100) NOT NULL}
+    \erUK{codigo CHAR(6) NOT NULL UNIQUE}
+    \erUK{token\_acceso UUID NOT NULL UNIQUE}
+    \erSigue{DEFAULT gen\_random\_uuid()}
+    \erAt{fecha\_alta TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{vigencia TIMESTAMPTZ NOT NULL}
+    \erAt{activo BOOLEAN NOT NULL DEFAULT TRUE}
+    \erAt{visible BOOLEAN NOT NULL DEFAULT TRUE}
+  }
+  \erTabla{estado}{19.74,0}{estado\_seguimiento}{
+    \erPK{id\_estado SERIAL}
+    \erLinea
+    \erUK{codigo\_estado VARCHAR(20) NOT NULL UNIQUE}
+    \erAt{descripcion VARCHAR(50) NOT NULL}
+  }
+  \erTabla{seguimiento}{19.74,-3.65}{seguimiento}{
+    \erPK{id\_seguimiento UUID}
+    \erSiguePK{DEFAULT gen\_random\_uuid()}
+    \erLinea
+    \erFK{id\_enlace UUID NOT NULL}
+    \erFK{id\_usuario\_seguidor UUID NOT NULL}
+    \erFK{id\_estado INT NOT NULL}
+    \erAt{tipo\_ingreso tipo\_ingreso\_seguimiento}
+    \erSigue{NOT NULL}
+    \erAt{fecha\_inicio TIMESTAMPTZ NOT NULL}
+    \erSigue{DEFAULT CURRENT\_TIMESTAMP}
+    \erAt{ultima\_vista TIMESTAMPTZ NULL}
+    \erAt{fecha\_fin TIMESTAMPTZ NULL}
+    \erAt{fecha\_confirmacion TIMESTAMPTZ NULL}
+    \erLinea
+    \erUK{UNIQUE (id\_enlace, id\_usuario\_seguidor)}
+  }
+  \erEnum{tipoingreso}{19.74,-10.2}{tipo\_ingreso\_seguimiento}{CODIGO \\ ENLACE}
+  \erCaja{usuario}{1.46,-1.2}{usuario}
+
+  % ---------------- Relaciones ----------------
+  \draw[erRelacion, {erCeroUno}-{erUno}] (ubicacion.west |- usuario) -- node[erVerbo, above=4pt] {actualiza} (usuario.east);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (enlace.north) -- node[erVerbo, right=5pt] {se comparte en} (ubicacion.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (seguimiento.west |- 0,-6) -- node[erVerbo, above=4pt] {recibe} (enlace.east |- 0,-6);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (seguimiento.north) -- node[erVerbo, right=5pt] {clasifica} (estado.south);
+  \draw[erRelacion, {erCeroMuchos}-{erUno}] (seguimiento.west |- 0,-8.9) -| node[erVerbo, pos=0.3, below=4pt] {sigue} (usuario.south);
+
+\end{tikzpicture}
