@@ -1,6 +1,102 @@
 % =========================================================
 % GLOSARIO DE TÉRMINOS
 % El encabezado (\chapter*) está en main.tex.
+% Orden alfabético. Las definiciones siguen el uso que se da a cada
+% término en el documento; las siglas están en acronimos.tex.
 % =========================================================
 
-% Incluir el contenido de los términos aquí.
+\begin{description}
+    \item[Algoritmo A* (A estrella).] Algoritmo de búsqueda del camino más corto que, a diferencia del de Dijkstra, usa una heurística para estimar la distancia restante al destino y explora primero los vértices más prometedores.
+
+    \item[Algoritmo de Dijkstra.] Algoritmo que calcula el camino de menor costo desde un vértice de origen hacia los demás vértices de un grafo cuyas aristas tienen pesos no negativos.
+
+    \item[Área de servicio.] Zona en la que opera el sistema, conformada por las Zonas Territoriales 6, 7 y 8 de la alcaldía Gustavo A. Madero; el origen, el destino y toda la ruta deben quedar dentro de ella (RN-01).
+
+    \item[Arista.] Elemento de un grafo que une dos vértices. En el grafo del sistema, cada arista representa un segmento de calle con su longitud y su nivel de riesgo.
+
+    \item[\textit{Backend}.] Parte de un sistema que se ejecuta en el servidor y gestiona los datos, la lógica de negocio y la autenticación; en este trabajo la provee Supabase.
+
+    \item[Cartografía participativa (\textit{crowdmapping}).] Técnica de recolección de información geográfica en la que los propios ciudadanos registran sucesos sobre un mapa; en el sistema se aplica mediante los reportes ciudadanos de riesgo.
+
+    \item[Cifra negra.] Proporción de delitos que no se denuncian o por los que la autoridad no inicia una carpeta de investigación, por lo que no aparecen en los registros oficiales.
+
+    \item[Código de seguimiento.] Código de seis caracteres alfanuméricos con el que un usuario solicita seguir a otro; el seguimiento inicia cuando el usuario seguido lo confirma (RN-18).
+
+    \item[Criminología ambiental.] Enfoque criminológico que estudia el delito en relación con el lugar y el momento en que ocurre, y con las características del entorno que lo facilitan.
+
+    \item[Definición de terminado.] Conjunto de condiciones que debe cumplir un elemento del \textit{Product Backlog} para considerarse terminado: cumplir sus criterios de aceptación, haber sido revisado por el equipo, haber pasado las pruebas correspondientes y haber sido validado por el \textit{Product Owner}.
+
+    \item[\textit{Edge Function}.] Función que se ejecuta bajo demanda en los servidores de Supabase; en el sistema resguarda las llaves de los servicios externos y realiza procesos como la búsqueda de direcciones y el envío de notificaciones.
+
+    \item[Enlace de seguimiento.] Enlace de un solo uso, con vigencia de 10 minutos, que permite a otra persona seguir en tiempo real la ubicación del usuario que lo genera (RN-17).
+
+    \item[Fórmula del semiverseno (\textit{Haversine}).] Fórmula que calcula la distancia entre dos puntos de la superficie terrestre a partir de su latitud y su longitud.
+
+    \item[\textit{Framework}.] Conjunto de herramientas y bibliotecas que define la estructura base para desarrollar una aplicación; en este trabajo, Flutter.
+
+    \item[Franja horaria.] Periodo del día, nocturno o diurno, con el que se pondera el riesgo de cada tramo al calcular una ruta (RN-04).
+
+    \item[\textit{Frontend}.] Parte de un sistema con la que interactúa directamente el usuario; en este trabajo, la aplicación móvil.
+
+    \item[Generador de crimen.] Lugar que concentra a muchas personas por motivos ajenos al delito, como comercios o estaciones de transporte, y que con ello crea oportunidades delictivas.
+
+    \item[Geocodificación.] Proceso de convertir una dirección o el nombre de un lugar en coordenadas geográficas. La geocodificación inversa convierte coordenadas en una dirección legible.
+
+    \item[Grafo.] Estructura matemática formada por un conjunto de vértices y un conjunto de aristas que los conectan; en este trabajo representa la red vial del área de servicio.
+
+    \item[Grafo ponderado.] Grafo cuyas aristas tienen asociado un valor numérico, llamado peso, como la distancia o el riesgo.
+
+    \item[Heurística.] Estrategia que estima la solución de un problema para orientar la búsqueda; en el algoritmo A*, una estimación de la distancia que falta para llegar al destino.
+
+    \item[Incremento.] Parte funcional del sistema que corresponde a un módulo o conjunto de requisitos y que se integra al producto al concluir su ciclo de diseño, construcción del prototipo, pruebas y refinamiento.
+
+    \item[Límite de trabajo en curso.] Número máximo de tareas que un integrante puede tener a la vez en las columnas En desarrollo y En pruebas del tablero Kanban; en este proyecto es de dos.
+
+    \item[Microentorno construido.] Características físicas inmediatas de una calle, como la iluminación, las fachadas, las banquetas o la vegetación, que influyen en la percepción de inseguridad y en las oportunidades delictivas.
+
+    \item[Modelado del terreno de riesgo.] Técnica que identifica los factores del entorno asociados a la ocurrencia de delitos y los combina en capas para estimar el riesgo de cada lugar.
+
+    \item[Notificación \textit{push}.] Mensaje que un servidor envía al dispositivo del usuario aunque la aplicación no esté abierta.
+
+    \item[Percepción de inseguridad.] Sensación de riesgo que experimenta una persona respecto a ser víctima de un delito en un lugar determinado.
+
+    \item[Peso.] Valor numérico asociado a una arista que representa el costo de recorrerla; en el sistema combina la distancia y el riesgo del segmento de calle.
+
+    \item[\textit{Product Backlog}.] Lista priorizada de los elementos que el sistema debe incorporar, ordenada por el \textit{Product Owner} según el valor que aporta cada uno.
+
+    \item[\textit{Product Owner}.] Rol responsable de crear y ordenar el \textit{Product Backlog} y de validar que los incrementos cumplan con los requerimientos funcionales y no funcionales.
+
+    \item[Prototipo.] Versión preliminar y funcional de un módulo que se construye para validar su diseño y obtener retroalimentación antes de integrarlo al sistema.
+
+    \item[Puntos calientes.] Zonas en las que se concentra una cantidad de delitos mayor a la esperada.
+
+    \item[Red vial.] Conjunto de calles y vialidades de un área, junto con sus intersecciones; en el sistema se modela como un grafo.
+
+    \item[Reporte ciudadano.] Registro que hace un usuario sobre una condición de riesgo en un punto del área de servicio, clasificado en una de las categorías del catálogo (RN-07).
+
+    \item[Reputación.] Valoración de 0 a 5 estrellas de cada usuario, que aumenta o disminuye según se validen o descarten sus reportes (RN-10).
+
+    \item[Ruta segura, rápida y balanceada.] Los tres criterios con los que el sistema calcula rutas: la segura minimiza el riesgo, la rápida minimiza la distancia y la balanceada busca un compromiso entre ambas (RN-02).
+
+    \item[Ruteo.] Cálculo del camino entre un origen y un destino sobre una red.
+
+    \item[\textit{Scrum Master}.] Rol que facilita la aplicación de la metodología, modera las reuniones y la planeación de los \textit{sprints} y elimina los obstáculos que retrasan al equipo.
+
+    \item[Scrumban.] Marco de gestión ágil que combina la estructura de roles y eventos de Scrum con el flujo continuo y los límites de trabajo de Kanban.
+
+    \item[Segmento de calle.] Tramo de vialidad comprendido entre dos intersecciones; corresponde a una arista del grafo.
+
+    \item[\textit{Sprint}.] Periodo fijo de trabajo, de tres semanas en este proyecto, que inicia con una reunión de planeación, tiene una reunión de seguimiento cada semana y termina con una revisión y retrospectiva.
+
+    \item[Tablero Kanban.] Tablero visual que organiza las tareas en columnas según su estado; en este proyecto, \textit{Backlog}, En desarrollo, En pruebas y Terminado.
+
+    \item[Teoría de las actividades rutinarias.] Teoría que explica el delito por la coincidencia, en un mismo tiempo y lugar, de un infractor motivado, un objetivo adecuado y la ausencia de un guardián capaz.
+
+    \item[Tesela.] Fragmento de un mapa que se descarga y se muestra junto con otros para formar el mapa completo.
+
+    \item[\textit{Token}.] Cadena de caracteres que identifica a un usuario o a un dispositivo ante un servicio, como los \textit{tokens} de sesión o el de notificaciones.
+
+    \item[Vértice (nodo).] Elemento de un grafo que se conecta con otros mediante aristas; en la red vial representa una intersección o el extremo de una calle.
+
+    \item[\textit{Webhook}.] Mecanismo por el que un sistema avisa automáticamente a otro cuando ocurre un evento; en el sistema, la base de datos invoca una \textit{Edge Function} al registrarse un reporte.
+\end{description}

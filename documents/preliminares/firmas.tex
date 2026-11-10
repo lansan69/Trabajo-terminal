@@ -1,6 +1,90 @@
 % =========================================================
-% HOJA DE FIRMAS
-% El encabezado (comentado) está en main.tex.
+% HOJA DE FIRMAS: CARTA RESPONSIVA (formato de la CATT)
+% Datos en setup/metadata.tex. Las líneas de firma quedan en blanco
+% para firmarse a mano.
 % =========================================================
+\providecommand{\mesactual}{\ifcase\month\or enero\or febrero\or marzo\or abril\or mayo\or junio\or julio\or agosto\or septiembre\or octubre\or noviembre\or diciembre\fi}
 
-% Contenido pendiente.
+\begin{titlepage}
+    \sffamily\small
+    % Sin cortes de palabra con guion en esta hoja
+    \hyphenpenalty=10000 \exhyphenpenalty=10000
+
+    \begin{center}
+        {\normalsize\bfseries CARTA RESPONSIVA}\\[2pt]
+        \parbox{0.9\textwidth}{\centering\footnotesize Que otorga visto bueno y avala la conclusión de documentación del Trabajo Terminal bajo los lineamientos establecidos por la Comisión Académica de Trabajos Terminales (CATT)}
+    \end{center}
+
+    \vspace{1em}
+
+    \begin{flushright}
+        CDMX, a \fbox{\makebox[1cm]{\the\day}} de \fbox{\makebox[2.6cm]{\mesactual}} de \fbox{\makebox[1.3cm]{\the\year}}
+    \end{flushright}
+
+    \vspace{0.5em}
+
+    \noindent{\bfseries\MakeUppercase{\presidenteCATT}\\
+    PRESIDENTE DE LA COMISIÓN ACADÉMICA DE TRABAJOS TERMINALES\\
+    P R E S E N T E}
+
+    \begin{flushright}
+        {\bfseries EN ATENCIÓN A:}\\
+        \MakeUppercase{\secretariaCATT}\\
+        SECRETARIA EJECUTIVA
+    \end{flushright}
+
+    \vspace{0.5em}
+
+    \noindent Por medio de la presente, se informa que el Trabajo Terminal Núm. \fbox{\period}
+
+    \vspace{1em}
+
+    \noindent\begin{tabular}{@{}p{3.6cm}p{\dimexpr\textwidth-3.6cm-2\tabcolsep\relax}@{}}
+        Que lleva por Título: & \thetitle\\[-0.6em]
+        & \rule{\linewidth}{0.4pt}
+    \end{tabular}
+
+    \vspace{1em}
+
+    \noindent Fue concluido satisfactoriamente por:
+
+    \begin{center}
+        \authors
+    \end{center}
+
+    \noindent Se avala que la documentación entregada mediante discos en formato DVD fue \textbf{revisada de manera precisa y exhaustiva} con el propósito de asegurar que los avances desarrollados bajo la supervisión de quien o quienes suscriben, hayan cumplido con lo planteado en el protocolo original, así como en lo establecido por el Documento Rector de Operación y Evaluación para los Trabajos Terminales de la ESCOM.
+
+    \vspace{2em}
+
+    \noindent{\bfseries ATENTAMENTE\\
+    ``LA TÉCNICA AL SERVICIO DE LA PATRIA''}
+
+    \vspace{4em}
+
+    \noindent\begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \rule{\linewidth}{0.4pt}\\
+        {\small (Nombre completo y Firma)}\\
+        {\small Director/a}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \rule{\linewidth}{0.4pt}\\
+        {\small (Nombre completo y Firma)}\\
+        {\small Director/a}
+    \end{minipage}
+
+    \vfill
+
+    \noindent\begin{minipage}[b]{0.55\textwidth}
+        {\scriptsize\bfseries SUBDIRECCIÓN ACADÉMICA}\\
+        {\tiny DEPARTAMENTO DE FORMACIÓN INTEGRAL E INSTITUCIONAL}\\[3pt]
+        {\Large CATT}\enspace
+        {\tiny\begin{tabular}[b]{@{}l@{}}COMISIÓN\\ ACADÉMICA DE\\ TRABAJOS TERMINALES\end{tabular}}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.38\textwidth}
+        \raggedleft
+        {\tiny FORMATO:}\\
+        \fbox{\makebox[0.9\linewidth]{\scriptsize\bfseries CARTA RESPONSIVA}}
+    \end{minipage}
+\end{titlepage}

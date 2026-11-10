@@ -1,0 +1,72 @@
+% =========================================================
+% SEGUNDA PORTADA (formato de documento técnico de la CATT)
+% Datos en setup/metadata.tex; el resumen se toma de
+% documents/preliminares/resumen.tex para no duplicarlo.
+% =========================================================
+\begin{titlepage}
+    \centering
+
+    \includegraphics[width=0.42\linewidth]{figures/cover/logo_tt.png}
+
+    \vspace{1.2em}
+
+    {\large\bfseries INSTITUTO POLITÉCNICO NACIONAL}\\[2pt]
+    {\bfseries ESCUELA SUPERIOR DE CÓMPUTO}
+
+    \vspace{2em}
+
+    \noindent No de TT: \period \hfill \today
+
+    \vspace{1.5em}
+
+    Documento Técnico
+
+    \vspace{1em}
+
+    {\large\bfseries ``\thetitle''}
+
+    \vspace{2.5em}
+
+    \textit{Presentan}
+
+    \vspace{0.8em}
+
+    \autorUno\textsuperscript{1}\\[2pt]
+    \autorDos\textsuperscript{2}\\[2pt]
+    \autorTres\textsuperscript{3}
+
+    \vspace{2.5em}
+
+    \textit{Directores}
+
+    \vspace{1em}
+
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering \directorUno
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering \directorDos
+    \end{minipage}
+
+    \vspace{2.5em}
+
+    {\bfseries RESUMEN}
+
+    \vspace{0.8em}
+
+    \begin{minipage}{\textwidth}
+        \small
+        \input{documents/preliminares/resumen}
+    \end{minipage}
+
+    \vfill
+
+    \noindent\rule{0.6\textwidth}{0.4pt}
+
+    \begin{flushleft}
+        \footnotesize
+        \textsuperscript{1}\correoUno\\
+        \textsuperscript{2}\correoDos\\
+        \textsuperscript{3}\correoTres
+    \end{flushleft}
+\end{titlepage}
