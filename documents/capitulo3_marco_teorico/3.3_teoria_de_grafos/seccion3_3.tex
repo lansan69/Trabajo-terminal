@@ -22,8 +22,8 @@ Con respecto a los grafos dirigidos, estos son su contraparte, por lo que las ar
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_dirigidoyno.png}
-    \caption{Representación topológica de los grafos dirigidos y no dirigidos}
+    \includegraphics[width=0.6\textwidth]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/Grafo_dir_no_dir.png}
+    \caption{Representación topológica de los grafos dirigidos y no dirigidos (Elaboración propia)}
     \label{fig:grafo_dirigino-no}
 \end{figure}
 
@@ -34,8 +34,8 @@ En caso contrario el grafo no ponderado carece de información o etiquetas asoci
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth, height=0.2\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_ponderado_y_no_ponderado.png}
-    \caption{Representación topológica de los grafos ponderados y no ponderados}
+    \includegraphics[width=0.8\textwidth, height=0.2\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_dir_pond.png}
+    \caption{Representación topológica de los grafos ponderados y no ponderados (Elaboración propia)}
     \label{fig:grafon_pond_no}
 \end{figure}
 
@@ -46,8 +46,8 @@ Al contrario los grafos acíclicos no tienen ningún ciclo. En la mayoría de lo
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth, height=0.15\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafio_ciclico_y_aciclico.png}
-    \caption{Representación topológica de los grafos cíclicos y acíclicos}
+    \includegraphics[width=0.8\textwidth, height=0.15\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_cic_acic.png}
+    \caption{Representación topológica de los grafos cíclicos y acíclicos (Elaboración propia)}
     \label{fig:grafon_ciclico_no}
 \end{figure}
 
@@ -58,8 +58,8 @@ Por su parte, un multigrafo representa una composición estructural de mayor com
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth, height=0.2\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_simple.png}
-    \caption{Representación topológica de los grafos simples y multigrafos}
+    \includegraphics[width=0.8\textwidth, height=0.2\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_simp_mult.png}
+    \caption{Representación topológica de los grafos simples y multigrafos (Elaboración propia)}
     \label{fig:grafon_simp_no}
 \end{figure}
 
@@ -72,8 +72,8 @@ Por el contrario, un grafo no conexo presenta una fragmentación en su arquitect
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth, height=0.15\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_conexo_y_no.png}
-    \caption{Representación topológica de los grafos conexos y no conexos}
+    \includegraphics[width=0.8\textwidth, height=0.15\textheight, keepaspectratio]{figures/capitulo3_marco_teorico/3.3_teoria_de_grafos/grafo_con_nocon.png}
+    \caption{Representación topológica de los grafos conexos y no conexos (Elaboración propia)}
     \label{fig:grafon_con_no}
 \end{figure}
 
@@ -111,17 +111,17 @@ Dentro de esta sección se encuentran los algoritmos enfocados en buscar la ruta
 \begin{itemize}
     \item \textbf{Algoritmo de Dijkstra:} Garantiza encontrar la solución óptima global iterando siempre sobre el menor costo acumulado. Algunos algoritmos iteran sobre un grafo en busca de la solución más optima pero en veces no toman en cuenta todas las alternativas disponibles dentro del grafo y sus múltiples conexiones lo que provoca que al encontrar una solución al final de la iteración, esta misma sea un optimo local, es decir, una solución que es factible para esa ejecución en particular la cual tiene probabilidad de no ser la mejor de todas al no tomar en cuenta todas las alternativas. Dijkstra soluciona el problema del optimo local mediante el calculo de costo acumulado teniendo como único problema que el algoritmo no funciona para ponderaciones negativas lo que lo vuelve el estándar para redes viales urbanas donde las distancias físicas impiden la existencia de pesos negativos. 
 
-    Dijkstra toma un nodo inicial (por ejemplo la dirección de un negocio o casa) y comienza a explorar todas las rutas posibles hacia el nodo de destino mientras lleva el calculo de la distancia acumulada en las diferentes posibilidades de trayectos los cuales se utilizaron para llegar al destino. Inicialmente parte del nodo de origen, "visita" primero al nodo más cercano y con menor coste para posteriormente trasladarse a dicho nodo y seguir repitiendo el proceso seleccionando siempre el camino de menor distancia acumulada conforme van aumentando los desplazamientos entre nodos. Es justo de esta forma como el algoritmo cada que llega a un nuevo "cruce", revisa, reconsidera y actualiza la distancia más corta registrada hasta el punto en el que se encuentra actualmente. En caso de encontrar una ruta más corta a una ubicación que ya había sido visitada por otro camino, el algoritmo reajusta el cálculo para reestructurar sus decisiones junto con la ruta que actualmente esta en ejecución hasta que finalmente consigue llegar al destino por medio del mejor camino posible \cite{dijkstra_udit}. 
+    Dijkstra toma un nodo inicial (por ejemplo la dirección de un negocio o casa) y comienza a explorar todas las rutas posibles hacia el nodo de destino mientras lleva el calculo de la distancia acumulada en las diferentes posibilidades de trayectos los cuales se utilizaron para llegar al destino. Inicialmente parte del nodo de origen, ''visita'' primero al nodo más cercano y con menor coste para posteriormente trasladarse a dicho nodo y seguir repitiendo el proceso seleccionando siempre el camino de menor distancia acumulada conforme van aumentando los desplazamientos entre nodos. Es justo de esta forma como el algoritmo cada que llega a un nuevo ''cruce'', revisa, reconsidera y actualiza la distancia más corta registrada hasta el punto en el que se encuentra actualmente. En caso de encontrar una ruta más corta a una ubicación que ya había sido visitada por otro camino, el algoritmo reajusta el cálculo para reestructurar sus decisiones junto con la ruta que actualmente esta en ejecución hasta que finalmente consigue llegar al destino por medio del mejor camino posible \cite{dijkstra_udit}. 
 
     Dijkstra sigue siendo uno de los algoritmos de búsqueda para el camino más corto más importantes del panorama informático en general por lo que es una alternativa altamente útil al momento de aplicarlo sobre la propuesta de software "Prototipo de aplicación móvil para la generación de rutas peatonales seguras dentro de la alcaldía Gustavo A. Madero". 
     
-    \item \textbf{A-Star (A*):} El algoritmo de A* se base en los principios fundamentales de Dijkstra que lo vuelven tan solido y añade una capa extra de inteligencia integrando la heurística o "intuición" como parte fundamental de la búsqueda \cite{dijkstra_udit}. 
+    \item \textbf{A-Star (A*):} El algoritmo de A* se base en los principios fundamentales de Dijkstra que lo vuelven tan solido y añade una capa extra de inteligencia integrando la heurística o ''intuición'' como parte fundamental de la búsqueda \cite{dijkstra_udit}. 
 
     Antes de profundizar en el funcionamiento del algoritmo A*, primero debemos entender el concepto que se introduce con el uso de este algoritmo, la \textbf{heurística}. En el ámbito de la inteligencia artificial y la búsqueda en grafos, una heurística es un atajo mental, o mejor dicho, un conjunto de diferentes métodos, técnicas o estrategias que permiten solucionar un problema, tomar decisiones, emitir juicios o realizar descubrimientos de forma rápida y práctica.
 
     Las heurística nos permiten reducir drásticamente el tiempo y la energía invertida en la resolución de problemáticas sin embargo muchas veces resultan en conclusiones erróneas o imperfectas a causa de basarse en suposiciones, intuición o conocimientos parciales. Por lo tanto, pueden dar lugar a conclusiones sesgadas y juicios erróneos \cite{heuristica_que}.
 
-    Para el caso especifico de A*, este combina dos variables al momento de estar explorando un grafo: por un lado la primera es la que propiamente Dijkstra introdujo, es decir, la distancia recorrida desde el inicio o "distancia acumulada" y, por otro lado, siendo la segunda variable la heurística que para este caso funge como la estimación de la distancia que falta hasta el destino. Por cada vez que A* realiza la búsqueda de su próximo movimiento, mantiene constantemente el calculo de la suma de lo que ya ha avanzado hasta el momento actual más lo que estima le queda por recorrer hasta llegar a la meta, hasta que finalmente llega al objetivo. Cabe mencionar que el uso de heurística ayuda al algoritmo a decidir de forma más rápida que camino es más conveniente de tomar para llegar a la meta pues "intuye" que su decisión podría ser optima a futuro sin dejar de lado el calculo real de distancia. 
+    Para el caso especifico de A*, este combina dos variables al momento de estar explorando un grafo: por un lado la primera es la que propiamente Dijkstra introdujo, es decir, la distancia recorrida desde el inicio o ''distancia acumulada'' y, por otro lado, siendo la segunda variable la heurística que para este caso funge como la estimación de la distancia que falta hasta el destino. Por cada vez que A* realiza la búsqueda de su próximo movimiento, mantiene constantemente el calculo de la suma de lo que ya ha avanzado hasta el momento actual más lo que estima le queda por recorrer hasta llegar a la meta, hasta que finalmente llega al objetivo. Cabe mencionar que el uso de heurística ayuda al algoritmo a decidir de forma más rápida que camino es más conveniente de tomar para llegar a la meta pues ''intuye'' que su decisión podría ser optima a futuro sin dejar de lado el calculo real de distancia. 
 
     La heurística aplicada en A* y problemas de distancia como el de camino más corto en grafos, suele basarse en la distancia en linea recta hasta el destino u otro cálculo aproximado \cite{dijkstra_udit}. A* prioriza la exploración de los caminos que le parecen más prometedores para llegar al nodo de destino lo que causa la reducción de tiempo en el procesos de exploración visitando menos nodos que Dijkstra y por lo tanto logrando encontrar la solución en menor tiempo y mucho más rápido en muchos de los casos, a diferencia de la implementación normal de Dijkstra. Utilizar A* para el caso especifico del problema planteado en este trabajo terminal resulta extremadamente beneficioso debido a las condiciones que maneja y los requerimientos para su aplicación ya que otorga la posibilidad de plantear una heurística única que en conjunto con el calculo de distancias más la integración de variables de riesgo se pueda obtener una ruta en el menor tiempo posible lo más optimizada y segura para el usuario.  
 
@@ -129,7 +129,7 @@ Dentro de esta sección se encuentran los algoritmos enfocados en buscar la ruta
 
     Bellman-Ford también puede aplicarse a problemas de grafos donde no necesariamente hay aristas con pesos negativos, es decir, se puede utilizar en grafos con aristas que tengan exclusivamente pesos positivos al igual que con Dijkstra, sin embargo, para este tipo de casos es más recomendable utilizar Dijkstra ya que es más rápido y tiene menor complejidad. Pese a que el funcionamiento del algoritmo Bellman-Ford es relativamente sencillo no es recomendable aplicarlo en problemas de ruteo o vialidades donde los pesos negativos son inexistentes ya que es precisamente el funcionamiento de este algoritmo el que lo hace inviable para grafos con una gran cantidad de información como lo son mapas reales los cuales tienen un volumen de intersecciones (vértices |V|) y calles (|aristas |E|) de miles o decenas de miles. En esencia, el algoritmo comprueba todas las aristas a través de la matriz de adyacencia (estructura que representa las conexiones o aristas entre los vértices del grafo). En cada verificación, se busca determinar si es posible reducir la distancia hacia un nodo destino transitando a través del nodo origen y la arista que los conecta. Esta comprobación de todos los bordes se efectúa \textbf{V-1} veces, siendo \textbf{V} el número de vértices de las cual dispone el grafo utilizado. 
 
-    Para el caso del presente trabajo terminal, las variables que conformarán el factor de "inseguridad" se modelaran como costos adicionales acumulativos en las aristas, dicho de otra manera, se desempeñaran como pesos positivos, nunca como bonificaciones que resten costo neto al trayecto. Dado que en este tipo de escenarios no existen aristas negativas, ciclos negativos o condiciones que modifiquen el peso de una arista hasta el punto de que su valor sea menor a cero, la principal ventaja teórica de Bellman-Ford queda sin utilidad, si entonces la principal ventaja de Bellman-Ford queda inútil, entonces no tendría caso tomarlo en cuenta dentro del problema ya que su implementación significa mayor tiempo de procesamiento reduciendo considerablemente la velocidad de la búsqueda gracias a la propia naturaleza en Bellman-Ford donde se examina todo el grafo y aristas repetidamente encontrando los caminos mínimos desde el origen hacia todos los demás vértices del grafo.
+    Para el caso del presente trabajo terminal, las variables que conformarán el factor de ''inseguridad'' se modelaran como costos adicionales acumulativos en las aristas, dicho de otra manera, se desempeñaran como pesos positivos, nunca como bonificaciones que resten costo neto al trayecto. Dado que en este tipo de escenarios no existen aristas negativas, ciclos negativos o condiciones que modifiquen el peso de una arista hasta el punto de que su valor sea menor a cero, la principal ventaja teórica de Bellman-Ford queda sin utilidad, por lo que no tendría caso tomarlo en cuenta dentro del problema ya que su implementación significa mayor tiempo de procesamiento reduciendo considerablemente la velocidad de la búsqueda gracias a la propia naturaleza en Bellman-Ford donde se examina todo el grafo y aristas repetidamente encontrando los caminos mínimos desde el origen hacia todos los demás vértices del grafo.
 
     \item \textbf{Greedy Best-First Search:} El algoritmo de búsqueda voraz primero el mejor o Greedy Best-First Search, es un método de búsqueda informada en inteligencia artificial esto quiere decir que trabaja mediante información adicional dentro de un entorno y sobre un problema para encontrar la solución más rápida. La búsqueda informada utiliza información heurística para guiar el proceso de búsqueda de manera más eficiente. 
 
@@ -185,7 +185,7 @@ Dentro de esta sección se encuentran los algoritmos enfocados en buscar la ruta
 
 \subsubsection{Algoritmos para todos los pares (APSP All-Pairs Shortest Path ):}
 
-Existe un categoría de algoritmos de ruta más corta poco conocida que pese a su poca fama resulta bastante importante en el tema de los algoritmos en grafos ya que introduce un nuevo enfoque para atacar el problema del camino más corto. Estamos hablando de los algoritmos de la familia All-Pairs Shortest Path (APSP) enfocándose ahora en calcular en simultaneo todas las rutas optimas disponibles entre todas las combinaciones posibles de nodos dentro de un grafo. A diferencia de los algoritmos de origen único donde se busca hallar una ruta especifica de un punto A hacia un punto B, en los algoritmos para todos los pares se calcula una matriz completa con toda la información acerca de las rutas más cortas entre todos los pares de nodos, es decir, dentro de la matriz cualquier nodo ya tiene su distancia minina resulta hacia cualquier otro punto del grafo. 
+Existe un categoría de algoritmos de ruta más corta poco conocida que pese a su poca fama resulta bastante importante en el tema de los algoritmos en grafos ya que introduce un nuevo enfoque para atacar el problema del camino más corto. Estamos hablando de los algoritmos de la familia All-Pairs Shortest Path (APSP) enfocándose ahora en calcular en simultaneo todas las rutas optimas disponibles entre todas las combinaciones posibles de nodos dentro de un grafo. A diferencia de los algoritmos de origen único donde se busca hallar una ruta especifica de un punto A hacia un punto B, en los algoritmos para todos los pares se calcula una matriz completa con toda la información acerca de las rutas más cortas entre todos los pares de nodos, es decir, dentro de la matriz cualquier nodo ya tiene su distancia minina resuelta hacia cualquier otro punto del grafo. 
 
 Pese a la utilidad que proporciona este nuevo enfoque algorítmico para resolver el problema del camino más corto, su aplicación dentro del presente trabajo puede llegar a perjudicar gravemente la eficiencia de la aplicación ya que presenta problemas técnicos que pueden conflictuar con el prototipo de aplicación, llegando a afectar negativamente el rendimiento del proyecto. Estas desventajas se analizaran de la mano de la explicación de los dos algoritmos para todos los pares que se detallarán a continuación:
 
@@ -193,7 +193,7 @@ Pese a la utilidad que proporciona este nuevo enfoque algorítmico para resolver
 
     \item \textbf{Floyd-Warshall:} Pertenece a la categoría de algoritmos de caminos más cortos para todos los pares (APSP, por sus siglas en inglés). Utiliza un enfoque de programación dinámica para construir una matriz bidimensional, actualizando iterativamente las distancias al evaluar cada vértice como un nodo intermedio, hasta encontrar las rutas óptimas entre todas las combinaciones posibles en la red \cite{gfg_floyd_warshall, gfg_floyd_warshall_cpp, gfg_floyd_warshall_c}. Posee una complejidad computacional de $O(V^3)$, siendo adecuado principalmente para grafos densos.
     
-    Sin embargo, su integración en este Trabajo Terminal resulta inviable. Modelar la red vial de la alcaldía Gustavo A. Madero implica trabajar con un grafo de gran extensión, lo que provocaría un consumo excesivo de memoria para almacenar la matriz de distancias. El factor más crítico radica en la variable de "inseguridad": al ser dinámica y alimentada mediante \textit{crowdmapping}, cualquier actualización en los pesos de las aristas obligaría al sistema a recalcular la matriz entera desde cero, lo que colapsaría el rendimiento del prototipo.
+    Sin embargo, su integración en este Trabajo Terminal resulta inviable. Modelar la red vial de la alcaldía Gustavo A. Madero implica trabajar con un grafo de gran extensión, lo que provocaría un consumo excesivo de memoria para almacenar la matriz de distancias. El factor más crítico radica en la variable de ''inseguridad'': al ser dinámica y alimentada mediante \textit{crowdmapping}, cualquier actualización en los pesos de las aristas obligaría al sistema a recalcular la matriz entera desde cero, lo que colapsaría el rendimiento del prototipo.
 
     \item \textbf{Algoritmo de Johnson:} Es una alternativa de tipo APSP diseñada para ser asintóticamente más rápida que Floyd-Warshall en grafos dispersos, logrando una complejidad de $O(V^2 \log V + VE)$ \cite{enjoyalgorithms_graphs}. Su funcionamiento es híbrido: primero utiliza el algoritmo de Bellman-Ford sobre un nodo temporal para eliminar aristas de peso negativo mediante una técnica de reponderación, y posteriormente ejecuta el algoritmo de Dijkstra desde cada nodo para calcular la matriz de distancias finales \cite{book_algoritmos_johnson}.
     
@@ -223,11 +223,11 @@ Pese a la utilidad que proporciona este nuevo enfoque algorítmico para resolver
 
 Los algoritmos de búsqueda clásicos operan construyendo un árbol de búsqueda sobre un grafo, comenzando la exploración desde un nodo inicial hasta alcanzar un nodo destino a través de una ruta óptima. En contraste, la \textbf{Búsqueda Bidireccional} consiste en la ejecución de dos exploraciones simultáneas: una hacia adelante desde el nodo origen y otra hacia atrás desde el nodo destino, con el objetivo de encontrar el camino interconectado más rápido en tiempo de ejecución.
 
-Suponiendo que se busca trazar una ruta desde un nodo $A$ hacia un nodo $B$, el enfoque bidireccional despliega los algoritmos de búsqueda de manera concurrente en ambos extremos. La ruta final se establece al detectar el cruce entre ambas exploraciones; es decir, en el momento exacto en que las fronteras de expansión de los dos árboles de búsqueda (tanto de $A$ como de $B$) se intersectan en un nodo intermedio.
+Suponiendo que se busca trazar una ruta desde un nodo $A$ hacia un nodo $B$, el enfoque bidireccional despliega los algoritmos de búsqueda de manera concurrente en ambos extremos. La ruta final se establece al detectar el cruce entre ambas exploraciones; es decir, en el momento exacto en que las fronteras de expansión de los dos árboles de búsqueda (tanto de $A$ como de $B$) se intersecan en un nodo intermedio.
 
 Este enfoque proporciona la ventaja de encontrar en la mayoría de los casos, la ruta óptimas más rápido que los algoritmos de origen único, sin embargo, requiere un diseño cuidadoso, especialmente en lo que respecta los criterios de parada lo que lo vuelve más difícil de implementar y depurar \cite{baeldung_bidirectional_search}. 
     
-El principal impedimento radica en el manejo de nuestra variable dinámica de "inseguridad". En algoritmos heurísticos bidireccionales (como el $A^*$ Bidireccional), diseñar una función heurística admisible y consistente para ambos extremos es matemáticamente complejo. Además, la condición de parada se vuelve un problema crítico: el hecho de que las fronteras de búsqueda del origen y el destino se crucen en un nodo intermedio no garantiza que esa sea la ruta más segura u óptima cuando los pesos de las aristas cambian constantemente por los reportes de \textit{crowdmapping}.
+El principal impedimento radica en el manejo de nuestra variable dinámica de ''inseguridad''. En algoritmos heurísticos bidireccionales (como el $A^*$ Bidireccional), diseñar una función heurística admisible y consistente para ambos extremos es matemáticamente complejo. Además, la condición de parada se vuelve un problema crítico: el hecho de que las fronteras de búsqueda del origen y el destino se crucen en un nodo intermedio no garantiza que esa sea la ruta más segura u óptima cuando los pesos de las aristas cambian constantemente por los reportes de \textit{crowdmapping}.
 
 Resolver estas colisiones y garantizar la ruta óptima con pesos dinámicos añadiría una sobrecarga computacional innecesaria al servidor. El sistema responde de mejor manera al procesamiento de redes viales utilizando búsqueda unidireccional informada para este caso en particular por lo que queda descartado el uso de búsqueda bidireccional.
 
