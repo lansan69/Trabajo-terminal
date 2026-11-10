@@ -1,24 +1,30 @@
 % =========================================================
 % Diagrama de secuencia: Registro e inicio de sesión con Google  (6.3.1)
-% CU-06 · RF-06 · RN-17
-% El mismo flujo sirve desde la pantalla de registro y la de inicio de
-% sesión: el usuario solo confirma su cuenta de Google; no se le pide
-% verificar el correo.
+% CU-02, CU-05, CU-10 · RF-07, RF-13 · RN-25
+% El mismo flujo sirve desde la pantalla de registro (CU-05) y la de inicio
+% de sesión (CU-10): el usuario confirma su cuenta de Google y no se le
+% pide verificar el correo. Al registrarse acepta además el aviso de
+% privacidad, porque CU-05 incluye a CU-02.
 % ---------------------------------------------------------
 % Estilos y macros: setup/settings.tex, sección G3.
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Participantes ----------------
-  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdActor{usr}{0}{Usuario}
   \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
   \sdExterno{goo}{6.0}{Identidad de Google}{Google Sign-In}
   \sdContenedor{auth}{9.1}{Autenticación}{Supabase Auth}
   \sdContenedor{bd}{12.2}{Base de datos}{PostgreSQL}
   \sdIniciar
 
+  % ---------------- Aviso de privacidad (CU-02) ----------------
+  % Solo al registrarse; el inicio de sesión no muestra el aviso
+  \sdAbrir{aviso}{opt}{[se registra desde la pantalla de registro]}{usr}{goo}
+    \sdMensaje[2]{usr}{app}{acepta el aviso\\de privacidad}
+  \sdCerrar{aviso}
+
   % ---------------- Autorización en Google ----------------
-  % El inicio de sesión no muestra el aviso de privacidad
   \sdMensaje[2]{usr}{app}{elige «Continuar\\con Google»}
   \sdMensaje[2]{app}{goo}{solicita el inicio\\de sesión}
   \sdMensaje{goo}{usr}{muestra el selector de cuentas}
@@ -35,7 +41,7 @@
   \sdAbrir{cuenta}{alt}{[el correo ya tiene cuenta con contraseña]}{app}{bd}
     \sdMensaje[2]{auth}{bd}{vincula la identidad\\de Google}
   \sdSino{cuenta}{[usuario nuevo]}
-    \sdMensaje[2]{auth}{bd}{crea la cuenta sin\\verificación}
+    \sdMensaje[3]{auth}{bd}{crea la cuenta sin\\verificación y guarda\\el consentimiento}
   \sdCerrar{cuenta}
 
   \sdRespuesta[2]{auth}{app}{tokens de acceso\\y renovación}

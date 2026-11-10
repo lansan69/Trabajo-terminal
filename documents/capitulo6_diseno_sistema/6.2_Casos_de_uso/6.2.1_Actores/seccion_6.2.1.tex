@@ -1,6 +1,8 @@
 % =========================================================
 % 6.2.1 ACTORES
-% =====
+% Los actores y sus RF coinciden con los diagramas de casos de uso de
+% 6.2.2 (figures/capitulo6_diseno_sistema/6.2_Casos_de_uso/cu_*.tex).
+% =========================================================
 En concordancia con la arquitectura del sistema definida en \ref{sec:arquitectura}, el límite del sistema comprende tanto la aplicación móvil en Flutter como el servicio de base de datos y autenticación en Supabase.
 
 Bajo esta arquitectura, se identifican los siguientes actores primarios (personas) y secundarios (sistemas externos fuera de la frontera del sistema):
@@ -8,20 +10,23 @@ Bajo esta arquitectura, se identifican los siguientes actores primarios (persona
 \subsubsection{Actores primarios}
 
 \begin{description}
-    \item[Usuario (No autenticado):] Estado inicial del peatón usuario al interactuar con la aplicación sin una sesión activa o con una cuenta pendiente de verificación. Sus interacciones comprenden la consulta y aceptación del aviso de privacidad, el registro de cuenta, la verificación de correo y solicitud de reenvío de enlace, el inicio de sesión, la recuperación y restablecimiento de contraseña.
+    \item[Usuario no autenticado:] Estado inicial del usuario al interactuar con la aplicación sin una sesión activa o con una cuenta pendiente de verificación. Sus interacciones comprenden el registro de la cuenta con correo electrónico o con una cuenta de Google, la aceptación del aviso de privacidad, la verificación del correo y la solicitud de un nuevo enlace, el inicio de sesión con correo electrónico o con Google, y la recuperación y el restablecimiento de la contraseña mediante un enlace.
 
-    \item[Usuario (Autenticado):] Usuario con cuenta verificada y sesión activa que se traslada a pie buscando rutas seguras o que monitorea el trayecto de otros usuarios en tiempo real. Interactúa con todos los componentes de la aplicación móvil para gestionar su perfil y cuenta, explorar el mapa y sus marcadores (RF-13, buscar y seleccionar origen y destino, administrar lugares favoritos, solicitar el cálculo de rutas seguras, navegar en tiempo real, registrar, confirmar reportes ciudadanos, configurar alertas, compartir o revocar enlaces de seguimiento, monitorear a otros usuarios, activar el botón de emergencia y consultar la sección de ayuda y simbología.
-
+    \item[Usuario autenticado:] Usuario con sesión activa que se traslada a pie buscando rutas seguras o que monitorea el trayecto de otros usuarios en tiempo real. Interactúa con todos los módulos de la aplicación para gestionar su perfil y su cuenta, consultar el aviso de privacidad y la sección de ayuda y simbología, activar las notificaciones, administrar sus lugares favoritos, explorar el mapa y sus marcadores, buscar y seleccionar el origen y el destino, solicitar el cálculo de rutas, navegar, registrar, confirmar y desmentir reportes, generar y administrar enlaces y códigos de seguimiento, consultar en el mapa a las personas que sigue e iniciar una llamada de emergencia.
 \end{description}
 
 \subsubsection{Actores secundarios (Sistemas externos)}
 
 \begin{description}
-    \item[Proveedor de mapas:] Sistema de software externo que provee los mosaicos (teselas) del mapa base interactivo (RF-13), así como los servicios de geocodificación y autocompletado para la búsqueda y selección de direcciones de origen y destino (RF-14, RF-15).
+    \item[Servicio de correo electrónico:] Servicio externo, implementado con Resend, que envía al usuario los enlaces de verificación del correo y de recuperación de la contraseña, así como sus reenvíos (RF-01, RF-03, RF-10).
 
-    \item[Proveedor de identidad de Google (Google OAuth):] Servicio externo que valida las credenciales de Google del peatón usuario para permitir el registro e inicio de sesión federado en comunicación con el módulo de autenticación del sistema (RF-06).
+    \item[Servicio de identidad de Google:] Servicio externo que autoriza y valida la cuenta de Google del usuario para el registro y el inicio de sesión federados, en comunicación con el servicio de autenticación del sistema (RF-07).
 
-    \item[Servicios del dispositivo móvil (GPS y Telefonía):] Interfaces del sistema operativo móvil que proveen al prototipo la ubicación en vivo en primer y segundo plano (RF-28, RF-29, RF-30, RF-38, RF-40, RF-41), el despacho de notificaciones locales, el selector de aplicaciones de mensajería y la ejecución de llamadas telefónicas de emergencia (RF-44).
+    \item[Servicio de notificaciones push:] Servicio externo, implementado con Firebase Cloud Messaging, que entrega en el dispositivo las alertas de reportes cercanos y los avisos de navegación dirigidos a los seguidores (RF-29, RF-33, RF-35, RF-42).
+
+    \item[Servicio de geocodificación:] Servicio externo, implementado con Geoapify y con Photon como respaldo, que traduce direcciones a coordenadas y coordenadas a texto, y que ofrece el autocompletado para la búsqueda de lugares favoritos y de direcciones de origen y destino (RF-16 a RF-18).
+
+    \item[Servicio de mapas:] Servicio externo, implementado con MapLibre y teselas de OpenFreeMap, que provee el mapa base interactivo y sobre el que se dibujan los marcadores, los trazados de las rutas, la navegación en tiempo real y la ubicación de la persona seguida (\mbox{RF-15}, \mbox{RF-18} a \mbox{RF-20}, \mbox{RF-22}, \mbox{RF-29}, \mbox{RF-31}, \mbox{RF-32}, \mbox{RF-46}).
 \end{description}
 
 \begin{table}[htbp]
@@ -29,21 +34,23 @@ Bajo esta arquitectura, se identifican los siguientes actores primarios (persona
 \caption{Relación de actores con los requerimientos funcionales del sistema.}
 \label{tab:actores_sistema}
 \footnotesize
-\begin{tabular}{p{3.4cm} p{2.2cm} p{6.2cm} p{2.8cm}}
+\begin{tabular}{L{3.0cm} L{2.0cm} p{5.6cm} L{2.7cm}}
 \hline
 \textbf{Actor} & \textbf{Tipo} & \textbf{Descripción en el sistema} & \textbf{RF asociados} \\
 \hline
-Peatón usuario (No autenticado) & Primario (Persona) & Registra su cuenta, verifica su correo, inicia sesión, recupera su contraseña, acepta el aviso de privacidad o activa el botón de emergencia. & RF-01 a RF-06, RF-09, RF-10, RF-12, RF-44 \\
+Usuario no autenticado & Primario (Persona) & Registra su cuenta con correo o con Google, acepta el aviso de privacidad, verifica su correo, inicia sesión y recupera su contraseña. & RF-01 a RF-07, RF-10, RF-11, RF-13 \\
 \hline
-Peatón usuario (Autenticado) & Primario (Persona) & Consulta su perfil, explora el mapa, gestiona favoritos, solicita rutas seguras, navega, reporta y valida incidentes, y comparte su trayecto. & RF-07, RF-08, RF-11 a RF-41, RF-43 a RF-45 \\
+Usuario autenticado & Primario (Persona) & Gestiona su perfil y sus favoritos, explora el mapa, solicita rutas, navega, reporta y valida incidentes, comparte su trayecto, sigue a otros usuarios e inicia llamadas de emergencia. & RF-08, RF-09, RF-12 a RF-38, RF-40 a RF-48 \\
 \hline
-Destinatario & Primario (Persona) & Visualiza en tiempo real el trayecto compartido por un peatón usuario mediante un enlace activo. & RF-42 \\
+Servicio de correo electrónico & Secundario (Sistema externo) & Envía los enlaces de verificación y de recuperación de la contraseña. & RF-01, RF-03, RF-10 \\
 \hline
-Proveedor de mapas & Secundario (Sistema externo) & Provee los mosaicos del mapa base interactivo y la búsqueda de direcciones. & RF-13, RF-14, RF-15 \\
+Servicio de identidad de Google & Secundario (Sistema externo) & Autoriza y valida la cuenta de Google del usuario. & RF-07 \\
 \hline
-Proveedor de identidad de Google & Secundario (Sistema externo) & Autentica la cuenta de Google del usuario para el acceso federado. & RF-06 \\
+Servicio de notificaciones push & Secundario (Sistema externo) & Entrega las alertas de reportes cercanos y los avisos de navegación. & RF-29, RF-33, RF-35, RF-42 \\
 \hline
-Servicios del dispositivo móvil & Secundario (Sistema externo) & Provee lecturas GPS, notificaciones, compartición por mensajería y llamadas telefónicas. & RF-28 a RF-30, RF-34, RF-38, RF-40, RF-41, RF-44 \\
+Servicio de geocodificación & Secundario (Sistema externo) & Traduce direcciones a coordenadas y viceversa, y autocompleta las búsquedas. & RF-16 a RF-18 \\
+\hline
+Servicio de mapas & Secundario (Sistema externo) & Provee el mapa base y dibuja marcadores, rutas y posiciones en tiempo real. & RF-15, RF-18 a RF-20, RF-22, RF-29, RF-31, RF-32, RF-46 \\
 \hline
 \end{tabular}
 \end{table}

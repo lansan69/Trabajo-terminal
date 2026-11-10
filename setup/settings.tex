@@ -179,6 +179,10 @@
 \newcolumntype{K}{>{\bfseries\raggedright\arraybackslash}p{1.6cm}}
 \newcolumntype{Q}{p{\dimexpr\textwidth-1.6cm-4\tabcolsep-3\arrayrulewidth\relax}}
 
+% L{ancho}: columna p alineada a la izquierda, sin estirar los espacios
+% Uso: \begin{tabular}{L{3cm} L{2cm}}           (6.2.1 Actores)
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
 % Las longtable quedan alineadas al margen izquierdo y derecho, sin sangría
 % (5.1.2, 5.2, 5.4)
 \setlength{\LTleft}{0pt}

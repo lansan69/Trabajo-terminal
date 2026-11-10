@@ -1,0 +1,45 @@
+% =========================================================
+% Diagrama de casos de uso: Módulo de Autenticación  (6.2.2)
+% ---------------------------------------------------------
+% Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
+% CU-07 extiende a CU-06 y queda justo encima de él; el caso de Google
+% (CU-10) va al final, junto a su sistema externo.
+% =========================================================
+\begin{tikzpicture}[node distance=0.35cm]
+
+  % ---------------- Casos de uso ----------------
+  \node[cuCaso] (cu07) at (5.4, 0) {CU-07: Solicitar nuevo enlace (RF-04)};
+  \node[cuCaso, below=0.9cm of cu07] (cu06) {CU-06: Solicitar recuperación de contraseña mediante enlace (RF-10)};
+  \node[cuCaso, below=of cu06] (cu08) {CU-08: Restablecer contraseña mediante enlace (RF-11)};
+  \node[cuCaso, below=of cu08] (cu09) {CU-09: Iniciar sesión con correo electrónico (RF-06)};
+  \node[cuCaso, below=of cu09] (cu10) {CU-10: Iniciar sesión con cuenta de Google (RF-07)};
+
+  % ---------------- Límite del módulo ----------------
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu07.north)+(0,0.3)$)
+    {Módulo de Autenticación};
+  \begin{scope}[on background layer]
+    \node[cuLimite, fit=(titulo)(cu07)(cu10)] (limite) {};
+  \end{scope}
+
+  % ---------------- Actores ----------------
+  % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
+  % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
+  \pic (guest)  at (cu08.north -| 0,0) {cuActor={Usuario no\\autenticado}};
+  \pic (email)  at ($(limite.east |- cu06.east)+(3.4,-0.2)$) {cuActorExterno={Servicio de\\correo electrónico}};
+  \pic (google) at ($(limite.east |- cu10.east)+(3.4,-0.2)$) {cuActorExterno={Servicio de\\identidad\\de Google}};
+
+  \begin{pgfonlayer}{flechas}
+    % ---------------- Asociaciones del usuario ----------------
+    \foreach \cu in {cu07, cu06, cu08, cu09, cu10}
+      \draw[cuAsociacion] (guest-der) -- (\cu.west);
+
+    % ---------------- Extensión ----------------
+    \draw[cuDependencia] (cu07.south) -- (cu06.north)
+      node[cuEstereotipo, midway, right] {\guillemotleft extend\guillemotright};
+
+    % ---------------- Sistemas externos ----------------
+    \cuExterna{cu06.east}{email}{envía enlace\\de recuperación}
+    \cuExterna{cu10.east}{google}{autoriza y valida}
+  \end{pgfonlayer}
+
+\end{tikzpicture}

@@ -1,0 +1,45 @@
+% =========================================================
+% Diagrama de secuencia: Monitoreo  (6.3.1)
+% CU-41 · RF-43, RF-46 · RN-19, RN-21
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% Seis participantes: cabeceras de 2.1 cm. A la izquierda, el usuario
+% seguido; a la derecha, quien lo sigue.
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Usuario\\seguido}
+  \sdContenedor[2.1cm]{app}{2.65}{Aplicación móvil}{Flutter}
+  \sdExterno[2.1cm]{gps}{5.3}{GPS del móvil}{Android}
+  \sdContenedor[2.1cm]{api}{7.95}{API REST}{Supabase}
+  \sdContenedor[2.1cm]{bd}{10.6}{Base de datos}{PostgreSQL}
+  \sdActor{seg}{13.25}{Seguidor}
+  \sdIniciar
+
+  % ---------------- Publicación de la ubicación ----------------
+  \sdAbrir{ubicacion}{loop}{[hay seguimientos activos]}{app}{bd}
+    \sdMensaje{app}{gps}{solicita la ubicación}
+    \sdRespuesta{gps}{app}{coordenadas}
+    \sdMensaje[3]{app}{api}{inserta la ubicación\\en los seguimientos\\activos}
+    \sdMensaje[2]{api}{bd}{actualiza\\en la BD}
+    \sdRespuesta{bd}{api}{confirmación}
+    \sdRespuesta{api}{app}{confirmación}
+  \sdCerrar{ubicacion}
+
+  % ---------------- Consulta del seguidor ----------------
+  \sdMensaje{seg}{app}{consulta la ubicación de otro usuario}
+  \sdMensaje{app}{api}{verifica los permisos}
+  \sdMensaje{api}{bd}{consulta}
+  \sdRespuesta{bd}{api}{confirmación}
+  \sdRespuesta{api}{app}{confirmación}
+
+  \sdAbrir{permiso}{alt}{[no tiene permisos]}{usr}{seg}
+    \sdMensaje{app}{seg}{error}
+  \sdSino{permiso}{[tiene permisos]}
+    \sdMensaje{app}{seg}{ubicación y navegación del usuario}
+    \sdRespuesta[2]{app}{usr}{aviso de\\monitoreo}
+  \sdCerrar{permiso}
+
+  \sdTerminar
+\end{tikzpicture}

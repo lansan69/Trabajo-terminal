@@ -1,52 +1,52 @@
 % =========================================================
-% Diagrama de casos de uso: Módulo de Lugares Favoritos  (6.2.2)
+% Diagrama de casos de uso: Módulo de Favoritos  (6.2.2)
 % ---------------------------------------------------------
 % Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
-% CU-17, CU-18 y CU-19 extienden a CU-16. CU-17 y CU-18 quedan junto a
-% CU-16; la extensión de CU-19 rodea a CU-18 por la izquierda, por debajo
+% CU-18, CU-20 y CU-21 extienden a CU-19. CU-18 y CU-20 quedan junto a
+% CU-19; la extensión de CU-21 rodea a CU-20 por la izquierda, por debajo
 % de las flechas del usuario, para no cruzar ninguna línea.
 % =========================================================
 \begin{tikzpicture}[node distance=0.35cm]
 
   % ---------------- Casos de uso ----------------
-  \node[cuCaso] (cu17) at (5.4, 0) {CU-17: Guardar lugar favorito (RF-17)};
-  \node[cuCaso, below=1.3cm of cu17] (cu16) {CU-16: Consultar lugares favoritos (RF-17)};
-  \node[cuCaso, below=0.9cm of cu16] (cu18) {CU-18: Editar lugar favorito (RF-17)};
-  \node[cuCaso, below=of cu18] (cu19) {CU-19: Eliminar lugar favorito (RF-17)};
+  \node[cuCaso] (cu18) at (5.4, 0) {CU-18: Agregar lugar favorito (RF-18)};
+  \node[cuCaso, below=1.3cm of cu18] (cu19) {CU-19: Consultar lugares favoritos (RF-18)};
+  \node[cuCaso, below=0.9cm of cu19] (cu20) {CU-20: Editar lugares favoritos (RF-18)};
+  \node[cuCaso, below=of cu20] (cu21) {CU-21: Eliminar lugares favoritos (RF-18)};
 
   % ---------------- Límite del módulo ----------------
-  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu17.north)+(0,0.3)$)
-    {Módulo de Lugares Favoritos};
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu18.north)+(0,0.3)$)
+    {Módulo de Favoritos};
   \begin{scope}[on background layer]
-    \node[cuLimite, fit=(titulo)(cu17)(cu19)] (limite) {};
+    \node[cuLimite, fit=(titulo)(cu18)(cu21)] (limite) {};
   \end{scope}
 
   % ---------------- Actores ----------------
   % Cada actor externo va a la altura de su caso más bajo: sus líneas llegan
   % de lado o desde arriba y no cruzan el nombre, que va debajo del monito.
-  \pic (user)  at (cu16.north -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
-  % Geocodificación más arriba: la línea CU-17 -> mapas pasa por debajo de su nombre
-  \pic (geo)   at ($(limite.east |- cu17.east)+(3.4,0.8)$) {cuActorExterno={Servicio de\\geocodificación}};
-  \pic (mapas) at ($(limite.east |- cu16.east)+(3.4,-0.2)$) {cuActorExterno={Servicio\\de mapas}};
+  \pic (user)  at (cu19.north -| 0,0) {cuActor={Usuario\\autenticado}};
+  % Geocodificación más arriba: la línea CU-18 -> mapas pasa por debajo de su nombre
+  \pic (geo)   at ($(limite.east |- cu18.east)+(3.4,0.8)$) {cuActorExterno={Servicio de\\geocodificación}};
+  \pic (mapas) at ($(limite.east |- cu19.east)+(3.4,-0.2)$) {cuActorExterno={Servicio\\de mapas}};
 
   \begin{pgfonlayer}{flechas}
     % ---------------- Asociaciones del usuario ----------------
-    \foreach \cu in {cu17, cu16}
+    \foreach \cu in {cu18, cu19}
       \draw[cuAsociacion] (user-der) -- (\cu.west);
 
     % ---------------- Extensiones ----------------
-    \draw[cuDependencia] (cu17.south) -- (cu16.north)
+    \draw[cuDependencia] (cu18.south) -- (cu19.north)
       node[cuEstereotipo, midway, right] {\guillemotleft extend\guillemotright};
-    \draw[cuDependencia] (cu18.north) -- (cu16.south)
+    \draw[cuDependencia] (cu20.north) -- (cu19.south)
       node[cuEstereotipo, midway, right] {\guillemotleft extend\guillemotright};
     \draw[cuDependencia, rounded corners=6pt]
-      (cu19.west) -- ++(-0.45,0) |- ($(cu16.south west)!0.5!(cu16.west)$)
+      (cu21.west) -- ++(-0.45,0) |- ($(cu19.south west)!0.5!(cu19.west)$)
       node[cuEstereotipo, pos=0.25, left] {\guillemotleft extend\guillemotright};
 
     % ---------------- Sistemas externos ----------------
-    \cuExterna[xshift=-0.6cm, yshift=0.15cm]{cu17.east}{geo}{traduce\\dirección a\\coordenadas}
-    \cuExterna{cu17.south east}{mapas}{selecciona punto}
-    \cuExterna{cu16.east}{mapas}{renderiza pines}
+    \cuExterna[xshift=-0.6cm, yshift=0.15cm]{cu18.east}{geo}{traduce\\dirección a\\coordenadas}
+    \cuExterna{cu18.south east}{mapas}{selecciona punto}
+    \cuExterna{cu19.east}{mapas}{renderiza puntos}
   \end{pgfonlayer}
 
 \end{tikzpicture}

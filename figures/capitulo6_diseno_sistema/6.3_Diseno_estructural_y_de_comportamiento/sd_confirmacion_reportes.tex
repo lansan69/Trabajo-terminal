@@ -1,0 +1,35 @@
+% =========================================================
+% Diagrama de secuencia: Confirmación de reportes  (6.3.1)
+% CU-34, CU-35 · RF-40, RF-41 · RN-08, RN-11, RN-12
+% ---------------------------------------------------------
+% Estilos y macros: setup/settings.tex, sección G3.
+% El radio de consulta es el de confirmación de RN-12 (1 km).
+% =========================================================
+\begin{tikzpicture}
+
+  % ---------------- Participantes ----------------
+  \sdActor{usr}{0}{Usuario}
+  \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
+  \sdExterno{gps}{6.0}{GPS del móvil}{Android}
+  \sdContenedor{api}{9.1}{API REST}{Supabase}
+  \sdContenedor{bd}{12.2}{Base de datos}{PostgreSQL, PostGIS}
+  \sdIniciar
+
+  % ---------------- Consulta de reportes pendientes (CU-34) ----------------
+  \sdMensaje{usr}{app}{abre los reportes}
+  \sdMensaje{app}{gps}{solicita la ubicación}
+  \sdRespuesta{gps}{app}{coordenadas}
+  \sdMensaje[2]{app}{api}{solicita los reportes pendientes\\en un radio de 1 km}
+  \sdMensaje[2]{api}{bd}{consulta los\\reportes}
+  \sdRespuesta{bd}{api}{reportes}
+  \sdRespuesta{api}{app}{reportes}
+  \sdRespuesta{app}{usr}{reportes}
+
+  % ---------------- Confirmación o desmentido (CU-35) ----------------
+  \sdMensaje[3]{usr}{app}{selecciona la\\opción\\correspondiente}
+  \sdMensaje[2]{app}{api}{actualiza las valoraciones\\del reporte}
+  \sdMensaje[2]{api}{bd}{solicita\\actualizar}
+  \sdPropioIzq[3]{bd}{actualiza el estado del\\reporte y modifica el\\peso de la calle}
+
+  \sdTerminar
+\end{tikzpicture}

@@ -1,45 +1,37 @@
 % =========================================================
-% Diagrama de secuencia: Registro de un reporte de riesgo  (6.3.1)
-% CU-31 · RF-29, RF-36, RF-37, RF-38 · RN-01, RN-06, RN-07, RN-12
+% Diagrama de secuencia: Generación de reportes  (6.3.1)
+% CU-32 · RF-30, RF-37, RF-39 · RN-01, RN-07, RN-08
 % ---------------------------------------------------------
 % Estilos y macros: setup/settings.tex, sección G3.
-% La validación por confirmaciones de otros usuarios (CU-33, RN-07)
-% ocurre después y no forma parte de este flujo.
+% La confirmación por otros usuarios (CU-34, CU-35) está en
+% sd_confirmacion_reportes.tex.
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Participantes ----------------
-  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdActor{usr}{0}{Usuario}
   \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
-  \sdExterno{dev}{6.0}{Servicios del dispositivo}{GPS, Android}
-  \sdContenedor{api}{9.1}{API REST}{Supabase PostgREST}
+  \sdExterno{gps}{6.0}{GPS del móvil}{Android}
+  \sdContenedor{api}{9.1}{API REST}{Supabase}
   \sdContenedor{bd}{12.2}{Base de datos}{PostgreSQL, PostGIS}
   \sdIniciar
 
-  \sdMensaje[2]{usr}{app}{abre «Reportar\\incidente»}
+  \sdMensaje{usr}{app}{abre «Reportar»}
 
-  \sdAbrir{lugar}{alt}{[usa su ubicación actual]}{usr}{dev}
-    \sdMensaje[2]{app}{dev}{solicita la ubicación\\actual}
-    \sdRespuesta{dev}{app}{coordenadas}
-  \sdSino{lugar}{[elige un punto en el mapa]}
-    \sdMensaje[2]{usr}{app}{selecciona el punto\\en el mapa}
+  \sdAbrir{lugar}{alt}{[usa su ubicación actual]}{usr}{gps}
+    \sdMensaje{app}{gps}{solicita la ubicación}
+    \sdRespuesta{gps}{app}{coordenadas}
+  \sdSino{lugar}{[selecciona un punto en el mapa]}
+    \sdMensaje[2]{usr}{app}{selecciona el\\punto en el mapa}
   \sdCerrar{lugar}
 
-  \sdMensaje[3]{usr}{app}{elige la categoría\\y escribe una\\descripción opcional}
-  \sdMensaje[2]{app}{api}{inserta el reporte con categoría,\\ubicación y descripción}
-  \sdMensaje[2]{api}{bd}{solicita guardar\\el reporte}
-  \sdPropioIzq[3]{bd}{comprueba la cuenta verificada,\\el área de servicio\\y el límite de 10 en 24 h}
-
-  \sdAbrir{valido}{alt}{[límite alcanzado o fuera del área]}{usr}{bd}
-    \sdRespuesta{bd}{api}{rechazo}
-    \sdRespuesta{api}{app}{error}
-    \sdMensaje[2]{app}{usr}{avisa que alcanzó\\el límite}
-  \sdSino{valido}{[reporte válido]}
-    \sdPropioIzq[2]{bd}{guarda el reporte en\\estado pendiente}
-    \sdRespuesta{bd}{api}{reporte registrado}
-    \sdRespuesta{api}{app}{confirmación}
-    \sdMensaje{app}{usr}{«Reporte enviado»}
-  \sdCerrar{valido}
+  \sdMensaje[2]{usr}{app}{llena los detalles\\del reporte}
+  \sdMensaje{app}{api}{inserta el reporte}
+  \sdMensaje{api}{bd}{solicita guardar}
+  \sdPropioIzq[3]{bd}{relaciona el reporte con el\\segmento de calle y asigna\\el peso preventivo}
+  \sdRespuesta[2]{bd}{api}{reporte\\registrado}
+  \sdRespuesta{api}{app}{confirmación}
+  \sdRespuesta{app}{usr}{reporte enviado}
 
   \sdTerminar
 \end{tikzpicture}

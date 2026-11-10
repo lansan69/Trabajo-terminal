@@ -1,50 +1,43 @@
 % =========================================================
-% Diagrama de secuencia: Navegación con recálculo por desvío  (6.3.1)
-% CU-29 · RF-29, RF-30, RF-31, RF-33 · RN-18
+% Diagrama de secuencia: Navegación  (6.3.1)
+% CU-30, CU-31 · RF-29 a RF-32, RF-34, RF-43 · RN-05
 % ---------------------------------------------------------
 % Estilos y macros: setup/settings.tex, sección G3.
 % =========================================================
 \begin{tikzpicture}
 
   % ---------------- Participantes ----------------
-  \sdActor{usr}{0}{Peatón\\usuario}
+  \sdActor{usr}{0}{Usuario}
   \sdContenedor{app}{2.9}{Aplicación móvil}{Flutter}
-  \sdExterno{dev}{6.0}{Servicios del dispositivo}{GPS, Android}
+  \sdExterno{gps}{6.0}{GPS del móvil}{Android}
   \sdContenedor{api}{9.1}{API REST}{Supabase}
-  \sdContenedor{bd}{12.2}{Base de datos}{PostGIS, pgRouting}
+  \sdContenedor{bd}{12.2}{Base de datos}{PostgreSQL, pgRouting}
   \sdIniciar
 
-  \sdMensaje[2]{usr}{app}{inicia la navegación\\de la ruta elegida}
+  \sdMensaje{usr}{app}{inicia la navegación}
 
-  % ---------------- Permiso de ubicación (RF-29) ----------------
-  \sdAbrir{permiso}{opt}{[sin permiso de ubicación]}{usr}{dev}
-    \sdMensaje[2]{app}{dev}{solicita el permiso\\de ubicación}
-    \sdMensaje{dev}{usr}{muestra el diálogo de permiso}
-    \sdMensaje{usr}{dev}{concede el permiso}
-    \sdRespuesta[2]{dev}{app}{permiso\\concedido}
+  % ---------------- Permiso de ubicación (RF-30) ----------------
+  \sdAbrir{permiso}{opt}{[sin permiso de ubicación]}{usr}{gps}
+    \sdMensaje{usr}{app}{concede el permiso}
   \sdCerrar{permiso}
-  \sdMensaje[2]{app}{dev}{activa la ubicación\\en primer plano}
 
   % ---------------- Seguimiento de la posición ----------------
-  \sdAbrir{nav}{loop}{[mientras la navegación esté en curso]}{usr}{bd}
-    \sdMensaje{dev}{app}{nueva posición}
-    \sdPropio[2]{app}{actualiza el marcador\\y el avance}
-    \sdAbrir[0.55]{segA}{opt}{[hay seguimientos activos]}{app}{api}
-      \sdMensaje[2]{app}{api}{publica la posición\\en Realtime}
-    \sdCerrar{segA}
-    \sdAbrir[0.55]{desvio}{opt}{[desvío mayor a 50 m]}{app}{bd}
-      \sdMensaje[3]{app}{api}{solicita una nueva ruta desde\\la posición actual al destino\\con el mismo criterio}
-      \sdMensaje[2]{api}{bd}{recalcula con\\pgRouting}
+  \sdAbrir{nav}{loop}{[navegación en curso]}{usr}{bd}
+    \sdMensaje{gps}{app}{nueva ubicación}
+    \sdRespuesta[2]{app}{usr}{avance de la\\navegación}
+    \sdAbrir[0.55]{seg}{opt}{[hay un enlace de seguimiento activo]}{app}{api}
+      \sdMensaje[2]{app}{api}{publica la posición\\en tiempo real}
+    \sdCerrar{seg}
+    \sdAbrir[0.5]{desvio}{opt}{[desvío de la ruta]}{usr}{bd}
+      \sdMensaje{app}{api}{solicita una nueva ruta}
+      \sdMensaje{api}{bd}{genera la consulta}
       \sdRespuesta{bd}{api}{nueva ruta}
       \sdRespuesta{api}{app}{nueva ruta}
-      \sdMensaje[2]{app}{usr}{traza la nueva ruta y\\avisa el recálculo}
-      \sdAbrir[0.4]{segB}{opt}{[hay seguimientos activos]}{app}{api}
-        \sdMensaje[2]{app}{api}{notifica el desvío\\a los seguidores}
-      \sdCerrar{segB}
+      \sdRespuesta[2]{app}{usr}{trazo de la\\nueva ruta}
     \sdCerrar{desvio}
   \sdCerrar{nav}
 
-  \sdMensaje[2]{app}{usr}{indica la llegada\\al destino}
+  \sdRespuesta[2]{app}{usr}{llegada al\\destino}
 
   \sdTerminar
 \end{tikzpicture}

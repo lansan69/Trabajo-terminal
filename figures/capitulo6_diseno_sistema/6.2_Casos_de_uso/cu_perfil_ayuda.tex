@@ -2,33 +2,36 @@
 % Diagrama de casos de uso: Módulo de Perfil y Ayuda  (6.2.2)
 % ---------------------------------------------------------
 % Estilos: setup/settings.tex, sección G2 (Diagramas de casos de uso).
-% CU-15 es nuevo; desde aquí la numeración de los módulos siguientes
-% aumenta en uno respecto a los diagramas anteriores en PlantUML.
+% Solo CU-17 usa un sistema externo; va al final, junto a él.
 % =========================================================
 \begin{tikzpicture}[node distance=0.35cm]
 
   % ---------------- Casos de uso ----------------
-  \node[cuCaso] (cu09) at (5.4, 0) {CU-09: Cambiar contraseña (RF-08)};
-  \node[cuCaso, below=of cu09] (cu10) {CU-10: Cerrar sesión (RF-07)};
-  \node[cuCaso, below=of cu10] (cu11) {CU-11: Eliminar cuenta (RF-11)};
-  \node[cuCaso, below=of cu11] (cu12) {CU-12: Consultar aviso de privacidad (RF-12)};
-  \node[cuCaso, below=of cu12] (cu13) {CU-13: Consultar sección de ayuda y simbología (RF-47)};
-  \node[cuCaso, below=of cu13] (cu14) {CU-14: Editar datos del perfil (RF-13)};
-  \node[cuCaso, below=of cu14] (cu15) {CU-15: Activar las notificaciones};
+  \node[cuCaso] (cu11) at (5.4, 0) {CU-11: Cambiar contraseña (RF-09)};
+  \node[cuCaso, below=of cu11] (cu12) {CU-12: Cerrar sesión (RF-08)};
+  \node[cuCaso, below=of cu12] (cu13) {CU-13: Eliminar cuenta (RF-12)};
+  \node[cuCaso, below=of cu13] (cu14) {CU-14: Consultar el aviso de privacidad (RF-13)};
+  \node[cuCaso, below=of cu14] (cu15) {CU-15: Consultar sección de ayuda y simbología (RF-48)};
+  \node[cuCaso, below=of cu15] (cu16) {CU-16: Editar datos del perfil (RF-14)};
+  \node[cuCaso, below=of cu16] (cu17) {CU-17: Activar notificaciones (RF-42)};
 
   % ---------------- Límite del módulo ----------------
-  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu09.north)+(0,0.3)$)
+  \node[cuLimiteTitulo, anchor=south] (titulo) at ($(cu11.north)+(0,0.3)$)
     {Módulo de Perfil y Ayuda};
   \begin{scope}[on background layer]
-    \node[cuLimite, fit=(titulo)(cu09)(cu15)] (limite) {};
+    \node[cuLimite, fit=(titulo)(cu11)(cu17)] (limite) {};
   \end{scope}
 
   % ---------------- Actores ----------------
-  \pic (user) at (cu12.north -| 0,0) {cuActor={Peatón usuario\\(Autenticado)}};
+  \pic (user) at (cu14.north -| 0,0) {cuActor={Usuario\\autenticado}};
+  \pic (push) at ($(limite.east |- cu17.east)+(3.4,-0.2)$) {cuActorExterno={Servicio de\\notificaciones push}};
 
   \begin{pgfonlayer}{flechas}
-    \foreach \cu in {cu09, cu10, cu11, cu12, cu13, cu14, cu15}
+    \foreach \cu in {cu11, cu12, cu13, cu14, cu15, cu16, cu17}
       \draw[cuAsociacion] (user-der) -- (\cu.west);
+
+    % ---------------- Sistema externo ----------------
+    \cuExterna{cu17.east}{push}{envía alertas}
   \end{pgfonlayer}
 
 \end{tikzpicture}

@@ -6,7 +6,7 @@
 
 \subsection{Diagramas de secuencia}
 
-Los diagramas de secuencia describen, en orden cronológico, los mensajes que intercambian los participantes de un caso de uso. Se modelaron los ocho flujos que involucran a más partes de la arquitectura: al menos uno por cada módulo de la sección \ref{sec:casos_uso}, incluyendo los que dependen de los proveedores externos seleccionados en la sección \ref{sec:factibilidad_tecnica}.
+Los diagramas de secuencia describen, en orden cronológico, los mensajes que intercambian los participantes de un caso de uso. Se modelaron los diez flujos que involucran a más partes de la arquitectura entre los casos de uso de la sección \ref{sec:casos_uso}, incluyendo los que dependen de los proveedores externos seleccionados en la sección \ref{sec:factibilidad_tecnica}.
 
 Los participantes corresponden a los contenedores del diagrama de la figura \ref{fig:diagrama_contenedor}: la aplicación móvil, el servicio de autenticación, la API REST y la base de datos, junto con los sistemas externos. Las cajas azules representan contenedores del sistema y las grises, sistemas externos; debajo de cada una, su línea de vida es la línea discontinua vertical. Las flechas continuas son llamadas, las discontinuas son respuestas y los mensajes están numerados en el orden en que ocurren. Los marcos indican fragmentos combinados: \textbf{alt} para alternativas excluyentes, separadas por una línea discontinua, \textbf{opt} para pasos que solo ocurren si se cumple la condición entre corchetes y \textbf{loop} para pasos que se repiten.
 
@@ -16,9 +16,9 @@ Los participantes corresponden a los contenedores del diagrama de la figura \ref
 
 \subsubsection{Registro y verificación de la cuenta}
 
-La figura \ref{fig:sd_registro} muestra el registro con correo electrónico (CU-01 y CU-02). Después de capturar sus datos, el usuario acepta los términos y el aviso de privacidad en el mismo formulario (RF-12): puede abrirlos y aceptarlos desde la ventana que los muestra, o solo marcar la casilla de aceptación. Al presionar «Registrarse», el consentimiento se envía junto con los datos de la cuenta. El servicio de autenticación rechaza los correos ya registrados; en caso contrario, crea la cuenta sin verificar y envía, mediante Resend, un enlace de un solo uso con vigencia de 10 minutos (RN-14), mientras la aplicación muestra el aviso de verificación pendiente (RF-04).
+La figura \ref{fig:sd_registro} muestra el registro con correo electrónico (CU-01), que incluye la aceptación del aviso de privacidad (CU-02). Después de capturar sus datos, el usuario acepta los términos y el aviso de privacidad en el mismo formulario (RF-13): puede abrirlos y aceptarlos desde la ventana que los muestra, o solo marcar la casilla de aceptación. Al presionar «Registrarse», el consentimiento se envía junto con los datos de la cuenta. El servicio de autenticación rechaza los correos ya registrados; en caso contrario, crea la cuenta sin verificar y envía, mediante Resend, un enlace de un solo uso con vigencia de 10 minutos (RN-22), mientras la aplicación muestra el aviso de verificación pendiente (RF-05).
 
-La figura \ref{fig:sd_verificacion} continúa este flujo con la verificación del correo (CU-03). Si el usuario abre el enlace dentro de su vigencia, la cuenta queda verificada y la aplicación habilita sus funciones (RN-17); si el enlace expiró o ya se usó, la aplicación ofrece reenviarlo (RF-03).
+La figura \ref{fig:sd_verificacion} continúa este flujo con la verificación del correo (CU-03). Si el usuario abre el enlace dentro de su vigencia, la cuenta queda verificada y la aplicación habilita sus funciones (RN-25); si el enlace expiró o ya se usó, la aplicación ofrece solicitar uno nuevo (CU-04, RF-03).
 
 \begin{figure}[htbp]
     \centering
@@ -36,7 +36,7 @@ La figura \ref{fig:sd_verificacion} continúa este flujo con la verificación de
 
 \subsubsection{Registro e inicio de sesión con Google}
 
-En la figura \ref{fig:sd_google} se presenta el acceso con una cuenta de Google (CU-06), disponible tanto en la pantalla de registro como en la de inicio de sesión. El usuario solo confirma su cuenta de Google: no se le pide verificar el correo (RN-17) ni se le muestra el aviso de privacidad. La aplicación obtiene de Google un token de identidad y lo entrega al servicio de autenticación, que verifica su firma, su emisor y su audiencia antes de confiar en él. Si el correo ya pertenece a una cuenta con contraseña, ambas formas de acceso se vinculan a la misma cuenta (RF-06); si es un usuario nuevo, su cuenta se crea en ese momento.
+En la figura \ref{fig:sd_google} se presenta el acceso con una cuenta de Google, que sirve tanto para registrarse (CU-05) como para iniciar sesión (CU-10). Al registrarse desde la pantalla de registro, el usuario acepta primero el aviso de privacidad, ya que CU-05 incluye a CU-02 (RF-13); al iniciar sesión, solo confirma su cuenta de Google. En ningún caso se le pide verificar el correo (RN-25). La aplicación obtiene de Google un token de identidad y lo entrega al servicio de autenticación, que verifica su firma, su emisor y su audiencia antes de confiar en él. Si el correo ya pertenece a una cuenta con contraseña, ambas formas de acceso se vinculan a la misma cuenta (RF-07); si es un usuario nuevo, su cuenta se crea en ese momento junto con su consentimiento.
 
 \begin{figure}[htbp]
     \centering
@@ -47,7 +47,7 @@ En la figura \ref{fig:sd_google} se presenta el acceso con una cuenta de Google 
 
 \subsubsection{Búsqueda de una dirección}
 
-La figura \ref{fig:sd_busqueda} describe la búsqueda de una dirección de origen o destino (CU-21). Para no saturar los servicios, la aplicación espera 300 ms sin cambios en el texto antes de consultar una Edge Function. Esta busca primero en el índice propio, que solo contiene los lugares del área de servicio, y únicamente consulta al servicio de geocodificación cuando no hay coincidencias suficientes, con Photon como respaldo si Geoapify falla. El área se delimita desde la consulta: a ambos proveedores se les envía el rectángulo que envuelve el área de servicio y nunca la posición del usuario (RN-16). Como estos servicios solo admiten rectángulos y el área es un polígono irregular, la Edge Function descarta al final las sugerencias que caen en las esquinas del rectángulo fuera del polígono (RN-01).
+La figura \ref{fig:sd_busqueda} describe la búsqueda de una dirección de origen o destino (CU-25, RF-16). Para no saturar los servicios, la aplicación espera 300 ms sin cambios en el texto antes de solicitar coincidencias a una Edge Function de Supabase. Esta busca primero en el índice propio de la base de datos, que solo contiene los lugares del área de servicio, y únicamente cuando no hay coincidencias suficientes consulta a Geoapify y, si este falla, a Photon como respaldo. Ambos proveedores se consultan desde la Edge Function, de modo que la llave de acceso no viaja en la aplicación, y la búsqueda se acota con el rectángulo que envuelve el área de servicio y nunca con la posición del usuario (RN-24). Como estos servicios solo admiten rectángulos y el área es un polígono irregular, la Edge Function descarta las sugerencias que caen en las esquinas del rectángulo fuera del polígono (RN-01).
 
 \begin{figure}[htbp]
     \centering
@@ -58,7 +58,7 @@ La figura \ref{fig:sd_busqueda} describe la búsqueda de una dirección de orige
 
 \subsubsection{Cálculo de rutas}
 
-El cálculo de rutas (CU-25) se muestra en la figura \ref{fig:sd_rutas}. Sin conexión, la aplicación no realiza la consulta y avisa al usuario (RF-26). Con conexión, invoca mediante la API REST una función de la base de datos que valida que el origen y el destino estén dentro del área de servicio (RN-01), aplica los pesos de la franja horaria de la consulta (RN-05) y calcula con pgRouting las rutas segura, rápida y balanceada (RN-02, RN-03). La respuesta puede indicar un punto fuera de cobertura (RF-20), la inexistencia de una ruta peatonal (RF-25) o las rutas encontradas, de las que la aplicación calcula el tiempo estimado (RN-18) y presenta la distancia y el nivel de riesgo (RF-22).
+El cálculo de rutas (CU-27) se muestra en la figura \ref{fig:sd_rutas}. Sin conexión, la aplicación no realiza la consulta y muestra un aviso de error (RF-27). Con conexión, solicita a la API REST las rutas entre el origen y el destino, y la API ejecuta una función de la base de datos que valida que ambos puntos estén dentro del área de servicio (RF-21, RN-01), pondera el riesgo según la franja horaria de la consulta (RF-28, RN-04) y calcula con pgRouting las rutas segura, rápida y balanceada (RF-22, RN-02, RN-03). Si no hay resultados, porque algún punto queda fuera del área o no existe una ruta peatonal (RF-26), la aplicación alerta al usuario; si los hay, le presenta las rutas con su resumen y su riesgo (CU-28, RF-23, RF-24).
 
 \begin{figure}[htbp]
     \centering
@@ -67,47 +67,58 @@ El cálculo de rutas (CU-25) se muestra en la figura \ref{fig:sd_rutas}. Sin con
     \label{fig:sd_rutas}
 \end{figure}
 
-\subsubsection{Navegación con recálculo por desvío}
+\subsubsection{Navegación}
 
-La figura \ref{fig:sd_navegacion} presenta la navegación activa (CU-29). Si la aplicación aún no tiene el permiso de ubicación, lo solicita (RF-29). Durante la navegación, cada nueva posición actualiza el marcador del usuario (RF-30) y, si tiene seguimientos activos, se publica a sus seguidores. Cuando el usuario se aparta más de 50 m de la ruta (RN-18), la aplicación solicita una nueva ruta desde su posición actual, la traza y avisa del recálculo (RF-31), notificando también a los seguidores.
+La figura \ref{fig:sd_navegacion} presenta la navegación (CU-30, CU-31). Si la aplicación aún no tiene el permiso de ubicación, el usuario debe concederlo (RF-30). Mientras la navegación está en curso, cada nueva ubicación del GPS actualiza el avance del usuario en el mapa (RF-31) y, si existe un enlace de seguimiento activo, la aplicación publica su posición en tiempo real (RF-43). Cuando el usuario se desvía de la ruta más de 50 m (RN-05), la aplicación solicita una nueva ruta y la traza (RF-32). Al terminar, indica la llegada al destino (RF-34).
 
 \begin{figure}[htbp]
     \centering
     \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_navegacion}
-    \caption{Diagrama de secuencia de la navegación con recálculo por desvío}
+    \caption{Diagrama de secuencia de la navegación}
     \label{fig:sd_navegacion}
 \end{figure}
 
-\subsubsection{Registro de un reporte de riesgo}
+\subsubsection{Generación de reportes}
 
-En la figura \ref{fig:sd_reporte} se muestra el registro de un reporte (CU-31). El usuario indica el lugar con su ubicación actual o con un punto del mapa, elige una categoría del catálogo (RN-06) y puede agregar una descripción. Al insertar el reporte, la base de datos comprueba que la cuenta esté verificada, que el punto esté dentro del área de servicio (RN-01) y que el usuario no haya rebasado 10 reportes en 24 horas (RN-12); si alguna condición falla, la aplicación informa del rechazo (RF-37). Los reportes aceptados quedan en estado pendiente (RN-07) hasta que otros usuarios los confirmen o desmientan, proceso que corresponde a CU-33.
+En la figura \ref{fig:sd_reporte} se muestra la generación de un reporte de riesgo (CU-32). El usuario indica el lugar con su ubicación actual, que la aplicación obtiene del GPS, o con un punto que selecciona en el mapa (RF-37), y llena los detalles del reporte: su categoría (RN-07) y, de forma opcional, una descripción. La API REST solicita guardarlo y la base de datos lo relaciona con el segmento de calle correspondiente y le asigna el peso preventivo de un reporte pendiente (RF-39, RN-08). Al recibir la confirmación, la aplicación avisa que el reporte fue enviado. El reporte queda pendiente hasta que otros usuarios lo confirmen o desmientan, como se describe a continuación.
 
 \begin{figure}[htbp]
     \centering
     \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_registro_reporte}
-    \caption{Diagrama de secuencia del registro de un reporte de riesgo}
+    \caption{Diagrama de secuencia de la generación de un reporte de riesgo}
     \label{fig:sd_reporte}
 \end{figure}
 
-\subsubsection{Compartir y visualizar un seguimiento}
+\subsubsection{Confirmación de reportes}
 
-La figura \ref{fig:sd_seguimiento} describe cómo el usuario comparte su ubicación (CU-35) y cómo la consulta otra persona (CU-38). El enlace se crea con la vigencia elegida por el usuario (RN-13) y se envía con las aplicaciones de mensajería del dispositivo. Al abrirlo, la aplicación del seguidor comprueba su vigencia y, si sigue activo, se suscribe a un canal de Supabase Realtime por el que recibe la posición, la ruta, la distancia, el tiempo y el riesgo del trayecto (RF-45). Si el enlace expiró, está pausado o fue eliminado, se informa al seguidor (RNF-10).
+La figura \ref{fig:sd_confirmacion} muestra cómo un usuario consulta los reportes pendientes cercanos (CU-34) y confirma o desmiente uno de ellos (CU-35). La aplicación obtiene la ubicación del GPS y solicita los reportes pendientes de otros usuarios que se encuentran dentro del radio de confirmación de 1 km (RF-40, RN-12). Cuando el usuario elige confirmar o desmentir un reporte, la API REST actualiza sus valoraciones (RF-41) y la base de datos actualiza su estado conforme a RN-11 y modifica el peso del segmento de calle según RN-08.
 
 \begin{figure}[htbp]
     \centering
-    \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_seguimiento}
-    \caption{Diagrama de secuencia para compartir y visualizar un seguimiento}
-    \label{fig:sd_seguimiento}
+    \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_confirmacion_reportes}
+    \caption{Diagrama de secuencia de la confirmación de reportes}
+    \label{fig:sd_confirmacion}
 \end{figure}
 
-\subsubsection{Alertas de reportes cercanos}
+\subsubsection{Monitoreo}
 
-Finalmente, la figura \ref{fig:sd_alertas} muestra las alertas de reportes cercanos (CU-34). Al activarlas, la aplicación solicita los permisos de ubicación en segundo plano y de notificaciones, obtiene el token del dispositivo en Firebase Cloud Messaging y lo registra en el servidor (RF-41). Cuando un reporte pasa a validado (RN-07), un webhook de la base de datos ejecuta una Edge Function que busca a los usuarios que se encuentran a 1.5 km o menos del reporte (RN-18) y les envía la notificación con prioridad alta.
+La figura \ref{fig:sd_monitoreo} describe el monitoreo de un usuario por parte de un seguidor (CU-41). Mientras el usuario seguido tiene seguimientos activos, la aplicación lee su ubicación del GPS y la inserta en esos seguimientos (RF-43). Cuando el seguidor consulta la ubicación, la aplicación verifica sus permisos, es decir, que el enlace o código de seguimiento siga vigente y activo (RN-19). Si no los tiene, recibe un error; si los tiene, ve la ubicación y la navegación del usuario seguido (RF-46), y este recibe un aviso de monitoreo (RN-21).
+
+\begin{figure}[htbp]
+    \centering
+    \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_monitoreo}
+    \caption{Diagrama de secuencia del monitoreo de un usuario}
+    \label{fig:sd_monitoreo}
+\end{figure}
+
+\subsubsection{Notificaciones de reportes cercanos}
+
+Finalmente, la figura \ref{fig:sd_alertas} muestra las notificaciones de reportes cercanos (CU-17). Al activarlas, la aplicación solicita los permisos de ubicación en segundo plano y de notificaciones (RF-30), obtiene el token del dispositivo en Firebase Cloud Messaging y lo registra en el servidor (RF-42). Cuando se registra un reporte nuevo o uno validado regresa a pendiente, un webhook de la base de datos ejecuta una Edge Function que busca a los usuarios que se encuentran a 1 km o menos del reporte, distintos de su autor, y les envía la notificación para solicitar su confirmación (RN-13). La última ubicación conocida del usuario se usa solo para este fin (RN-24).
 
 \begin{figure}[htbp]
     \centering
     \input{figures/capitulo6_diseno_sistema/6.3_Diseno_estructural_y_de_comportamiento/sd_alertas_push}
-    \caption{Diagrama de secuencia de las alertas de reportes cercanos}
+    \caption{Diagrama de secuencia de las notificaciones de reportes cercanos}
     \label{fig:sd_alertas}
 \end{figure}
 
